@@ -64,8 +64,7 @@ STAZIONI = [
         "nome": "Lido di Volano",
         "url": "http://dkwa.it/meteo/",
         "tipo": "saratoga",
-        # Stazione a nord: avvisa solo per i venti da nord (Tramontana/Bora).
-        "direzioni": ["N", "NNE", "NE", "ENE", "NNW", "NW"],
+        "direzioni": None,            # avvisa per qualsiasi direzione
     },
 ]
 

@@ -4,7 +4,7 @@ Controlla ogni 30 minuti i dati di due stazioni meteo e ti manda un messaggio
 **Telegram** quando il vento medio supera i **10 nodi**:
 
 - **Porto Corsini** (a sud) — Adriatico Wind Club: avviso per qualsiasi direzione.
-- **Lido di Volano** (a nord, `dkwa.it/meteo`): avviso solo per i venti da nord.
+- **Lido di Volano** (a nord, `dkwa.it/meteo`): avviso per qualsiasi direzione.
 
 - Gira gratis su **GitHub Actions** (nessun PC acceso necessario).
 - Avviso **solo al superamento** della soglia (niente messaggi a raffica):
