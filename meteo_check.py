@@ -50,11 +50,22 @@ TZ = ZoneInfo("Europe/Rome")
 #   direzioni  -> None = avvisa per qualsiasi direzione;
 #                 oppure lista di settori (es. ["S", "SSW", "SW"]) per
 #                 avvisare solo quando il vento arriva da quelle direzioni.
+# Campo "tipo": indica quale lettore usare per quella pagina
+#   "meteosystem" -> pagine Meteosystem/WeatherLink (es. Porto Corsini)
+#   "saratoga"    -> template Saratoga/Meteobridge (es. Lido di Volano)
 STAZIONI = [
     {
         "nome": "Porto Corsini",
         "url": "http://www.meteosystem.com/wlip/awc/",
-        "direzioni": None,
+        "tipo": "meteosystem",
+        "direzioni": None,            # avvisa per qualsiasi direzione
+    },
+    {
+        "nome": "Lido di Volano",
+        "url": "http://dkwa.it/meteo/",
+        "tipo": "saratoga",
+        # Stazione a nord: avvisa solo per i venti da nord (Tramontana/Bora).
+        "direzioni": ["N", "NNE", "NE", "ENE", "NNW", "NW"],
     },
 ]
 
@@ -79,12 +90,56 @@ def _num(s: str) -> float:
     return float(s.replace(",", "."))
 
 
-def leggi_stazione(url: str) -> dict | None:
-    """Scarica la pagina ed estrae vento attuale, direzione e raffica.
+def _parse_meteosystem(html: str) -> dict | None:
+    """Pagine Meteosystem/WeatherLink, es. 'Velocita' attuale: 5.2 kts SSW'."""
+    testo = _solo_testo(html)
+    m_vento = re.search(
+        r"attuale[:\s]*([\d.,]+)\s*kts?\s*([NSEWnsew]{1,3})",
+        testo, re.IGNORECASE,
+    )
+    # "raffica ... 13.0 kts"  (raffica massima giornaliera)
+    m_raffica = re.search(r"raffica[^0-9]{0,40}?([\d.,]+)\s*kts?",
+                          testo, re.IGNORECASE)
+    if not m_vento:
+        return None
+    return {
+        "vento": _num(m_vento.group(1)),
+        "direzione": m_vento.group(2).upper(),
+        "raffica": _num(m_raffica.group(1)) if m_raffica else None,
+    }
 
-    Ritorna un dict {vento, direzione, raffica} oppure None se il parsing
-    fallisce (es. il sito ha cambiato formato).
+
+def _parse_saratoga(html: str) -> dict | None:
+    """Template Saratoga/Meteobridge, es. testo 'S 4.7 Raffica: 5.4 kts'."""
+    testo = _solo_testo(html)
+    # velocita' attuale: il numero subito prima della parola "Raffica"
+    m_vento = re.search(r"([\d.,]+)\s*Raffica", testo, re.IGNORECASE)
+    # raffica: il numero subito dopo "Raffica:"
+    m_raffica = re.search(r"Raffica:?\s*([\d.,]+)", testo, re.IGNORECASE)
+    # direzione: dal nome dell'immagine della rosa dei venti (es. wr-it-S.png)
+    m_dir = re.search(r"wr-it-([NSEW]{1,3})\.png", html, re.IGNORECASE)
+    if not m_vento:
+        return None
+    return {
+        "vento": _num(m_vento.group(1)),
+        "direzione": m_dir.group(1).upper() if m_dir else "?",
+        "raffica": _num(m_raffica.group(1)) if m_raffica else None,
+    }
+
+
+PARSER = {
+    "meteosystem": _parse_meteosystem,
+    "saratoga": _parse_saratoga,
+}
+
+
+def leggi_stazione(st: dict) -> dict | None:
+    """Scarica la pagina della stazione ed estrae vento, direzione, raffica.
+
+    Ritorna {vento, direzione, raffica} oppure None se il download o il
+    parsing falliscono (es. il sito ha cambiato formato).
     """
+    url = st["url"]
     try:
         r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
         r.raise_for_status()
@@ -92,27 +147,11 @@ def leggi_stazione(url: str) -> dict | None:
         print(f"[errore] download fallito da {url}: {e}")
         return None
 
-    testo = _solo_testo(r.text)
-
-    # "Velocita' attuale: 5.2 kts SSW"
-    m_vento = re.search(
-        r"attuale[:\s]*([\d.,]+)\s*kts?\s*([NSEWnsew]{1,3})",
-        testo,
-        re.IGNORECASE,
-    )
-    # "raffica ... 13.0 kts"  (raffica massima giornaliera)
-    m_raffica = re.search(r"raffica[^0-9]{0,40}?([\d.,]+)\s*kts?",
-                          testo, re.IGNORECASE)
-
-    if not m_vento:
+    parser = PARSER[st.get("tipo", "meteosystem")]
+    dati = parser(r.text)
+    if dati is None:
         print(f"[errore] impossibile leggere il vento da {url}")
-        return None
-
-    return {
-        "vento": _num(m_vento.group(1)),
-        "direzione": m_vento.group(2).upper(),
-        "raffica": _num(m_raffica.group(1)) if m_raffica else None,
-    }
+    return dati
 
 
 # --------------------------------------------------------------------------
@@ -171,7 +210,7 @@ def main() -> int:
 
     for st in STAZIONI:
         nome = st["nome"]
-        dati = leggi_stazione(st["url"])
+        dati = leggi_stazione(st)
         if dati is None:
             continue  # non tocco lo stato se non riesco a leggere
 
