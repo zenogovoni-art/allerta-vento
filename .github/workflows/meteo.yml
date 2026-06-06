@@ -5,7 +5,12 @@ on:
     # Ogni 30 minuti. Attenzione: l'orario del cron e' in UTC e GitHub puo'
     # ritardare l'esecuzione di qualche minuto nei momenti di carico.
     - cron: "*/30 * * * *"
-  workflow_dispatch: {}   # permette l'avvio manuale dalla scheda Actions
+  workflow_dispatch:      # permette l'avvio manuale dalla scheda Actions
+    inputs:
+      test_telegram:
+        description: "Invia un messaggio di prova su Telegram"
+        type: boolean
+        default: false
 
 permissions:
   contents: write          # serve per ri-committare state.json
@@ -32,6 +37,7 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEST_TELEGRAM: ${{ inputs.test_telegram }}
         run: python meteo_check.py
 
       - name: Salva lo stato aggiornato

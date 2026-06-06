@@ -154,6 +154,15 @@ def salva_stato(stato: dict) -> None:
 # --------------------------------------------------------------------------
 
 def main() -> int:
+    # Modalita' test: invia un messaggio di prova e termina.
+    if os.environ.get("TEST_TELEGRAM", "").lower() in ("1", "true", "yes"):
+        try:
+            invia_telegram("✅ Test allerta vento: il bot funziona!")
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] invio Telegram di test fallito: {e}")
+            return 1
+        return 0
+
     adesso = datetime.now(TZ)
     in_orario = ORA_INIZIO <= adesso.hour < ORA_FINE
 
