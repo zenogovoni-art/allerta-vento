@@ -192,10 +192,25 @@ def salva_stato(stato: dict) -> None:
 # --------------------------------------------------------------------------
 
 def main() -> int:
-    # Modalita' test: invia un messaggio di prova e termina.
+    # Modalita' test: legge i dati attuali di tutte le stazioni e li invia
+    # (anche sotto soglia), poi termina. Utile per verificare che funzioni.
     if os.environ.get("TEST_TELEGRAM", "").lower() in ("1", "true", "yes"):
+        righe = ["🧪 *Test allerta vento — dati attuali*"]
+        for st in STAZIONI:
+            dati = leggi_stazione(st)
+            if dati is None:
+                righe.append(f"\n*{st['nome']}*: dati non disponibili")
+                continue
+            raffica = dati["raffica"]
+            raffica_txt = (f" — raffica {raffica:.1f} nodi"
+                           if raffica is not None else "")
+            righe.append(
+                f"\n🌬️ *{st['nome']}*\n"
+                f"Vento {dati['vento']:.1f} nodi da {dati['direzione']}"
+                f"{raffica_txt}"
+            )
         try:
-            invia_telegram("✅ Test allerta vento: il bot funziona!")
+            invia_telegram("\n".join(righe))
         except Exception as e:  # noqa: BLE001
             print(f"[errore] invio Telegram di test fallito: {e}")
             return 1
