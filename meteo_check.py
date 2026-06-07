@@ -28,13 +28,36 @@ import requests
 # CONFIGURAZIONE
 # --------------------------------------------------------------------------
 
-# Soglia in nodi sul vento medio/attuale.
-SOGLIA_NODI = 8.0
-
-# Isteresi: lo stato si "riarma" (pronto a un nuovo avviso) solo quando il
-# vento riscende sotto questo valore. Evita avvisi ripetuti se il vento
-# oscilla attorno alla soglia.
-SOGLIA_RIARMO = 7.0
+# Livelli di avviso, dal piu' basso al piu' alto. Tutti sul vento medio.
+#   soglia       -> nodi oltre i quali scatta il livello
+#   riarmo       -> nodi sotto cui il livello si "disarma" (isteresi: evita
+#                   avvisi ripetuti se il vento oscilla attorno alla soglia)
+#   intestazione -> testo speciale premesso ai dati (None = avviso normale)
+LIVELLI = [
+    {
+        "soglia": 8.0,
+        "riarmo": 7.0,
+        "intestazione": None,
+    },
+    {
+        "soglia": 20.0,
+        "riarmo": 19.0,
+        "intestazione": (
+            "⚠️ *ALERT VENTO !!!*\n"
+            "_Vento sostenuto: condizioni impegnative, adatte solo a chi ha "
+            "esperienza. Valutate bene prima di uscire._"
+        ),
+    },
+    {
+        "soglia": 30.0,
+        "riarmo": 29.0,
+        "intestazione": (
+            "🛑 *ALERT VENTO !!!*\n"
+            "_Vento molto forte: si sconsiglia di uscire in acqua. Pericoloso "
+            "anche per i piu' esperti._"
+        ),
+    },
+]
 
 # Fascia oraria in cui inviare gli avvisi (ora locale italiana, 24h).
 ORA_INIZIO = 9
@@ -187,6 +210,22 @@ def salva_stato(stato: dict) -> None:
     STATE_FILE.write_text(json.dumps(stato, indent=2, ensure_ascii=False))
 
 
+def calcola_livello(vento: float, livello_attuale: int) -> int:
+    """Calcola il livello di vento (0 = sotto soglia, 1..N) con isteresi.
+
+    Partendo dal livello attuale: prima scende finche' il vento e' sotto la
+    soglia di riarmo, poi sale finche' il vento supera le soglie successive.
+    """
+    livello = livello_attuale
+    # Discesa: scendo di livello solo se il vento e' sotto il riarmo.
+    while livello > 0 and vento < LIVELLI[livello - 1]["riarmo"]:
+        livello -= 1
+    # Salita: salgo di livello se il vento supera la soglia successiva.
+    while livello < len(LIVELLI) and vento >= LIVELLI[livello]["soglia"]:
+        livello += 1
+    return livello
+
+
 # --------------------------------------------------------------------------
 # MAIN
 # --------------------------------------------------------------------------
@@ -231,31 +270,29 @@ def main() -> int:
         vento = dati["vento"]
         direzione = dati["direzione"]
         raffica = dati["raffica"]
-        print(f"[{nome}] vento {vento} kts {direzione} "
-              f"raffica {raffica} kts (orario={in_orario})")
 
-        era_sopra = stato.get(nome, {}).get("sopra", False)
+        livello_prima = stato.get(nome, {}).get("livello", 0)
+        livello_ora = calcola_livello(vento, livello_prima)
+        print(f"[{nome}] vento {vento} kts {direzione} raffica {raffica} kts "
+              f"(livello {livello_prima}->{livello_ora}, orario={in_orario})")
 
-        # Riarmo quando il vento riscende sotto la soglia di isteresi.
-        if vento < SOGLIA_RIARMO and era_sopra:
-            stato.setdefault(nome, {})["sopra"] = False
-            cambiato = True
-            era_sopra = False
-
-        # Superamento: vento sopra soglia e prima eravamo sotto.
-        if vento > SOGLIA_NODI and not era_sopra:
-            stato.setdefault(nome, {})["sopra"] = True
+        if livello_ora != livello_prima:
+            stato.setdefault(nome, {})["livello"] = livello_ora
             cambiato = True
 
+        # Avviso solo quando il livello SALE (superamento di una soglia).
+        if livello_ora > livello_prima:
             direzioni_ok = (st["direzioni"] is None
                             or direzione in st["direzioni"])
 
             if in_orario and direzioni_ok:
+                intestazione = LIVELLI[livello_ora - 1]["intestazione"]
                 raffica_txt = (f" — raffica *{raffica:.1f} nodi*"
                                if raffica is not None else "")
-                testo = (f"🌬️ *{nome}*\n"
+                corpo = (f"🌬️ *{nome}*\n"
                          f"Vento *{vento:.1f} nodi* da {direzione}"
                          f"{raffica_txt}")
+                testo = f"{intestazione}\n\n{corpo}" if intestazione else corpo
                 try:
                     invia_telegram(testo)
                 except Exception as e:  # noqa: BLE001
