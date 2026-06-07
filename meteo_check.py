@@ -29,16 +29,16 @@ import requests
 # --------------------------------------------------------------------------
 
 # Soglia in nodi sul vento medio/attuale.
-SOGLIA_NODI = 10.0
+SOGLIA_NODI = 8.0
 
 # Isteresi: lo stato si "riarma" (pronto a un nuovo avviso) solo quando il
 # vento riscende sotto questo valore. Evita avvisi ripetuti se il vento
 # oscilla attorno alla soglia.
-SOGLIA_RIARMO = 9.0
+SOGLIA_RIARMO = 7.0
 
 # Fascia oraria in cui inviare gli avvisi (ora locale italiana, 24h).
-ORA_INIZIO = 7
-ORA_FINE = 21
+ORA_INIZIO = 9
+ORA_FINE = 19
 
 # Fuso orario per il calcolo della fascia oraria.
 TZ = ZoneInfo("Europe/Rome")

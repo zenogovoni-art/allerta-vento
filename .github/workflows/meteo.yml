@@ -2,9 +2,9 @@ name: Allerta vento
 
 on:
   schedule:
-    # Ogni 30 minuti. Attenzione: l'orario del cron e' in UTC e GitHub puo'
+    # Ogni 15 minuti. Attenzione: l'orario del cron e' in UTC e GitHub puo'
     # ritardare l'esecuzione di qualche minuto nei momenti di carico.
-    - cron: "*/30 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:      # permette l'avvio manuale dalla scheda Actions
     inputs:
       test_telegram:

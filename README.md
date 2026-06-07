@@ -1,15 +1,15 @@
 # Allerta vento 🌬️
 
-Controlla ogni 30 minuti i dati di due stazioni meteo e ti manda un messaggio
-**Telegram** quando il vento medio supera i **10 nodi**:
+Controlla ogni 15 minuti i dati di due stazioni meteo e ti manda un messaggio
+**Telegram** quando il vento medio supera gli **8 nodi**:
 
 - **Porto Corsini** (a sud) — Adriatico Wind Club: avviso per qualsiasi direzione.
 - **Lido di Volano** (a nord, `dkwa.it/meteo`): avviso per qualsiasi direzione.
 
 - Gira gratis su **GitHub Actions** (nessun PC acceso necessario).
 - Avviso **solo al superamento** della soglia (niente messaggi a raffica):
-  riparte solo quando il vento riscende sotto i 9 nodi e poi risale.
-- Avvisi **solo di giorno** (07:00–21:00, ora italiana).
+  riparte solo quando il vento riscende sotto i 7 nodi e poi risale.
+- Avvisi **solo di giorno** (09:00–19:00, ora italiana).
 - Messaggio con **intensità**, **direzione** e **raffica**.
 
 ---
