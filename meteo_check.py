@@ -392,9 +392,9 @@ def main() -> int:
         tendenza = None
         if in_orario and vento_prec is not None:
             delta = vento - vento_prec
-            tendenza = ("↗️ in aumento" if delta >= 1
-                        else "↘️ in calo" if delta <= -1
-                        else "➡️ stabile")
+            tendenza = ("📈 in aumento" if delta >= 1
+                        else "📉 in calo" if delta <= -1
+                        else "➖ stabile")
 
         print(f"[{nome}] vento {vento} kts {direzione} raffica {raffica} kts "
               f"(vento liv {livello_prima}->{livello_ora}, "
