@@ -164,15 +164,20 @@ def stima_arrivo_min(coord, direzione: str, vento: float):
     return dist / (componente * 1.852) * 60  # km / (nodi->km/h) -> minuti
 
 
-# Frecce (8 punte) che puntano verso la PROVENIENZA del vento.
+# Frecce (8 punte) per le 8 direzioni della bussola.
 _FRECCE = ["⬆️", "↗️", "➡️", "↘️", "⬇️", "↙️", "⬅️", "↖️"]  # N NE E SE S SW W NW
 
 
 def freccia(direzione: str) -> str:
-    """Emoji freccia che indica da dove arriva il vento (vuota se sconosciuta)."""
+    """Freccia che punta verso DOVE soffia il vento (vuota se sconosciuta).
+
+    Il vento si muove verso la direzione opposta a quella di provenienza:
+    es. 'da SE' -> soffia verso NW -> ↖️.
+    """
     if direzione not in COMPASS:
         return ""
-    return _FRECCE[int((COMPASS[direzione] + 22.5) // 45) % 8]
+    rotta = (COMPASS[direzione] + 180) % 360
+    return _FRECCE[int((rotta + 22.5) // 45) % 8]
 
 
 _COMPASS16 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
