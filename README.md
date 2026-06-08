@@ -3,8 +3,8 @@
 Controlla ogni 15 minuti i dati di due stazioni meteo e ti manda un messaggio
 **Telegram** quando il vento medio supera gli **8 nodi**:
 
-- **Porto Corsini** (a sud) — Adriatico Wind Club: avviso per qualsiasi direzione.
-- **Lido di Volano** (a nord, `dkwa.it/meteo`): avviso per qualsiasi direzione.
+- **Porto Corsini** (a sud) — Adriatico Wind Club: solo venti da E/SE/S/SW/O.
+- **Lido di Volano** (a nord, `dkwa.it/meteo`): solo venti da O/NW/N/NE/E.
 
 - Gira gratis su **GitHub Actions** (nessun PC acceso necessario).
 - Avviso **solo al superamento** della soglia (niente messaggi a raffica):

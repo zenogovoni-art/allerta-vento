@@ -81,13 +81,15 @@ STAZIONI = [
         "nome": "Porto Corsini",
         "url": "http://www.meteosystem.com/wlip/awc/",
         "tipo": "meteosystem",
-        "direzioni": None,            # avvisa per qualsiasi direzione
+        # Semicerchio sud: venti da E, SE, S, SW, O (e settori intermedi).
+        "direzioni": ["E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W"],
     },
     {
         "nome": "Lido di Volano",
         "url": "http://dkwa.it/meteo/",
         "tipo": "saratoga",
-        "direzioni": None,            # avvisa per qualsiasi direzione
+        # Semicerchio nord: venti da O, NW, N, NE, E (e settori intermedi).
+        "direzioni": ["W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE", "E"],
     },
 ]
 
