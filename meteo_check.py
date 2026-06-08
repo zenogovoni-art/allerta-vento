@@ -164,6 +164,17 @@ def stima_arrivo_min(coord, direzione: str, vento: float):
     return dist / (componente * 1.852) * 60  # km / (nodi->km/h) -> minuti
 
 
+# Frecce (8 punte) che puntano verso la PROVENIENZA del vento.
+_FRECCE = ["⬆️", "↗️", "➡️", "↘️", "⬇️", "↙️", "⬅️", "↖️"]  # N NE E SE S SW W NW
+
+
+def freccia(direzione: str) -> str:
+    """Emoji freccia che indica da dove arriva il vento (vuota se sconosciuta)."""
+    if direzione not in COMPASS:
+        return ""
+    return _FRECCE[int((COMPASS[direzione] + 22.5) // 45) % 8]
+
+
 # --------------------------------------------------------------------------
 # PARSING
 # --------------------------------------------------------------------------
@@ -342,10 +353,21 @@ def main() -> int:
         return 0
 
     adesso = datetime.now(TZ)
+    oggi = adesso.strftime("%Y-%m-%d")
     in_orario = ORA_INIZIO <= adesso.hour < ORA_FINE
 
     stato = carica_stato()
     cambiato = False
+
+    # Reset giornaliero di massimi e tendenza all'inizio di un nuovo giorno.
+    if stato.get("_data") != oggi:
+        stato["_data"] = oggi
+        for st in STAZIONI:
+            s = stato.setdefault(st["nome"], {})
+            s["vento_max"] = 0.0
+            s["raffica_max"] = 0.0
+            s.pop("vento_prec", None)
+        cambiato = True
 
     for st in STAZIONI:
         nome = st["nome"]
@@ -356,23 +378,41 @@ def main() -> int:
         vento = dati["vento"]
         direzione = dati["direzione"]
         raffica = dati["raffica"]
+        s = stato.setdefault(nome, {})
 
-        livello_prima = stato.get(nome, {}).get("livello", 0)
+        livello_prima = s.get("livello", 0)
         livello_ora = calcola_livello(vento, livello_prima, LIVELLI)
 
-        raf_prima = stato.get(nome, {}).get("livello_raffica", 0)
+        raf_prima = s.get("livello_raffica", 0)
         raf_ora = (calcola_livello(raffica, raf_prima, RAFFICA_LIVELLI)
                    if raffica is not None else raf_prima)
+
+        # Tendenza rispetto alla lettura precedente (solo in orario attivo).
+        vento_prec = s.get("vento_prec")
+        tendenza = None
+        if in_orario and vento_prec is not None:
+            delta = vento - vento_prec
+            tendenza = ("↗️ in aumento" if delta >= 1
+                        else "↘️ in calo" if delta <= -1
+                        else "➡️ stabile")
 
         print(f"[{nome}] vento {vento} kts {direzione} raffica {raffica} kts "
               f"(vento liv {livello_prima}->{livello_ora}, "
               f"raffica liv {raf_prima}->{raf_ora}, orario={in_orario})")
 
         if livello_ora != livello_prima:
-            stato.setdefault(nome, {})["livello"] = livello_ora
+            s["livello"] = livello_ora
             cambiato = True
         if raf_ora != raf_prima:
-            stato.setdefault(nome, {})["livello_raffica"] = raf_ora
+            s["livello_raffica"] = raf_ora
+            cambiato = True
+
+        # Aggiorna tendenza e massimi giornalieri (solo in orario attivo).
+        if in_orario:
+            s["vento_prec"] = vento
+            s["vento_max"] = max(s.get("vento_max", 0.0), vento)
+            if raffica is not None:
+                s["raffica_max"] = max(s.get("raffica_max", 0.0), raffica)
             cambiato = True
 
         # --- Avviso VENTO: solo quando il livello SALE (e direzione OK) ---
@@ -382,11 +422,14 @@ def main() -> int:
 
             if in_orario and direzioni_ok:
                 intestazione = LIVELLI[livello_ora - 1]["intestazione"]
+                dir_txt = f"{direzione} {freccia(direzione)}".strip()
                 raffica_txt = (f" — raffica *{raffica:.1f} nodi*"
                                if raffica is not None else "")
                 corpo = (f"🌬️ *{nome}*\n"
-                         f"Vento *{vento:.1f} nodi* da {direzione}"
+                         f"Vento *{vento:.1f} nodi* da {dir_txt}"
                          f"{raffica_txt}")
+                if tendenza:
+                    corpo += f"\n{tendenza}"
                 # Stima di quando il rinforzo potrebbe arrivare al circolo.
                 eta = stima_arrivo_min(st.get("coord"), direzione, vento)
                 if eta is not None:
@@ -416,6 +459,29 @@ def main() -> int:
                     print(f"[errore] invio Telegram raffica fallito: {e}")
             else:
                 print("[info] soglia raffica superata ma fuori orario")
+
+    # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
+    if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
+        righe = ["📊 *Riepilogo di oggi*"]
+        almeno_uno = False
+        for st in STAZIONI:
+            s = stato.get(st["nome"], {})
+            vmax = s.get("vento_max", 0.0)
+            rmax = s.get("raffica_max", 0.0)
+            if vmax <= 0 and rmax <= 0:
+                continue
+            almeno_uno = True
+            rtxt = f"{rmax:.1f} nodi" if rmax > 0 else "n.d."
+            righe.append(f"🌬️ *{st['nome']}*: vento max *{vmax:.1f} nodi*, "
+                         f"raffica max *{rtxt}*")
+        if almeno_uno:
+            righe.append("⛵ Buona serata!")
+            try:
+                invia_telegram("\n".join(righe))
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] invio riepilogo fallito: {e}")
+        stato["_riepilogo"] = oggi
+        cambiato = True
 
     if cambiato:
         salva_stato(stato)
