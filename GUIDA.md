@@ -37,6 +37,18 @@ seconda della direzione.
 | 🟠 Attenzione | **da 20 nodi** | ⚠️ **ALERT VENTO !!!** — *Vento sostenuto: condizioni impegnative, adatte solo a chi ha esperienza. Valutate bene prima di uscire.* |
 | 🔴 Sconsigliato | **da 30 nodi** | 🛑 **ALERT VENTO !!!** — *Vento molto forte: si sconsiglia di uscire in acqua. Pericoloso anche per i più esperti.* |
 
+## 🌀 ALERT RAFFICA
+
+Oltre al vento, il bot avvisa quando la **raffica** della giornata raggiunge
+**15, 20, 25 o 30 nodi** (un avviso per soglia, una volta al giorno):
+
+> 🌀 *ALERT RAFFICA — Porto Corsini*
+> Oggi la raffica ha raggiunto **22.0 nodi** (soglia 20).
+
+⚠️ Le stazioni forniscono la raffica **massima della giornata**, non quella
+dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,
+non necessariamente che stia raffica ora.
+
 ## Come "ragiona" il bot (per non riempirti di messaggi)
 
 L'avviso parte **solo quando il vento sale di fascia**:
@@ -57,6 +69,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **ALERT RAFFICA**: avviso quando la raffica di giornata raggiunge 15, 20, 25,
+  30 nodi.
+- **Filtri direzione**: Porto Corsini avvisa per venti da sud (E→S→O), Lido di
+  Volano per venti da nord (O→N→E).
 - **Tre livelli di avviso**: oltre all'avviso normale (8 nodi), aggiunti due
   ALERT di sicurezza a **20 nodi** (attenzione) e **30 nodi** (uscita
   sconsigliata).

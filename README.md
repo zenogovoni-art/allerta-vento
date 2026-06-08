@@ -11,6 +11,8 @@ Controlla ogni 15 minuti i dati di due stazioni meteo e ti manda un messaggio
   riparte solo quando il vento riscende sotto i 7 nodi e poi risale.
 - Avvisi **solo di giorno** (09:00–19:00, ora italiana).
 - Messaggio con **intensità**, **direzione** e **raffica**.
+- Tre livelli vento (8 / 20 / 30 nodi) e **ALERT RAFFICA** (15 / 20 / 25 / 30
+  nodi sul picco di giornata).
 
 ---
 
