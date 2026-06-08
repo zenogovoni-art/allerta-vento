@@ -28,7 +28,7 @@ import requests
 # CONFIGURAZIONE
 # --------------------------------------------------------------------------
 
-# Livelli di avviso, dal piu' basso al piu' alto. Tutti sul vento medio.
+# Livelli di avviso sul VENTO ATTUALE, dal piu' basso al piu' alto.
 #   soglia       -> nodi oltre i quali scatta il livello
 #   riarmo       -> nodi sotto cui il livello si "disarma" (isteresi: evita
 #                   avvisi ripetuti se il vento oscilla attorno alla soglia)
@@ -57,6 +57,17 @@ LIVELLI = [
             "anche per i piu' esperti._"
         ),
     },
+]
+
+# Livelli di avviso sulla RAFFICA. ATTENZIONE: le stazioni espongono solo la
+# raffica MASSIMA della giornata (non la raffica istantanea), quindi l'avviso
+# scatta la prima volta che il picco di giornata supera ciascuna soglia (poi si
+# ri-arma quando il dato si azzera a mezzanotte).
+RAFFICA_LIVELLI = [
+    {"soglia": 15.0, "riarmo": 14.0},
+    {"soglia": 20.0, "riarmo": 19.0},
+    {"soglia": 25.0, "riarmo": 24.0},
+    {"soglia": 30.0, "riarmo": 29.0},
 ]
 
 # Fascia oraria in cui inviare gli avvisi (ora locale italiana, 24h).
@@ -212,18 +223,19 @@ def salva_stato(stato: dict) -> None:
     STATE_FILE.write_text(json.dumps(stato, indent=2, ensure_ascii=False))
 
 
-def calcola_livello(vento: float, livello_attuale: int) -> int:
-    """Calcola il livello di vento (0 = sotto soglia, 1..N) con isteresi.
+def calcola_livello(valore: float, livello_attuale: int, livelli: list) -> int:
+    """Calcola il livello (0 = sotto soglia, 1..N) con isteresi.
 
-    Partendo dal livello attuale: prima scende finche' il vento e' sotto la
-    soglia di riarmo, poi sale finche' il vento supera le soglie successive.
+    Partendo dal livello attuale: prima scende finche' il valore e' sotto la
+    soglia di riarmo, poi sale finche' il valore supera le soglie successive.
+    Vale sia per il vento (LIVELLI) sia per la raffica (RAFFICA_LIVELLI).
     """
     livello = livello_attuale
-    # Discesa: scendo di livello solo se il vento e' sotto il riarmo.
-    while livello > 0 and vento < LIVELLI[livello - 1]["riarmo"]:
+    # Discesa: scendo di livello solo se il valore e' sotto il riarmo.
+    while livello > 0 and valore < livelli[livello - 1]["riarmo"]:
         livello -= 1
-    # Salita: salgo di livello se il vento supera la soglia successiva.
-    while livello < len(LIVELLI) and vento >= LIVELLI[livello]["soglia"]:
+    # Salita: salgo di livello se il valore supera la soglia successiva.
+    while livello < len(livelli) and valore >= livelli[livello]["soglia"]:
         livello += 1
     return livello
 
@@ -274,15 +286,24 @@ def main() -> int:
         raffica = dati["raffica"]
 
         livello_prima = stato.get(nome, {}).get("livello", 0)
-        livello_ora = calcola_livello(vento, livello_prima)
+        livello_ora = calcola_livello(vento, livello_prima, LIVELLI)
+
+        raf_prima = stato.get(nome, {}).get("livello_raffica", 0)
+        raf_ora = (calcola_livello(raffica, raf_prima, RAFFICA_LIVELLI)
+                   if raffica is not None else raf_prima)
+
         print(f"[{nome}] vento {vento} kts {direzione} raffica {raffica} kts "
-              f"(livello {livello_prima}->{livello_ora}, orario={in_orario})")
+              f"(vento liv {livello_prima}->{livello_ora}, "
+              f"raffica liv {raf_prima}->{raf_ora}, orario={in_orario})")
 
         if livello_ora != livello_prima:
             stato.setdefault(nome, {})["livello"] = livello_ora
             cambiato = True
+        if raf_ora != raf_prima:
+            stato.setdefault(nome, {})["livello_raffica"] = raf_ora
+            cambiato = True
 
-        # Avviso solo quando il livello SALE (superamento di una soglia).
+        # --- Avviso VENTO: solo quando il livello SALE (e direzione OK) ---
         if livello_ora > livello_prima:
             direzioni_ok = (st["direzioni"] is None
                             or direzione in st["direzioni"])
@@ -301,8 +322,22 @@ def main() -> int:
                     print(f"[errore] invio Telegram fallito: {e}")
             else:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
-                print(f"[info] superamento rilevato ma avviso non inviato "
+                print(f"[info] superamento vento ma avviso non inviato "
                       f"({motivo})")
+
+        # --- Avviso RAFFICA: quando il picco di giornata sale di soglia ---
+        if raf_ora > raf_prima:
+            if in_orario:
+                soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
+                testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
+                         f"Oggi la raffica ha raggiunto *{raffica:.1f} nodi* "
+                         f"(soglia {soglia:.0f}).")
+                try:
+                    invia_telegram(testo)
+                except Exception as e:  # noqa: BLE001
+                    print(f"[errore] invio Telegram raffica fallito: {e}")
+            else:
+                print("[info] soglia raffica superata ma fuori orario")
 
     if cambiato:
         salva_stato(stato)
