@@ -5,41 +5,42 @@
 <title>Locandina - INFO VENTO C.S.V.B.</title>
 <style>
   @page { size: A4 portrait; margin: 0; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body {
     font-family: "Helvetica Neue", Arial, sans-serif;
-    background: #e9eef2;
+    background: #fff;
     color: #0c2a3a;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 0;
   }
   .foglio {
     width: 210mm;
-    min-height: 297mm;
+    min-height: 296mm;
     background: linear-gradient(170deg, #0c4a6e 0%, #075985 38%, #f4f8fb 38%, #f4f8fb 100%);
-    padding: 22mm 18mm 16mm;
+    padding: 10mm 18mm 8mm;
     display: flex;
     flex-direction: column;
   }
-  .testata { color: #fff; text-align: center; margin-bottom: 10mm; }
-  .vela { font-size: 46px; line-height: 1; }
-  .testata h1 { font-size: 40px; letter-spacing: 1px; margin: 6px 0 4px; }
-  .testata p { font-size: 17px; opacity: .92; }
+  .testata { color: #fff; text-align: center; margin-bottom: 5mm; }
+  .vela { font-size: 36px; line-height: 1; }
+  .testata h1 { font-size: 34px; letter-spacing: 1px; margin: 5px 0 3px; }
+  .testata p { font-size: 16px; opacity: .92; }
 
   .iscrizione {
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 10px 26px rgba(0,0,0,.16);
-    padding: 7mm;
+    padding: 6mm;
     display: flex;
     align-items: center;
-    gap: 7mm;
-    margin-bottom: 8mm;
+    gap: 6mm;
+    margin-bottom: 6mm;
   }
-  .iscrizione img { width: 42mm; height: 42mm; flex: none; }
-  .iscrizione .txt h2 { font-size: 23px; color: #075985; margin-bottom: 4px; }
-  .iscrizione .txt p { font-size: 15px; line-height: 1.45; }
+  .iscrizione img { width: 36mm; height: 36mm; flex: none; }
+  .iscrizione .txt h2 { font-size: 21px; color: #075985; margin-bottom: 4px; }
+  .iscrizione .txt p { font-size: 14px; line-height: 1.4; }
   .link {
     display: inline-block;
     margin-top: 8px;
@@ -52,20 +53,20 @@
   }
 
   .sezione-titolo { font-size: 15px; font-weight: 700; color: #075985;
-    text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5mm; }
+    text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4mm; }
 
-  .livelli { display: flex; flex-direction: column; gap: 5mm; margin-bottom: 8mm; }
-  .livello { border-radius: 12px; padding: 5mm 6mm; color: #fff;
+  .livelli { display: flex; flex-direction: column; gap: 3.5mm; margin-bottom: 5mm; }
+  .livello { border-radius: 12px; padding: 3.5mm 6mm; color: #fff;
     display: flex; align-items: center; gap: 5mm; }
-  .livello .n { font-size: 30px; font-weight: 800; flex: none; width: 30mm; }
-  .livello .d { font-size: 14.5px; line-height: 1.4; }
+  .livello .n { font-size: 27px; font-weight: 800; flex: none; width: 28mm; }
+  .livello .d { font-size: 13.5px; line-height: 1.35; }
   .l-verde  { background: #15803d; }
   .l-arancio{ background: #ea580c; }
   .l-rosso  { background: #b91c1c; }
 
   .info {
-    background: #fff; border-radius: 12px; padding: 6mm;
-    font-size: 14px; line-height: 1.6; margin-bottom: 6mm;
+    background: #fff; border-radius: 12px; padding: 5mm;
+    font-size: 14px; line-height: 1.55; margin-bottom: 5mm;
     border: 1px solid #d6e3ec;
   }
   .info b { color: #075985; }
@@ -75,7 +76,7 @@
     padding: 4mm 5mm; font-size: 13px; line-height: 1.5; color: #7c2d12;
   }
   .pie { margin-top: auto; text-align: center; font-size: 12px;
-    color: #5b7689; padding-top: 6mm; }
+    color: #5b7689; padding-top: 4mm; }
 </style>
 </head>
 <body>
