@@ -1,28 +1,22 @@
-📢 *INFO VENTO — Aggiornamenti*
+📢 *INFO VENTO — Novità*
 
-Il servizio si è arricchito di nuove funzioni! Ecco cosa è cambiato 👇
+Il canale si arricchisce di nuove funzioni per leggere meglio il vento 👇
 
-🌬️ *Tre livelli di avviso vento*
-🟢 da 8 nodi — si naviga
-🟠 da 20 nodi — ⚠️ ALERT VENTO: condizioni impegnative
-🔴 da 30 nodi — 🛑 ALERT VENTO: uscita sconsigliata
+🌅 *Bollettino mattutino*
+Ogni mattina (~9:00) la previsione vento della giornata per Lido di Spina:
+cosa aspettarsi ora per ora, raffiche comprese.
 
-🌀 *Novità: ALERT RAFFICA*
-Avviso quando la raffica di giornata raggiunge 15, 20, 25 o 30 nodi.
+📊 *Riepilogo serale*
+Ogni sera (~19:00) vento massimo e raffica massima registrati nella giornata.
 
-⏳ *Novità: stima di arrivo al circolo*
-Negli avvisi di vento trovi una stima di quanto può metterci il rinforzo ad
-arrivare al nostro circolo (Lido di Spina), calcolata su distanza, direzione e
-intensità del vento alle stazioni. Un piccolo anticipo per organizzarti! 😉
+📈 *Tendenza*
+Negli avvisi vedete se il vento è in aumento o in calo: capite subito se sta
+rinforzando o mollando.
 
-🧭 *Avvisi per direzione*
-• Porto Corsini (sud): venti da E · SE · S · SO · O
-• Lido di Volano (nord): venti da O · NO · N · NE · E
+🧭 *Direzione a colpo d'occhio*
+Negli avvisi una freccia indica verso dove soffia il vento. Esempio:
+🌬️ Vento 12 nodi da SE ↖️ — raffica 16 nodi
+📈 in aumento
 
-⏱️ *Più reattivo*
-• Soglia abbassata a 8 nodi
-• Controllo ogni 15 minuti
-• Attivo dalle 9:00 alle 19:00
-
-⛵ Buon vento e buona sicurezza a tutti!
+⛵ Buon vento a tutti!
 Dati indicativi e non ufficiali: verificate sempre le condizioni reali.
