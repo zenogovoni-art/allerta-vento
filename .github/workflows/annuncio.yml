@@ -1,0 +1,29 @@
+name: Pubblica annuncio
+
+# Pubblica sul canale Telegram il contenuto di annuncio.md.
+# Parte SOLO manualmente (dalla scheda Actions o via comando), cosi' l'annuncio
+# va sul canale solo dopo che e' stato letto e approvato.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  annuncio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Pubblica l'annuncio sul canale
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          INVIA_ANNUNCIO: "1"
+        run: python meteo_check.py

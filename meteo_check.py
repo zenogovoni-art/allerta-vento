@@ -245,6 +245,21 @@ def calcola_livello(valore: float, livello_attuale: int, livelli: list) -> int:
 # --------------------------------------------------------------------------
 
 def main() -> int:
+    # Modalita' annuncio: pubblica sul canale il contenuto di annuncio.md e
+    # termina. Usata dal workflow annuncio.yml quando il file viene aggiornato.
+    if os.environ.get("INVIA_ANNUNCIO", "").lower() in ("1", "true", "yes"):
+        testo = Path(__file__).with_name("annuncio.md").read_text(
+            encoding="utf-8").strip()
+        if not testo:
+            print("[info] annuncio.md vuoto: nessun invio.")
+            return 0
+        try:
+            invia_telegram(testo)
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] invio annuncio fallito: {e}")
+            return 1
+        return 0
+
     # Modalita' test: legge i dati attuali di tutte le stazioni e li invia
     # (anche sotto soglia), poi termina. Utile per verificare che funzioni.
     if os.environ.get("TEST_TELEGRAM", "").lower() in ("1", "true", "yes"):
