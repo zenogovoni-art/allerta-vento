@@ -10,6 +10,11 @@ Il servizio si è arricchito di nuove funzioni! Ecco cosa è cambiato 👇
 🌀 *Novità: ALERT RAFFICA*
 Avviso quando la raffica di giornata raggiunge 15, 20, 25 o 30 nodi.
 
+⏳ *Novità: stima di arrivo al circolo*
+Negli avvisi di vento trovi una stima di quanto può metterci il rinforzo ad
+arrivare al nostro circolo (Lido di Spina), calcolata su distanza, direzione e
+intensità del vento alle stazioni. Un piccolo anticipo per organizzarti! 😉
+
 🧭 *Avvisi per direzione*
 • Porto Corsini (sud): venti da E · SE · S · SO · O
 • Lido di Volano (nord): venti da O · NO · N · NE · E

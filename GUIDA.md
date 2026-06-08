@@ -49,6 +49,18 @@ Oltre al vento, il bot avvisa quando la **raffica** della giornata raggiunge
 dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,
 non necessariamente che stia raffica ora.
 
+## ⏳ Stima di arrivo al circolo
+
+Negli **avvisi di vento** (non nelle raffiche) trovi una riga come:
+
+> ⏱️ Possibile arrivo al circolo tra ~80 min
+
+È una stima di quanto può metterci il rinforzo ad arrivare al circolo di
+**Lido di Spina**, calcolata in base a distanza, direzione e intensità del
+vento. Compare solo quando il vento sta effettivamente puntando verso il
+circolo (es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
+**indicativo**, utile come anticipo.
+
 ## Come "ragiona" il bot (per non riempirti di messaggi)
 
 L'avviso parte **solo quando il vento sale di fascia**:
@@ -69,6 +81,8 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Stima di arrivo al circolo**: negli avvisi vento, una stima dei minuti
+  perché il rinforzo raggiunga Lido di Spina.
 - **ALERT RAFFICA**: avviso quando la raffica di giornata raggiunge 15, 20, 25,
   30 nodi.
 - **Filtri direzione**: Porto Corsini avvisa per venti da sud (E→S→O), Lido di
