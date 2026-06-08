@@ -15,6 +15,7 @@ Variabili d'ambiente richieste:
 """
 
 import json
+import math
 import os
 import re
 import sys
@@ -77,10 +78,15 @@ ORA_FINE = 19
 # Fuso orario per il calcolo della fascia oraria.
 TZ = ZoneInfo("Europe/Rome")
 
+# Posizione del circolo (Lido di Spina, Comacchio), riferimento per stimare
+# tra quanto il rinforzo di vento puo' raggiungere il circolo.
+CIRCOLO = (44.665, 12.231)  # (lat, lon) approssimati
+
 # Elenco delle stazioni da controllare.
 # Per aggiungere una stazione a nord in futuro basta aggiungere un dict qui.
 #   nome       -> etichetta mostrata nel messaggio
 #   url        -> pagina da scaricare
+#   coord      -> (lat, lon) della stazione, per la stima del tempo di arrivo
 #   direzioni  -> None = avvisa per qualsiasi direzione;
 #                 oppure lista di settori (es. ["S", "SSW", "SW"]) per
 #                 avvisare solo quando il vento arriva da quelle direzioni.
@@ -92,6 +98,7 @@ STAZIONI = [
         "nome": "Porto Corsini",
         "url": "http://www.meteosystem.com/wlip/awc/",
         "tipo": "meteosystem",
+        "coord": (44.493, 12.279),    # a sud del circolo (~20 km)
         # Semicerchio sud: venti da E, SE, S, SW, O (e settori intermedi).
         "direzioni": ["E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W"],
     },
@@ -99,12 +106,62 @@ STAZIONI = [
         "nome": "Lido di Volano",
         "url": "http://dkwa.it/meteo/",
         "tipo": "saratoga",
+        "coord": (44.797, 12.268),    # a nord del circolo (~15 km)
         # Semicerchio nord: venti da O, NW, N, NE, E (e settori intermedi).
         "direzioni": ["W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE", "E"],
     },
 ]
 
+# Direzioni della bussola (16 punte) in gradi, per la stima del tempo di arrivo.
+COMPASS = {
+    "N": 0, "NNE": 22.5, "NE": 45, "ENE": 67.5, "E": 90, "ESE": 112.5,
+    "SE": 135, "SSE": 157.5, "S": 180, "SSW": 202.5, "SW": 225, "WSW": 247.5,
+    "W": 270, "WNW": 292.5, "NW": 315, "NNW": 337.5,
+}
+
 STATE_FILE = Path(__file__).with_name("state.json")
+
+
+# --------------------------------------------------------------------------
+# STIMA TEMPO DI ARRIVO AL CIRCOLO
+# --------------------------------------------------------------------------
+
+def _dist_bearing(lat1: float, lon1: float,
+                  lat2: float, lon2: float) -> tuple[float, float]:
+    """Distanza (km) e rotta iniziale (gradi) dal punto 1 al punto 2."""
+    r = 6371.0
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = (math.sin(dphi / 2) ** 2
+         + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2)
+    dist = 2 * r * math.asin(math.sqrt(a))
+    y = math.sin(dl) * math.cos(p2)
+    x = math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dl)
+    brg = (math.degrees(math.atan2(y, x)) + 360) % 360
+    return dist, brg
+
+
+def stima_arrivo_min(coord, direzione: str, vento: float):
+    """Stima in minuti quanto impiega il rinforzo ad arrivare al circolo.
+
+    Il rinforzo viaggia con il vento: si proietta la velocita' del vento
+    sulla direzione stazione->circolo. Se il vento non punta verso il circolo
+    (angolo troppo ampio) ritorna None: in quel caso non ha senso una stima.
+    """
+    if not coord or direzione not in COMPASS or vento <= 0:
+        return None
+    dist, brg_circolo = _dist_bearing(coord[0], coord[1],
+                                      CIRCOLO[0], CIRCOLO[1])
+    # Direzione verso cui si sposta l'aria (opposta a quella di provenienza).
+    rotta_aria = (COMPASS[direzione] + 180) % 360
+    diff = abs((rotta_aria - brg_circolo + 180) % 360 - 180)  # 0..180
+    if diff > 45:             # vento non abbastanza diretto verso il circolo
+        return None
+    componente = vento * math.cos(math.radians(diff))  # nodi utili
+    if componente <= 0:
+        return None
+    return dist / (componente * 1.852) * 60  # km / (nodi->km/h) -> minuti
 
 
 # --------------------------------------------------------------------------
@@ -330,6 +387,12 @@ def main() -> int:
                 corpo = (f"🌬️ *{nome}*\n"
                          f"Vento *{vento:.1f} nodi* da {direzione}"
                          f"{raffica_txt}")
+                # Stima di quando il rinforzo potrebbe arrivare al circolo.
+                eta = stima_arrivo_min(st.get("coord"), direzione, vento)
+                if eta is not None:
+                    minuti = max(5, int(round(eta / 5.0) * 5))
+                    corpo += (f"\n⏱️ Possibile arrivo al circolo tra "
+                              f"~{minuti} min")
                 testo = f"{intestazione}\n\n{corpo}" if intestazione else corpo
                 try:
                     invia_telegram(testo)
