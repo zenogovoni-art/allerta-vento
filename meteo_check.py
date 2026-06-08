@@ -175,6 +175,53 @@ def freccia(direzione: str) -> str:
     return _FRECCE[int((COMPASS[direzione] + 22.5) // 45) % 8]
 
 
+_COMPASS16 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+
+
+def _dir16(gradi: float) -> str:
+    """Converte i gradi nella sigla a 16 punte (es. 135 -> SE)."""
+    return _COMPASS16[int((gradi + 11.25) // 22.5) % 16]
+
+
+def bollettino_mattutino():
+    """Previsione vento del giorno per il circolo (Open-Meteo). None se fallisce."""
+    lat, lon = CIRCOLO
+    url = ("https://api.open-meteo.com/v1/forecast"
+           f"?latitude={lat}&longitude={lon}"
+           "&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m"
+           "&wind_speed_unit=kn&timezone=Europe/Rome&forecast_days=1")
+    try:
+        r = requests.get(url, timeout=30)
+        r.raise_for_status()
+        h = r.json()["hourly"]
+    except (requests.RequestException, KeyError, ValueError) as e:
+        print(f"[errore] bollettino non disponibile: {e}")
+        return None
+
+    ore, ws, wg, wd = (h["time"], h["wind_speed_10m"],
+                       h["wind_gusts_10m"], h["wind_direction_10m"])
+    righe = ["🌅 *Bollettino di oggi — Lido di Spina*",
+             "Previsione vento (Open-Meteo):", ""]
+    vmax = gmax = 0.0
+    ora_vmax = None
+    for i, t in enumerate(ore):
+        ora = int(t[11:13])
+        if ORA_INIZIO <= ora < ORA_FINE:
+            if ws[i] > vmax:
+                vmax, ora_vmax = ws[i], ora
+            gmax = max(gmax, wg[i])
+        if ora in (9, 12, 15, 18):
+            righe.append(f"• {t[11:16]} — {ws[i]:.0f} nodi {_dir16(wd[i])}, "
+                         f"raffiche {wg[i]:.0f}")
+    righe.append("")
+    if ora_vmax is not None:
+        righe.append(f"Max previsto: ~{vmax:.0f} nodi (raffiche fino a "
+                     f"{gmax:.0f}) verso le {ora_vmax}:00.")
+    righe.append("ℹ️ Previsione indicativa, non sostituisce gli avvisi reali.")
+    return "\n".join(righe)
+
+
 # --------------------------------------------------------------------------
 # PARSING
 # --------------------------------------------------------------------------
@@ -368,6 +415,18 @@ def main() -> int:
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
         cambiato = True
+
+    # --- Bollettino mattutino: una volta al giorno, in mattinata ---
+    if (stato.get("_bollettino") != oggi
+            and ORA_INIZIO <= adesso.hour < ORA_INIZIO + 3):
+        msg = bollettino_mattutino()
+        if msg:
+            try:
+                invia_telegram(msg)
+                stato["_bollettino"] = oggi
+                cambiato = True
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] invio bollettino fallito: {e}")
 
     for st in STAZIONI:
         nome = st["nome"]
