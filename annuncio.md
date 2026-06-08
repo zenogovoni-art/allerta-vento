@@ -1,4 +1,4 @@
-📢 *INFO VENTO C.S.V.B. — Aggiornamenti*
+📢 *INFO VENTO — Aggiornamenti*
 
 Il servizio si è arricchito di nuove funzioni! Ecco cosa è cambiato 👇
 

@@ -1,11 +1,11 @@
-# 🌬️ INFO VENTO C.S.V.B. — Guida al servizio
+# 🌬️ INFO VENTO — Guida al servizio
 
 Avvisi automatici sul vento per i soci, direttamente su Telegram.
 
 ## Cos'è
 
 Un servizio **gratuito e automatico** che controlla due stazioni meteo della
-nostra zona e pubblica un avviso sul canale Telegram **«INFO VENTO C.S.V.B.»**
+nostra zona e pubblica un avviso sul canale Telegram **«INFO VENTO»**
 quando il vento si alza. Nessun PC acceso, nessuna app da installare: basta
 iscriversi al canale.
 
