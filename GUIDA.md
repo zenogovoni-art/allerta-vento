@@ -11,7 +11,7 @@ iscriversi al canale.
 
 ## Come iscriversi
 
-👉 **t.me/INFOVENTOSOPRA10nodi**
+👉 **t.me/INFOVENTO**
 
 Apri il link, premi **Iscriviti / Join** e riceverai gli avvisi sul telefono.
 
