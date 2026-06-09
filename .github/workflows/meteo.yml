@@ -2,9 +2,13 @@ name: Allerta vento
 
 on:
   schedule:
-    # Ogni 15 minuti. Attenzione: l'orario del cron e' in UTC e GitHub puo'
-    # ritardare l'esecuzione di qualche minuto nei momenti di carico.
-    - cron: "*/15 * * * *"
+    # Ogni 15 minuti, ma SOLO da maggio a settembre (campo mese = 5-9): e' la
+    # stagione velica. Da ottobre ad aprile il workflow non parte proprio,
+    # cosi' si evitano esecuzioni inutili quando le stazioni meteo d'inverno
+    # spesso non funzionano bene.
+    # Attenzione: l'orario del cron e' in UTC e GitHub puo' ritardare
+    # l'esecuzione di qualche minuto nei momenti di carico.
+    - cron: "*/15 * * 5-9 *"
   workflow_dispatch:      # permette l'avvio manuale dalla scheda Actions
     inputs:
       test_telegram:
