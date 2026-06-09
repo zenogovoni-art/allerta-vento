@@ -7,7 +7,7 @@
     "livello_raffica": 1
   },
   "Lido di Volano": {
-    "livello": 1,
+    "livello": 0,
     "vento_max": 13.0,
     "raffica_max": 16.5,
     "vento_prec": 12.8,
