@@ -119,6 +119,20 @@ COMPASS = {
     "W": 270, "WNW": 292.5, "NW": 315, "NNW": 337.5,
 }
 
+# Nomi italiani di giorni e mesi: li costruiamo a mano perche' sui runner di
+# GitHub il locale it_IT spesso non e' installato e strftime darebbe i nomi in
+# inglese.
+GIORNI_IT = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì",
+             "sabato", "domenica"]
+MESI_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
+           "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"]
+
+
+def data_estesa(dt: datetime) -> str:
+    """Data in italiano senza anno, es. 'mercoledì 10 giugno'."""
+    return f"{GIORNI_IT[dt.weekday()]} {dt.day} {MESI_IT[dt.month - 1]}"
+
+
 STATE_FILE = Path(__file__).with_name("state.json")
 
 
@@ -207,6 +221,7 @@ def bollettino_mattutino():
     ore, ws, wg, wd = (h["time"], h["wind_speed_10m"],
                        h["wind_gusts_10m"], h["wind_direction_10m"])
     righe = ["🌅 *Bollettino di oggi — Lido di Spina*",
+             f"_{data_estesa(datetime.now(TZ))}_",
              "Previsione vento (Open-Meteo):", ""]
     vmax = gmax = 0.0
     ora_vmax = None
@@ -526,7 +541,7 @@ def main() -> int:
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
-        righe = ["📊 *Riepilogo di oggi*"]
+        righe = ["📊 *Riepilogo di oggi*", f"_{data_estesa(adesso)}_"]
         almeno_uno = False
         for st in STAZIONI:
             s = stato.get(st["nome"], {})
