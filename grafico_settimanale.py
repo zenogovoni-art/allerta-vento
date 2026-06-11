@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Grafico previsioni vento per il weekend, inviato sul canale Telegram.
+Grafico previsioni vento per il weekend a Lido di Spina, inviato sul canale.
 
 Pensato per girare il GIOVEDI' mattina: genera un istogramma con la velocita'
 massima del vento prevista per i prossimi giorni (da oggi fino alla domenica
-inclusa) in due localita' -- Porto Corsini (sud) e Lido di Volano (nord) --
-con sopra ogni barra una freccia che indica la direzione dominante del vento.
+inclusa) a Lido di Spina, con sopra ogni barra una freccia che indica la
+direzione dominante del vento.
 
 I dati vengono dalla previsione giornaliera di Open-Meteo (stessa fonte del
 bollettino mattutino di meteo_check.py). Niente raffiche: a qualche giorno di
@@ -34,13 +34,9 @@ import requests
 
 TZ = ZoneInfo("Europe/Rome")
 
-# Localita' da confrontare: stesso ordine = stesso colore in tutto il grafico.
-#   coord -> (lat, lon) usate per interrogare la previsione Open-Meteo
-#   colore -> colore della barra
-LOCALITA = [
-    {"nome": "Porto Corsini", "coord": (44.493, 12.279), "colore": "#1f6fb4"},  # blu
-    {"nome": "Lido di Volano", "coord": (44.797, 12.268), "colore": "#c0392b"},  # rosso
-]
+# Coordinate del punto di previsione: Lido di Spina (44°38'37.1"N 12°15'22.5"E).
+LIDO_SPINA = (44.6436, 12.2563)
+COLORE = "#1f6fb4"  # blu
 
 # Numero massimo di giorni da mostrare partendo da oggi (cap di sicurezza).
 MAX_GIORNI = 7
@@ -103,66 +99,55 @@ def _dxdy_verso_dove_soffia(dir_provenienza_gradi: float):
     return math.sin(rotta), math.cos(rotta)
 
 
-def costruisci_grafico(etichette_giorni, dati, oggi: datetime) -> bytes:
-    """Crea l'istogramma e lo restituisce come PNG in memoria (bytes).
-
-    etichette_giorni -> lista di stringhe sull'asse x (es. ['gio 12', ...])
-    dati             -> lista (parallela a LOCALITA) di liste di velocita' nodi
-    """
+def costruisci_grafico(etichette_giorni, velocita, direzioni,
+                       oggi: datetime) -> bytes:
+    """Crea l'istogramma e lo restituisce come PNG in memoria (bytes)."""
     n_giorni = len(etichette_giorni)
-    n_loc = len(LOCALITA)
     x = list(range(n_giorni))
-    larghezza = 0.8 / n_loc
 
     fig, ax = plt.subplots(figsize=(1.7 * n_giorni + 1.5, 5.2), dpi=130)
 
-    vmax = max((v for d in dati for v in d["velocita"]), default=0) or 1
+    vmax = max(velocita, default=0) or 1
+
+    ax.bar(x, velocita, width=0.6, color=COLORE, zorder=3)
 
     # Raccogliamo le frecce e le disegniamo DOPO aver fissato i limiti, cosi'
     # la conversione in pixel (sotto) usa la scala definitiva degli assi.
-    frecce = []  # (px, ay, dx, dy, colore)
-    for j, loc in enumerate(LOCALITA):
-        offset = (j - (n_loc - 1) / 2) * larghezza
-        posizioni = [xi + offset for xi in x]
-        velocita = dati[j]["velocita"]
-        direzioni = dati[j]["direzioni"]
-        ax.bar(posizioni, velocita, width=larghezza,
-               color=loc["colore"], label=loc["nome"], zorder=3)
-
-        for px, v, dirg in zip(posizioni, velocita, direzioni):
-            # numero (nodi) appena sopra la barra
-            ax.text(px, v + vmax * 0.02, f"{v:.0f}", ha="center", va="bottom",
-                    fontsize=9, color=loc["colore"], fontweight="bold")
-            dx, dy = _dxdy_verso_dove_soffia(dirg)
-            frecce.append((px, v + vmax * 0.13, dx, dy, loc["colore"]))
+    frecce = []  # (px, ay, dx, dy)
+    for px, v, dirg in zip(x, velocita, direzioni):
+        # numero (nodi) appena sopra la barra
+        ax.text(px, v + vmax * 0.02, f"{v:.0f}", ha="center", va="bottom",
+                fontsize=11, color=COLORE, fontweight="bold")
+        dx, dy = _dxdy_verso_dove_soffia(dirg)
+        frecce.append((px, v + vmax * 0.15, dx, dy))
 
     ax.set_xticks(x)
-    ax.set_xticklabels(etichette_giorni, fontsize=11)
+    ax.set_xticklabels(etichette_giorni, fontsize=12)
     ax.set_ylabel("Vento max (nodi)", fontsize=11)
-    ax.set_ylim(0, vmax * 1.30)
+    ax.set_ylim(0, vmax * 1.32)
     ax.set_xlim(-0.5, n_giorni - 0.5)
+    ax.set_title(f"Previsioni vento per il weekend — Lido di Spina\n"
+                 f"{GIORNI_IT_LUNGHI[oggi.weekday()]} {oggi.day} "
+                 f"{MESI_IT[oggi.month - 1]}",
+                 fontsize=13, fontweight="bold")
+    ax.grid(axis="y", linestyle=":", alpha=0.5, zorder=0)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
 
     # Frecce a lunghezza fissa in pixel (angolo corretto a prescindere dalla
     # scala degli assi): convertiamo il centro in pixel, applichiamo l'offset
     # e torniamo in coordinate-dati per annotate.
     trans = ax.transData
     inv = trans.inverted()
-    half_px = 16  # mezza lunghezza della freccia, in pixel
-    for px, ay, dx, dy, colore in frecce:
+    half_px = 18  # mezza lunghezza della freccia, in pixel
+    for px, ay, dx, dy in frecce:
         cx, cy = trans.transform((px, ay))
         testa = inv.transform((cx + dx * half_px, cy + dy * half_px))
         coda = inv.transform((cx - dx * half_px, cy - dy * half_px))
         ax.annotate("", xy=testa, xytext=coda,
-                    arrowprops=dict(arrowstyle="-|>", color=colore, lw=2),
+                    arrowprops=dict(arrowstyle="-|>", color=COLORE, lw=2.2),
                     zorder=4)
-    ax.set_title(f"Previsioni vento per il weekend — Lido di Spina\n"
-                 f"{GIORNI_IT_LUNGHI[oggi.weekday()]} {oggi.day} "
-                 f"{MESI_IT[oggi.month - 1]}",
-                 fontsize=13, fontweight="bold")
-    ax.legend(loc="best", fontsize=10, framealpha=0.9)
-    ax.grid(axis="y", linestyle=":", alpha=0.5, zorder=0)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+
     fig.text(0.5, 0.01,
              "Freccia = direzione verso cui soffia il vento · "
              "previsione Open-Meteo, indicativa",
@@ -205,15 +190,13 @@ def main() -> int:
     etichette = [f"{GIORNI_IT[(oggi + timedelta(days=i)).weekday()]} "
                  f"{(oggi + timedelta(days=i)).day}" for i in range(n)]
 
-    dati = []
-    for loc in LOCALITA:
-        vel, dirs = previsione_giornaliera(loc["coord"], n)
-        if vel is None:
-            print(f"[errore] niente dati per {loc['nome']}, esco.")
-            return 1
-        dati.append({"velocita": vel[:n], "direzioni": dirs[:n]})
+    vel, dirs = previsione_giornaliera(LIDO_SPINA, n)
+    if vel is None:
+        print("[errore] niente dati di previsione, esco.")
+        return 1
+    vel, dirs = vel[:n], dirs[:n]
 
-    png = costruisci_grafico(etichette, dati, oggi)
+    png = costruisci_grafico(etichette, vel, dirs, oggi)
 
     # In locale (senza token) salva un file da guardare invece di inviare.
     if not os.environ.get("TELEGRAM_TOKEN"):
@@ -224,8 +207,8 @@ def main() -> int:
         return 0
 
     didascalia = ("🌬️ *Previsioni vento per il weekend* — Lido di Spina\n"
-                  "Velocità massima e direzione, "
-                  "blu Porto Corsini · rosso Lido di Volano.")
+                  "Velocità massima e direzione del vento prevista, "
+                  "giorno per giorno.")
     try:
         invia_foto(png, didascalia)
     except Exception as e:  # noqa: BLE001
