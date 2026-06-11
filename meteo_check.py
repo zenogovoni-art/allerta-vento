@@ -71,6 +71,22 @@ RAFFICA_LIVELLI = [
     {"soglia": 30.0, "riarmo": 29.0},
 ]
 
+# Livelli di avviso sulla CADUTA di pressione, normalizzata a 3 ore (hPa).
+# La tendenza barometrica si misura sullo standard delle 3 ore: un calo di
+# 3 hPa/3h mette l'equipaggio in allerta, oltre i 6 hPa/3h e' un calo "molto
+# rapido" -> peggioramento marcato / possibile groppo. Stessa isteresi del
+# vento (riarmo poco sotto la soglia) per non ripetere l'avviso.
+PRESSIONE_LIVELLI = [
+    {"soglia": 3.0, "riarmo": 2.0},
+    {"soglia": 6.0, "riarmo": 5.0},
+]
+
+# Finestra per la tendenza di pressione (minuti):
+#   FINESTRA  -> quanto storico di letture teniamo in state.json
+#   MIN_SPAN  -> baseline minima necessaria per poter valutare la tendenza
+PRESS_FINESTRA_MIN = 195
+PRESS_MIN_SPAN_MIN = 150
+
 # Fascia oraria in cui inviare gli avvisi (ora locale italiana, 24h).
 ORA_INIZIO = 9
 ORA_FINE = 19
@@ -270,12 +286,15 @@ def _parse_meteosystem(html: str) -> dict | None:
     # "raffica ... 13.0 kts"  (raffica massima giornaliera)
     m_raffica = re.search(r"raffica[^0-9]{0,40}?([\d.,]+)\s*kts?",
                           testo, re.IGNORECASE)
+    # "Pressione: 1016.9 hPa"
+    m_press = re.search(r"Pressione[:\s]*([\d.,]+)\s*hPa", testo, re.IGNORECASE)
     if not m_vento:
         return None
     return {
         "vento": _num(m_vento.group(1)),
         "direzione": m_vento.group(2).upper(),
         "raffica": _num(m_raffica.group(1)) if m_raffica else None,
+        "pressione": _num(m_press.group(1)) if m_press else None,
     }
 
 
@@ -288,12 +307,15 @@ def _parse_saratoga(html: str) -> dict | None:
     m_raffica = re.search(r"Raffica:?\s*([\d.,]+)", testo, re.IGNORECASE)
     # direzione: dal nome dell'immagine della rosa dei venti (es. wr-it-S.png)
     m_dir = re.search(r"wr-it-([NSEW]{1,3})\.png", html, re.IGNORECASE)
+    # "Barometro: 1016.6 hPa"
+    m_press = re.search(r"Barometro[:\s]*([\d.,]+)\s*hPa", testo, re.IGNORECASE)
     if not m_vento:
         return None
     return {
         "vento": _num(m_vento.group(1)),
         "direzione": m_dir.group(1).upper() if m_dir else "?",
         "raffica": _num(m_raffica.group(1)) if m_raffica else None,
+        "pressione": _num(m_press.group(1)) if m_press else None,
     }
 
 
@@ -376,10 +398,100 @@ def calcola_livello(valore: float, livello_attuale: int, livelli: list) -> int:
 
 
 # --------------------------------------------------------------------------
+# CONTROLLO PRESSIONE (workflow separato, sfasato rispetto al vento)
+# --------------------------------------------------------------------------
+
+def _eta_min(iso: str, ora: datetime) -> float:
+    """Eta' in minuti di una lettura (timestamp ISO) rispetto a `ora`."""
+    return (ora - datetime.fromisoformat(iso)).total_seconds() / 60.0
+
+
+def controlla_pressione(stato: dict) -> bool:
+    """Legge la pressione delle stazioni, aggiorna lo storico e avvisa.
+
+    Tiene in state.json una finestra di letture per stazione, calcola la caduta
+    di pressione normalizzata a 3 ore e, al superamento delle soglie, invia un
+    avviso Telegram (solo in fascia oraria). Ritorna True se lo stato e'
+    cambiato (e va quindi salvato).
+    """
+    adesso = datetime.now(TZ)
+    in_orario = ORA_INIZIO <= adesso.hour < ORA_FINE
+    cambiato = False
+
+    for st in STAZIONI:
+        nome = st["nome"]
+        dati = leggi_stazione(st)
+        if dati is None or dati.get("pressione") is None:
+            print(f"[{nome}] pressione non disponibile")
+            continue
+
+        p = dati["pressione"]
+        s = stato.setdefault(nome, {})
+
+        # Aggiungo la lettura corrente e poto quelle fuori finestra.
+        storia = s.get("pressioni", [])
+        storia.append([adesso.isoformat(), p])
+        storia = [e for e in storia if _eta_min(e[0], adesso) <= PRESS_FINESTRA_MIN]
+        s["pressioni"] = storia
+        cambiato = True
+
+        # Baseline = lettura piu' vecchia rimasta nella finestra.
+        span = _eta_min(storia[0][0], adesso)
+        if span < PRESS_MIN_SPAN_MIN:
+            print(f"[{nome}] pressione {p:.1f} hPa, storico insufficiente "
+                  f"({span:.0f} min)")
+            continue
+
+        # Caduta normalizzata a 3 ore (positiva se la pressione SCENDE).
+        caduta = (storia[0][1] - p) * 180.0 / span
+        liv_prima = s.get("livello_pressione", 0)
+        liv_ora = calcola_livello(max(0.0, caduta), liv_prima, PRESSIONE_LIVELLI)
+
+        print(f"[{nome}] pressione {p:.1f} hPa, caduta ~{caduta:.1f} hPa/3h "
+              f"(liv {liv_prima}->{liv_ora}, span {span:.0f} min, "
+              f"orario={in_orario})")
+
+        if liv_ora != liv_prima:
+            s["livello_pressione"] = liv_ora
+            cambiato = True
+
+        # Avviso solo quando il livello SALE (e in fascia oraria).
+        if liv_ora > liv_prima:
+            if not in_orario:
+                print(f"[info] caduta pressione ma fuori orario ({nome})")
+                continue
+            if liv_ora >= 2:
+                testo = (f"🔴 *ALERT PRESSIONE — {nome}*\n"
+                         f"Pressione *{p:.1f} hPa*, in calo di "
+                         f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
+                         f"_Calo marcato: possibile peggioramento o groppo in "
+                         f"arrivo, prudenza in acqua._")
+            else:
+                testo = (f"🟡 *Pressione in calo — {nome}*\n"
+                         f"Pressione *{p:.1f} hPa*, scesa di "
+                         f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
+                         f"_Probabile rinforzo di vento in arrivo._")
+            try:
+                invia_telegram(testo)
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] invio alert pressione fallito: {e}")
+
+    return cambiato
+
+
+# --------------------------------------------------------------------------
 # MAIN
 # --------------------------------------------------------------------------
 
 def main() -> int:
+    # Modalita' pressione: gira sul workflow dedicato (sfasato dal vento) e
+    # controlla solo la tendenza barometrica, poi termina.
+    if os.environ.get("MODO_PRESSIONE", "").lower() in ("1", "true", "yes"):
+        stato = carica_stato()
+        if controlla_pressione(stato):
+            salva_stato(stato)
+        return 0
+
     # Modalita' annuncio: pubblica sul canale il contenuto di annuncio.md e
     # termina. Usata dal workflow annuncio.yml quando il file viene aggiornato.
     if os.environ.get("INVIA_ANNUNCIO", "").lower() in ("1", "true", "yes"):
