@@ -3,6 +3,9 @@ __pycache__/
 .venv/
 .env
 
+# Grafico generato in locale da grafico_settimanale.py (prova senza token)
+previsioni_weekend.png
+
 # File con segreti, da NON caricare mai
 token TELEGRAM.txt
 *token*
