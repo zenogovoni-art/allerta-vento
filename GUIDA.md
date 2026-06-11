@@ -5,9 +5,9 @@ Avvisi automatici sul vento per i soci, direttamente su Telegram.
 ## Cos'è
 
 Un servizio **gratuito e automatico** che controlla due stazioni meteo della
-nostra zona e pubblica un avviso sul canale Telegram **«INFO VENTO»**
-quando il vento si alza. Nessun PC acceso, nessuna app da installare: basta
-iscriversi al canale.
+nostra zona e pubblica avvisi sul canale Telegram **«INFO VENTO»**: quando il
+vento si alza, quando la pressione cala in fretta, più previsioni e riepiloghi.
+Nessun PC acceso, nessuna app da installare: basta iscriversi al canale.
 
 ## Come iscriversi
 
@@ -61,6 +61,45 @@ vento. Compare solo quando il vento sta effettivamente puntando verso il
 circolo (es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
 **indicativo**, utile come anticipo.
 
+## 📉 ALERT VARIAZIONE PRESSIONE
+
+Un **calo rapido della pressione atmosferica** è uno dei segnali più affidabili
+di vento in rinforzo o di peggioramento in arrivo. Il servizio tiene d'occhio la
+pressione a **Porto Corsini** e **Lido di Volano** e avvisa quando scende troppo
+in fretta (calo misurato sulle ultime **3 ore**):
+
+| Livello | Calo in 3 ore | Cosa significa |
+|--------|---------------|----------------|
+| 🟡 Attenzione | **≥ 3 hPa** | probabile rinforzo di vento |
+| 🔴 Alert | **≥ 6 hPa** | peggioramento marcato, possibile groppo: prudenza |
+
+Il controllo è automatico durante la giornata, sfasato rispetto a quello del
+vento per non sovrapporsi.
+
+## 🌅 Bollettino del mattino
+
+Ogni mattina verso le **9:00** la **previsione vento della giornata** per Lido di
+Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
+comprese. *Il giovedì non viene inviato: alle 9:05 esce il grafico del weekend
+(qui sotto), che copre già la giornata.*
+
+## 📊 Grafico previsioni weekend (giovedì)
+
+Ogni **giovedì verso le 9:05** un grafico con il vento previsto a **Lido di
+Spina** per **giovedì, venerdì, sabato e domenica**. Ogni barra è il vento
+massimo previsto in nodi, con sopra una freccia che indica la direzione: utile
+per programmare le uscite del fine settimana. *Previsione indicativa.*
+
+## 📊 Riepilogo della sera
+
+Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
+registrati nella giornata.
+
+## 📈 Tendenza e direzione negli avvisi
+
+Negli avvisi di vento trovi sempre se il vento è 📈 **in aumento**, 📉 **in calo**
+o ➖ **stabile**, e una **freccia** che mostra verso dove sta soffiando.
+
 ## Come "ragiona" il bot (per non riempirti di messaggi)
 
 L'avviso parte **solo quando il vento sale di fascia**:
@@ -81,6 +120,14 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **ALERT variazione pressione**: avviso quando la pressione cala rapidamente
+  (≥3 hPa/3h giallo, ≥6 hPa/3h rosso), su entrambe le stazioni.
+- **Grafico previsioni weekend**: ogni giovedì alle 9:05 il vento previsto a Lido
+  di Spina per gio-ven-sab-dom (il bollettino del giovedì non viene più inviato,
+  per non duplicare).
+- **Bollettino del mattino** (~9:00) e **riepilogo della sera** (~19:00).
+- **Tendenza** del vento (in aumento / in calo / stabile) e **freccia** della
+  direzione negli avvisi.
 - **Stima di arrivo al circolo**: negli avvisi vento, una stima dei minuti
   perché il rinforzo raggiunga Lido di Spina.
 - **ALERT RAFFICA**: avviso quando la raffica di giornata raggiunge 15, 20, 25,
