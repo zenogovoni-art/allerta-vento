@@ -437,7 +437,11 @@ def main() -> int:
         cambiato = True
 
     # --- Bollettino mattutino: una volta al giorno, in mattinata ---
-    if (stato.get("_bollettino") != oggi
+    # Il GIOVEDI' (weekday() == 3) NON lo inviamo: alle 9:05 esce il grafico
+    # previsioni weekend (grafico_settimanale.py), che include gia' il giovedi'
+    # stesso -> il bollettino sarebbe un doppione della stessa giornata.
+    if (adesso.weekday() != 3
+            and stato.get("_bollettino") != oggi
             and ORA_INIZIO <= adesso.hour < ORA_INIZIO + 3):
         msg = bollettino_mattutino()
         if msg:
