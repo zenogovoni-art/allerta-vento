@@ -1,15 +1,14 @@
 📢 *INFO VENTO — Novità*
 
-Da oggi sul canale arriva una nuova funzione per programmare le uscite del weekend 👇
+Si aggiunge un nuovo avviso, molto utile per noi in acqua 👇
 
-📊 *Grafico previsioni weekend*
-Ogni *giovedì mattina* (~9:05) un grafico con il vento previsto a *Lido di Spina* per i prossimi giorni — *giovedì, venerdì, sabato e domenica* — così sapete in anticipo cosa aspettarvi quando si esce in barca.
+📉 *Alert variazione di pressione*
+Quando la pressione atmosferica *cala rapidamente* è uno dei segnali più affidabili di vento in rinforzo o peggioramento in arrivo. Da ora il canale tiene d'occhio la pressione a *Porto Corsini* e *Lido di Volano* e vi avvisa quando scende troppo in fretta:
 
-📈 *Come leggerlo*
-Ogni barra mostra il *vento massimo previsto in nodi* per quel giorno.
+🟡 *Calo ≥ 3 hPa in 3 ore* → probabile rinforzo di vento
+🔴 *Calo ≥ 6 hPa in 3 ore* → peggioramento marcato, possibile groppo: prudenza
 
-🧭 *Direzione del vento*
-Sopra ogni barra una freccia indica verso dove soffia il vento.
+🕐 Il controllo è automatico durante la giornata, in aggiunta agli avvisi di vento e raffica che già conoscete.
 
 ⛵ Buon vento a tutti!
-Previsioni indicative (fonte Open-Meteo): a qualche giorno di distanza possono cambiare, verificate sempre le condizioni reali prima di uscire.
+Dati indicativi e non ufficiali: verificate sempre le condizioni reali prima di uscire.
