@@ -20,6 +20,7 @@ import io
 import math
 import os
 import sys
+import time
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -64,14 +65,23 @@ def previsione_giornaliera(coord, giorni: int):
            "&daily=wind_speed_10m_max,wind_direction_10m_dominant"
            "&wind_speed_unit=kn&timezone=Europe/Rome"
            f"&forecast_days={giorni}")
-    try:
-        r = requests.get(url, timeout=30)
-        r.raise_for_status()
-        d = r.json()["daily"]
-        return d["wind_speed_10m_max"], d["wind_direction_10m_dominant"]
-    except (requests.RequestException, KeyError, ValueError) as e:
-        print(f"[errore] previsione non disponibile per {coord}: {e}")
-        return None, None
+    # Open-Meteo ogni tanto cade in handshake/timeout dai runner: riproviamo
+    # qualche volta con una breve pausa crescente prima di arrenderci.
+    tentativi = 4
+    for n in range(1, tentativi + 1):
+        try:
+            r = requests.get(url, timeout=45)
+            r.raise_for_status()
+            d = r.json()["daily"]
+            return d["wind_speed_10m_max"], d["wind_direction_10m_dominant"]
+        except (requests.RequestException, KeyError, ValueError) as e:
+            print(f"[tentativo {n}/{tentativi}] previsione non disponibile "
+                  f"per {coord}: {e}")
+            if n < tentativi:
+                time.sleep(5 * n)  # 5s, 10s, 15s
+    print(f"[errore] previsione non disponibile per {coord} dopo {tentativi} "
+          f"tentativi")
+    return None, None
 
 
 def giorni_da_mostrare(oggi: datetime) -> int:
