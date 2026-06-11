@@ -2,7 +2,7 @@
   "Porto Corsini": {
     "livello": 1,
     "vento_max": 12.1,
-    "raffica_max": 13.0,
+    "raffica_max": 14.8,
     "livello_raffica": 0,
     "vento_prec": 12.1
   },
@@ -11,7 +11,7 @@
     "vento_max": 9.3,
     "raffica_max": 12.1,
     "livello_raffica": 0,
-    "vento_prec": 4.5
+    "vento_prec": 5.1
   },
   "_data": "2026-06-11",
   "_riepilogo": "2026-06-10",
