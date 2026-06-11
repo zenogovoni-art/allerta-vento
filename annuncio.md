@@ -1,22 +1,15 @@
 📢 *INFO VENTO — Novità*
 
-Il canale si arricchisce di nuove funzioni per leggere meglio il vento 👇
+Da oggi sul canale arriva una nuova funzione per programmare le uscite del weekend 👇
 
-🌅 *Bollettino mattutino*
-Ogni mattina (~9:00) la previsione vento della giornata per Lido di Spina:
-cosa aspettarsi ora per ora, raffiche comprese.
+📊 *Grafico previsioni weekend*
+Ogni *giovedì mattina* (~9:05) un grafico con il vento previsto a *Lido di Spina* per i prossimi giorni — *giovedì, venerdì, sabato e domenica* — così sapete in anticipo cosa aspettarvi quando si esce in barca.
 
-📊 *Riepilogo serale*
-Ogni sera (~19:00) vento massimo e raffica massima registrati nella giornata.
+📈 *Come leggerlo*
+Ogni barra mostra il *vento massimo previsto in nodi* per quel giorno.
 
-📈 *Tendenza*
-Negli avvisi vedete se il vento è in aumento o in calo: capite subito se sta
-rinforzando o mollando.
-
-🧭 *Direzione a colpo d'occhio*
-Negli avvisi una freccia indica verso dove soffia il vento. Esempio:
-🌬️ Vento 12 nodi da SE ↖️ — raffica 16 nodi
-📈 in aumento
+🧭 *Direzione del vento*
+Sopra ogni barra una freccia indica verso dove soffia il vento.
 
 ⛵ Buon vento a tutti!
-Dati indicativi e non ufficiali: verificate sempre le condizioni reali.
+Previsioni indicative (fonte Open-Meteo): a qualche giorno di distanza possono cambiare, verificate sempre le condizioni reali prima di uscire.
