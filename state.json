@@ -10,12 +10,12 @@
         1022.4
       ]
     ],
-    "vento_prec": 13.0
+    "vento_prec": 10.4
   },
   "Lido di Volano": {
     "livello": 2,
-    "vento_max": 11.3,
-    "raffica_max": 12.8,
+    "vento_max": 11.9,
+    "raffica_max": 13.8,
     "livello_raffica": 0,
     "pressioni": [
       [
@@ -23,7 +23,7 @@
         1022.2
       ]
     ],
-    "vento_prec": 11.3
+    "vento_prec": 11.9
   },
   "_data": "2026-06-12",
   "_riepilogo": "2026-06-11",
