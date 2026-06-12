@@ -1,14 +1,14 @@
 📢 *INFO VENTO — Novità*
 
-Si aggiunge un nuovo avviso, molto utile per noi in acqua 👇
+Due nuovi avvisi vento, per seguire meglio quando rinforza 👇
 
-📉 *Alert variazione di pressione*
-Quando la pressione atmosferica *cala rapidamente* è uno dei segnali più affidabili di vento in rinforzo o peggioramento in arrivo. Da ora il canale tiene d'occhio la pressione a *Porto Corsini* e *Lido di Volano* e vi avvisa quando scende troppo in fretta:
+🟢 *Vento a 10 nodi* — bella arietta da planata
+💨 *Vento a 15 nodi* — vento teso: divertente ma impegnativo
 
-🟡 *Calo ≥ 3 hPa in 3 ore* → probabile rinforzo di vento
-🔴 *Calo ≥ 6 hPa in 3 ore* → peggioramento marcato, possibile groppo: prudenza
+Da ora la scala degli avvisi è più dettagliata:
+🟩 8 · 🟢 10 · 🟡 15 · 🟧 20 (sostenuto) · 🟥 30 nodi (molto forte)
 
-🕐 Il controllo è automatico durante la giornata, in aggiunta agli avvisi di vento e raffica che già conoscete.
+🔔 Come sempre l'avviso parte solo quando il vento *sale di livello*: niente messaggi ripetuti se le condizioni restano stabili. Restano attivi anche gli alert di *raffica* e di *pressione*.
 
 ⛵ Buon vento a tutti!
 Dati indicativi e non ufficiali: verificate sempre le condizioni reali prima di uscire.
