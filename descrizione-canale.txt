@@ -1,0 +1,21 @@
+DESCRIZIONE DEL CANALE TELEGRAM "INFO VENTO"
+============================================
+
+Da incollare a mano in Telegram:
+  Impostazioni canale -> Modifica -> Descrizione
+(il bot non puo' modificarla da solo; limite Telegram: 255 caratteri)
+
+
+--- Versione standard ---------------------------------------------
+
+⛵🌬️ INFO VENTO — avvisi vento automatici e gratuiti per Lido di Spina.
+Scala: 🟩8 · 🟢10 · 🟡15 · 🟧20 · 🟥30 nodi, + alert raffica e pressione.
+Stazioni: Porto Corsini e Lido di Volano · attivo 9–19.
+Dati indicativi, non ufficiali.
+
+
+--- Versione ultra-corta ------------------------------------------
+
+⛵🌬️ INFO VENTO — avvisi vento gratuiti per Lido di Spina.
+🟩8 · 🟢10 · 🟡15 · 🟧20 · 🟥30 nodi + raffica e pressione · 9–19.
+Dati indicativi, non ufficiali.
