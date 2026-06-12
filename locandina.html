@@ -17,13 +17,14 @@
   }
   .foglio {
     width: 210mm;
-    min-height: 296mm;
+    height: 295mm;
+    overflow: hidden;
     background: linear-gradient(170deg, #0c4a6e 0%, #075985 38%, #f4f8fb 38%, #f4f8fb 100%);
-    padding: 10mm 18mm 8mm;
+    padding: 9mm 18mm 7mm;
     display: flex;
     flex-direction: column;
   }
-  .testata { color: #fff; text-align: center; margin-bottom: 5mm; }
+  .testata { color: #fff; text-align: center; margin-bottom: 4mm; }
   .vela { font-size: 36px; line-height: 1; }
   .testata h1 { font-size: 34px; letter-spacing: 1px; margin: 5px 0 3px; }
   .testata p { font-size: 16px; opacity: .92; }
@@ -36,7 +37,7 @@
     display: flex;
     align-items: center;
     gap: 6mm;
-    margin-bottom: 6mm;
+    margin-bottom: 5mm;
   }
   .iscrizione img { width: 36mm; height: 36mm; flex: none; }
   .iscrizione .txt h2 { font-size: 21px; color: #075985; margin-bottom: 4px; }
@@ -53,16 +54,30 @@
   }
 
   .sezione-titolo { font-size: 15px; font-weight: 700; color: #075985;
-    text-transform: uppercase; letter-spacing: 1px; margin: 0 0 4mm; }
+    text-transform: uppercase; letter-spacing: 1px; margin: 0 0 3mm; }
 
-  .livelli { display: flex; flex-direction: column; gap: 3.5mm; margin-bottom: 5mm; }
-  .livello { border-radius: 12px; padding: 3.5mm 6mm; color: #fff;
+  .livelli { display: flex; flex-direction: column; gap: 3mm; margin-bottom: 4mm; }
+  .livello { border-radius: 12px; padding: 3mm 6mm; color: #fff;
     display: flex; align-items: center; gap: 5mm; }
   .livello .n { font-size: 27px; font-weight: 800; flex: none; width: 28mm; }
   .livello .d { font-size: 13.5px; line-height: 1.35; }
   .l-verde  { background: #15803d; }
   .l-arancio{ background: #ea580c; }
   .l-rosso  { background: #b91c1c; }
+
+  .sezione-titolo .new {
+    display: inline-block; background: #075985; color: #fff;
+    font-size: 11px; padding: 1px 7px; border-radius: 999px;
+    vertical-align: middle; margin-left: 6px; letter-spacing: .5px;
+  }
+  .pressione { display: flex; flex-direction: column; gap: 3mm; margin-bottom: 5mm; }
+  .p-riga { border-radius: 12px; padding: 3mm 6mm; color: #fff;
+    display: flex; align-items: center; gap: 5mm; }
+  .p-riga .pv { font-size: 20px; font-weight: 800; flex: none; width: 28mm; line-height: 1.1; }
+  .p-riga .pd { font-size: 13.5px; line-height: 1.35; }
+  .p-giallo { background: #ca8a04; }
+  .p-rosso  { background: #b91c1c; }
+  .p-intro { font-size: 13px; line-height: 1.45; color: #0c2a3a; margin-bottom: 3.5mm; }
 
   .info {
     background: #fff; border-radius: 12px; padding: 5mm;
@@ -115,6 +130,25 @@
         <div class="n">30 nodi</div>
         <div class="d"><b>🛑 ALERT VENTO !!!</b> Vento molto forte: si sconsiglia
           di uscire in acqua. Pericoloso anche per i più esperti.</div>
+      </div>
+    </div>
+
+    <div class="sezione-titolo">Alert variazione di pressione <span class="new">NOVITÀ</span></div>
+    <div class="p-intro">
+      📉 Quando la pressione atmosferica <b>cala rapidamente</b> è uno dei
+      segnali più affidabili di vento in rinforzo in arrivo. Il canale tiene
+      d'occhio la pressione e vi avvisa quando scende troppo in fretta:
+    </div>
+    <div class="pressione">
+      <div class="p-riga p-giallo">
+        <div class="pv">−3 hPa<br>in 3 ore</div>
+        <div class="pd"><b>🟡 Attenzione.</b> Probabile rinforzo di vento in
+          arrivo.</div>
+      </div>
+      <div class="p-riga p-rosso">
+        <div class="pv">−6 hPa<br>in 3 ore</div>
+        <div class="pd"><b>🔴 Prudenza.</b> Peggioramento marcato, possibile
+          groppo.</div>
       </div>
     </div>
 
