@@ -80,15 +80,16 @@ vento per non sovrapporsi.
 
 Ogni mattina verso le **9:00** la **previsione vento della giornata** per Lido di
 Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
-comprese. *Il giovedì non viene inviato: alle 9:05 esce il grafico del weekend
-(qui sotto), che copre già la giornata.*
+comprese. Viene inviato **tutti i giorni**, giovedì compreso.
 
-## 📊 Grafico previsioni weekend (giovedì)
+## 📊 Grafico previsioni weekend (giovedì, venerdì, sabato)
 
-Ogni **giovedì verso le 9:05** un grafico con il vento previsto a **Lido di
-Spina** per **giovedì, venerdì, sabato e domenica**. Ogni barra è il vento
-massimo previsto in nodi, con sopra una freccia che indica la direzione: utile
-per programmare le uscite del fine settimana. *Previsione indicativa.*
+**Giovedì, venerdì e sabato verso le 9:05**, subito dopo il bollettino, un
+grafico con il vento previsto a **Lido di Spina** per i **giorni che restano del
+weekend**: giovedì → ven/sab/dom, venerdì → sab/dom, sabato → domenica. Il giorno
+di oggi non viene ripetuto, perché è già nel bollettino qui sopra. Ogni barra è
+il vento massimo previsto in nodi, con sopra una freccia che indica la direzione:
+utile per programmare le uscite del fine settimana. *Previsione indicativa.*
 
 ## 📊 Riepilogo della sera
 
@@ -122,9 +123,9 @@ viene prima di tutto.
 
 - **ALERT variazione pressione**: avviso quando la pressione cala rapidamente
   (≥3 hPa/3h giallo, ≥6 hPa/3h rosso), su entrambe le stazioni.
-- **Grafico previsioni weekend**: ogni giovedì alle 9:05 il vento previsto a Lido
-  di Spina per gio-ven-sab-dom (il bollettino del giovedì non viene più inviato,
-  per non duplicare).
+- **Grafico previsioni weekend**: giovedì, venerdì e sabato alle 9:05 il vento
+  previsto a Lido di Spina per i giorni che restano del weekend (gio → ven/sab/dom,
+  ven → sab/dom, sab → dom). Il bollettino del mattino ora esce tutti i giorni.
 - **Bollettino del mattino** (~9:00) e **riepilogo della sera** (~19:00).
 - **Tendenza** del vento (in aumento / in calo / stabile) e **freccia** della
   direzione negli avvisi.
