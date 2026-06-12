@@ -41,6 +41,22 @@ LIVELLI = [
         "intestazione": None,
     },
     {
+        "soglia": 10.0,
+        "riarmo": 9.0,
+        "intestazione": (
+            "🟢 *Vento a 10 nodi*\n"
+            "_Bella arietta da planata._"
+        ),
+    },
+    {
+        "soglia": 15.0,
+        "riarmo": 14.0,
+        "intestazione": (
+            "💨 *Vento teso — 15+ nodi*\n"
+            "_Divertente ma impegnativo._"
+        ),
+    },
+    {
         "soglia": 20.0,
         "riarmo": 19.0,
         "intestazione": (
