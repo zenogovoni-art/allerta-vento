@@ -24,8 +24,8 @@
     display: flex;
     flex-direction: column;
   }
-  .testata { color: #fff; text-align: center; margin-bottom: 4mm; }
-  .vela { font-size: 36px; line-height: 1; }
+  .testata { color: #fff; text-align: center; margin-bottom: 3mm; }
+  .vela { font-size: 30px; line-height: 1; }
   .testata h1 { font-size: 34px; letter-spacing: 1px; margin: 5px 0 3px; }
   .testata p { font-size: 16px; opacity: .92; }
 
@@ -33,13 +33,13 @@
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 10px 26px rgba(0,0,0,.16);
-    padding: 6mm;
+    padding: 5mm;
     display: flex;
     align-items: center;
     gap: 6mm;
-    margin-bottom: 5mm;
+    margin-bottom: 4mm;
   }
-  .iscrizione img { width: 36mm; height: 36mm; flex: none; }
+  .iscrizione img { width: 32mm; height: 32mm; flex: none; }
   .iscrizione .txt h2 { font-size: 21px; color: #075985; margin-bottom: 4px; }
   .iscrizione .txt p { font-size: 14px; line-height: 1.4; }
   .link {
@@ -56,12 +56,17 @@
   .sezione-titolo { font-size: 15px; font-weight: 700; color: #075985;
     text-transform: uppercase; letter-spacing: 1px; margin: 0 0 3mm; }
 
-  .livelli { display: flex; flex-direction: column; gap: 3mm; margin-bottom: 4mm; }
-  .livello { border-radius: 12px; padding: 3mm 6mm; color: #fff;
-    display: flex; align-items: center; gap: 5mm; }
-  .livello .n { font-size: 27px; font-weight: 800; flex: none; width: 28mm; }
-  .livello .d { font-size: 13.5px; line-height: 1.35; }
+  .livelli { display: flex; flex-direction: column; gap: 2.1mm; margin-bottom: 4mm; }
+  .livello { border-radius: 11px; padding: 2.3mm 5mm; color: #fff;
+    display: flex; align-items: center; gap: 4mm; }
+  .livello .n { font-size: 21px; font-weight: 800; flex: none; width: 21mm; line-height: 1.05; }
+  .livello .d { font-size: 12.5px; line-height: 1.3; }
+  .livello .np { display: inline-block; background: rgba(255,255,255,.28);
+    border-radius: 999px; padding: 0 6px; font-size: 9.5px; font-weight: 700;
+    letter-spacing: .5px; vertical-align: middle; margin-left: 4px; }
   .l-verde  { background: #15803d; }
+  .l-lime   { background: #4d9b2f; }
+  .l-ambra  { background: #ca8a04; }
   .l-arancio{ background: #ea580c; }
   .l-rosso  { background: #b91c1c; }
 
@@ -113,23 +118,30 @@
       </div>
     </div>
 
-    <div class="sezione-titolo">I tre livelli di avviso</div>
+    <div class="sezione-titolo">La scala degli avvisi vento</div>
     <div class="livelli">
       <div class="livello l-verde">
         <div class="n">8 nodi</div>
-        <div class="d"><b>Si naviga.</b> Arrivano intensità, direzione e raffica
-          del vento.</div>
+        <div class="d"><b>Si naviga.</b> Primo avviso con intensità, direzione e
+          raffica del vento.</div>
+      </div>
+      <div class="livello l-lime">
+        <div class="n">10 nodi</div>
+        <div class="d"><b>🟢 Bella arietta da planata.</b><span class="np">NOVITÀ</span></div>
+      </div>
+      <div class="livello l-ambra">
+        <div class="n">15 nodi</div>
+        <div class="d"><b>💨 Vento teso.</b> Divertente ma impegnativo.<span class="np">NOVITÀ</span></div>
       </div>
       <div class="livello l-arancio">
         <div class="n">20 nodi</div>
-        <div class="d"><b>⚠️ ALERT VENTO !!!</b> Vento sostenuto: condizioni
-          impegnative, adatte solo a chi ha esperienza. Valutate bene prima di
-          uscire.</div>
+        <div class="d"><b>⚠️ ALERT VENTO!</b> Vento sostenuto: condizioni
+          impegnative, solo per chi ha esperienza.</div>
       </div>
       <div class="livello l-rosso">
         <div class="n">30 nodi</div>
-        <div class="d"><b>🛑 ALERT VENTO !!!</b> Vento molto forte: si sconsiglia
-          di uscire in acqua. Pericoloso anche per i più esperti.</div>
+        <div class="d"><b>🛑 ALERT VENTO!</b> Vento molto forte: si sconsiglia di
+          uscire, pericoloso anche per i più esperti.</div>
       </div>
     </div>
 
