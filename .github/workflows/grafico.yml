@@ -2,11 +2,13 @@ name: Grafico previsioni weekend
 
 on:
   schedule:
-    # Ogni GIOVEDI' mattina alle 9:05 italiane, subito dopo il "Bollettino di
-    # oggi" (che parte alle 9:00 dal workflow meteo). Solo nella stagione velica
-    # (mesi 5-9). 07:05 UTC = 09:05 ora legale italiana (UTC+2). L'orario del
-    # cron e' in UTC e GitHub puo' ritardare l'esecuzione di qualche minuto.
-    - cron: "5 7 * 5-9 4"
+    # GIOVEDI', VENERDI' e SABATO mattina alle 9:05 italiane, subito dopo il
+    # "Bollettino di oggi" (che parte alle 9:00 dal workflow meteo). Ogni giorno
+    # il grafico mostra solo i giorni FUTURI del weekend: gio -> ven/sab/dom,
+    # ven -> sab/dom, sab -> dom. Solo nella stagione velica (mesi 5-9).
+    # 07:05 UTC = 09:05 ora legale italiana (UTC+2). L'orario del cron e' in UTC
+    # e GitHub puo' ritardare l'esecuzione di qualche minuto.
+    - cron: "5 7 * 5-9 4-6"
   workflow_dispatch: {}     # avvio manuale dalla scheda Actions (per provare)
 
 jobs:

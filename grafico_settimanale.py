@@ -85,13 +85,26 @@ def previsione_giornaliera(coord, giorni: int):
 
 
 def giorni_da_mostrare(oggi: datetime) -> int:
-    """Quanti giorni mostrare: da oggi fino alla domenica inclusa.
+    """Quanti giorni FUTURI mostrare: da domani fino alla domenica inclusa.
 
-    Giovedi' -> 4 giorni (gio, ven, sab, dom). Se lanciato in un altro giorno
-    si adatta da solo (es. venerdi' -> 3). Cap a MAX_GIORNI.
+    Il giorno di oggi e' gia' coperto in dettaglio dal "Bollettino di oggi",
+    quindi il grafico guarda solo avanti. Giovedi' -> 3 (ven, sab, dom),
+    venerdi' -> 2 (sab, dom), sabato -> 1 (dom). Cap a MAX_GIORNI. Domenica
+    restituisce 0: non c'e' piu' weekend davanti.
     """
-    fino_a_domenica = (6 - oggi.weekday()) + 1  # +1 per includere oggi
-    return max(1, min(fino_a_domenica, MAX_GIORNI))
+    return max(0, min(6 - oggi.weekday(), MAX_GIORNI))
+
+
+def titolo_periodo(oggi: datetime, n: int) -> str:
+    """Titolo dinamico in base ai giorni futuri mostrati.
+
+    Con piu' di un giorno davanti si parla di "weekend"; quando resta solo
+    domani (il sabato -> domenica) si nomina direttamente quel giorno.
+    """
+    if n <= 1:
+        domani = oggi + timedelta(days=1)
+        return f"Previsione vento per {GIORNI_IT_LUNGHI[domani.weekday()]}"
+    return "Previsioni vento per il weekend"
 
 
 # --------------------------------------------------------------------------
@@ -115,7 +128,10 @@ def costruisci_grafico(etichette_giorni, velocita, direzioni,
     n_giorni = len(etichette_giorni)
     x = list(range(n_giorni))
 
-    fig, ax = plt.subplots(figsize=(1.7 * n_giorni + 1.5, 5.2), dpi=130)
+    # Larghezza proporzionale ai giorni, ma con un minimo: con 1-2 giorni la
+    # figura sarebbe troppo stretta e il titolo verrebbe tagliato.
+    larghezza = max(7.0, 1.7 * n_giorni + 1.5)
+    fig, ax = plt.subplots(figsize=(larghezza, 5.2), dpi=130)
 
     vmax = max(velocita, default=0) or 1
 
@@ -136,8 +152,8 @@ def costruisci_grafico(etichette_giorni, velocita, direzioni,
     ax.set_ylabel("Vento max (nodi)", fontsize=11)
     ax.set_ylim(0, vmax * 1.32)
     ax.set_xlim(-0.5, n_giorni - 0.5)
-    ax.set_title(f"Previsioni vento per il weekend — Lido di Spina\n"
-                 f"{GIORNI_IT_LUNGHI[oggi.weekday()]} {oggi.day} "
+    ax.set_title(f"{titolo_periodo(oggi, n_giorni)} — Lido di Spina\n"
+                 f"emesso {GIORNI_IT_LUNGHI[oggi.weekday()]} {oggi.day} "
                  f"{MESI_IT[oggi.month - 1]}",
                  fontsize=13, fontweight="bold")
     ax.grid(axis="y", linestyle=":", alpha=0.5, zorder=0)
@@ -196,15 +212,21 @@ def invia_foto(png: bytes, didascalia: str) -> None:
 def main() -> int:
     oggi = datetime.now(TZ)
     n = giorni_da_mostrare(oggi)
+    if n == 0:
+        print("[info] e' domenica: nessun giorno futuro del weekend, esco.")
+        return 0
 
+    # Etichette e dati partono da DOMANI (i=1): oggi e' gia' nel bollettino.
     etichette = [f"{GIORNI_IT[(oggi + timedelta(days=i)).weekday()]} "
-                 f"{(oggi + timedelta(days=i)).day}" for i in range(n)]
+                 f"{(oggi + timedelta(days=i)).day}" for i in range(1, n + 1)]
 
-    vel, dirs = previsione_giornaliera(LIDO_SPINA, n)
+    # Open-Meteo conta i giorni da oggi (indice 0): chiediamo n+1 giorni e
+    # scartiamo oggi, cosi' restano domani..domenica.
+    vel, dirs = previsione_giornaliera(LIDO_SPINA, n + 1)
     if vel is None:
         print("[errore] niente dati di previsione, esco.")
         return 1
-    vel, dirs = vel[:n], dirs[:n]
+    vel, dirs = vel[1:n + 1], dirs[1:n + 1]
 
     png = costruisci_grafico(etichette, vel, dirs, oggi)
 
@@ -216,7 +238,7 @@ def main() -> int:
         print(f"[locale] nessun TELEGRAM_TOKEN: grafico salvato in {out}")
         return 0
 
-    didascalia = ("🌬️ *Previsioni vento per il weekend* — Lido di Spina\n"
+    didascalia = (f"🌬️ *{titolo_periodo(oggi, n)}* — Lido di Spina\n"
                   "Velocità massima e direzione del vento prevista, "
                   "giorno per giorno.")
     try:
