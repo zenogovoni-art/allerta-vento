@@ -17,11 +17,13 @@ Variabili d'ambiente richieste:
 """
 
 import io
+import json
 import math
 import os
 import sys
 import time
 from datetime import datetime, timedelta
+from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import matplotlib
@@ -34,6 +36,11 @@ import requests
 # --------------------------------------------------------------------------
 
 TZ = ZoneInfo("Europe/Rome")
+
+# Stato condiviso col workflow meteo: qui ci salviamo solo la data dell'ultimo
+# invio del grafico (flag "_grafico") per non ripubblicarlo piu' volte lo
+# stesso giorno. Committato dal workflow (vedi grafico.yml).
+STATE_FILE = Path(__file__).with_name("state.json")
 
 # Coordinate del punto di previsione: Lido di Spina (44°38'37.1"N 12°15'22.5"E).
 LIDO_SPINA = (44.6436, 12.2563)
@@ -206,6 +213,23 @@ def invia_foto(png: bytes, didascalia: str) -> None:
 
 
 # --------------------------------------------------------------------------
+# STATO (anti-doppione)
+# --------------------------------------------------------------------------
+
+def carica_stato() -> dict:
+    if STATE_FILE.exists():
+        try:
+            return json.loads(STATE_FILE.read_text())
+        except json.JSONDecodeError:
+            pass
+    return {}
+
+
+def salva_stato(stato: dict) -> None:
+    STATE_FILE.write_text(json.dumps(stato, indent=2, ensure_ascii=False))
+
+
+# --------------------------------------------------------------------------
 # MAIN
 # --------------------------------------------------------------------------
 
@@ -214,6 +238,18 @@ def main() -> int:
     n = giorni_da_mostrare(oggi)
     if n == 0:
         print("[info] e' domenica: nessun giorno futuro del weekend, esco.")
+        return 0
+
+    # Anti-doppione: il grafico va pubblicato UNA sola volta al giorno. Il
+    # workflow puo' partire piu' volte (test manuali, retry, scheduler esterno
+    # che fa piu' chiamate): se oggi e' gia' stato inviato, usciamo senza
+    # ripubblicare. In locale (senza token) saltiamo il guard, cosi' si puo'
+    # sempre rigenerare il PNG di prova.
+    oggi_str = oggi.date().isoformat()
+    invio_telegram = bool(os.environ.get("TELEGRAM_TOKEN"))
+    stato = carica_stato()
+    if invio_telegram and stato.get("_grafico") == oggi_str:
+        print(f"[info] grafico gia' inviato oggi ({oggi_str}), esco.")
         return 0
 
     # Etichette e dati partono da DOMANI (i=1): oggi e' gia' nel bollettino.
@@ -231,7 +267,7 @@ def main() -> int:
     png = costruisci_grafico(etichette, vel, dirs, oggi)
 
     # In locale (senza token) salva un file da guardare invece di inviare.
-    if not os.environ.get("TELEGRAM_TOKEN"):
+    if not invio_telegram:
         out = "previsioni_weekend.png"
         with open(out, "wb") as f:
             f.write(png)
@@ -246,6 +282,11 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001
         print(f"[errore] invio grafico fallito: {e}")
         return 1
+
+    # Inviato con successo: segniamo la data cosi' eventuali run successivi di
+    # oggi non ripubblicano. Lo scrive su disco; e' il workflow a committarlo.
+    stato["_grafico"] = oggi_str
+    salva_stato(stato)
     return 0
 
 
