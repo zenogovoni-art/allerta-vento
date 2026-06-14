@@ -625,11 +625,14 @@ def main() -> int:
                 s["raffica_max"] = max(s.get("raffica_max", 0.0), raffica)
             cambiato = True
 
+        # Direzione "verso il circolo": True se il vento arriva da un settore
+        # che spinge verso Lido di Spina (semicerchio sud per Porto Corsini,
+        # nord per Volano). Vale sia per l'avviso vento sia per l'alert raffica.
+        direzioni_ok = (st["direzioni"] is None
+                        or direzione in st["direzioni"])
+
         # --- Avviso VENTO: solo quando il livello SALE (e direzione OK) ---
         if livello_ora > livello_prima:
-            direzioni_ok = (st["direzioni"] is None
-                            or direzione in st["direzioni"])
-
             if in_orario and direzioni_ok:
                 intestazione = LIVELLI[livello_ora - 1]["intestazione"]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
@@ -657,8 +660,10 @@ def main() -> int:
                       f"({motivo})")
 
         # --- Avviso RAFFICA: quando il picco di giornata sale di soglia ---
+        # Come l'avviso vento, scatta solo se la direzione attuale punta verso
+        # il circolo (semicerchio sud/nord della stazione).
         if raf_ora > raf_prima:
-            if in_orario:
+            if in_orario and direzioni_ok:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
                 testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
                          f"Oggi la raffica ha raggiunto *{raffica:.1f} nodi* "
@@ -668,7 +673,9 @@ def main() -> int:
                 except Exception as e:  # noqa: BLE001
                     print(f"[errore] invio Telegram raffica fallito: {e}")
             else:
-                print("[info] soglia raffica superata ma fuori orario")
+                motivo = "fuori orario" if not in_orario else "direzione esclusa"
+                print(f"[info] soglia raffica superata ma avviso non inviato "
+                      f"({motivo})")
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
