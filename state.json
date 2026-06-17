@@ -16,10 +16,10 @@
     ]
   },
   "Lido di Volano": {
-    "livello": 0,
+    "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 0,
+    "livello_raffica": 1,
     "pressioni": [
       [
         "2026-06-16T23:59:41.199244+02:00",
