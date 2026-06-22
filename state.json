@@ -1,6 +1,6 @@
 {
   "Porto Corsini": {
-    "livello": 0,
+    "livello": 1,
     "vento_max": 0.0,
     "raffica_max": 0.0,
     "livello_raffica": 0,
@@ -19,7 +19,7 @@
     "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 2,
+    "livello_raffica": 1,
     "pressioni": [
       [
         "2026-06-22T21:53:26.231692+02:00",
