@@ -1,7 +1,7 @@
 {
   "Porto Corsini": {
     "livello": 1,
-    "vento_max": 8.7,
+    "vento_max": 9.6,
     "raffica_max": 10.4,
     "livello_raffica": 0,
     "pressioni": [
@@ -18,7 +18,7 @@
         1018.6
       ]
     ],
-    "vento_prec": 8.7
+    "vento_prec": 9.6
   },
   "Lido di Volano": {
     "livello": 0,
