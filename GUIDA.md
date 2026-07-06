@@ -76,11 +76,35 @@ in fretta (calo misurato sulle ultime **3 ore**):
 Il controllo è automatico durante la giornata, sfasato rispetto a quello del
 vento per non sovrapporsi.
 
+## 🌬️ Situazione vento ogni 30 minuti
+
+Dalle **9:00 alle 19:00**, ogni **mezz'ora**, il canale pubblica **sempre** la
+situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
+direzione e raffica massima della giornata — **anche quando le condizioni non
+cambiano**. È un quadro in tempo reale utile prima di decidere se uscire:
+
+> 🌬️ *Situazione vento — 11:30*
+> 🌬️ *Porto Corsini* — Vento **8.7 nodi** da ESE ↖️ — raffica max oggi **22.6 nodi**
+> 🌬️ *Lido di Volano* — Vento **2.7 nodi** da E ⬅️ — raffica max oggi **5.4 nodi**
+
+A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
+questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
+aggiornato.
+
 ## 🌅 Bollettino del mattino
 
 Ogni mattina verso le **9:00** la **previsione vento della giornata** per Lido di
 Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
 comprese. Viene inviato **tutti i giorni**, giovedì compreso.
+
+Da questo bollettino trovi anche due dati marini utili alla navigazione:
+
+- 🌊 **Corrente di superficie** — la direzione verso cui scorre la corrente
+  (con velocità indicativa).
+- 🌙 **Maree del giorno** — orari di **alta** e **bassa marea** con la relativa
+  altezza (livello sul medio mare: valori positivi sopra la media, negativi
+  sotto). La previsione tiene conto anche della spinta del vento, non solo della
+  marea astronomica. Orari su base oraria, quindi indicativi al minuto.
 
 ## 📊 Grafico previsioni weekend (giovedì, venerdì, sabato)
 
@@ -121,6 +145,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Situazione vento ogni 30 minuti** (9:00–19:00): vento, direzione e raffica
+  delle due stazioni pubblicati sempre, anche a condizioni invariate.
+- **Correnti e maree nel bollettino delle 9:00**: direzione della corrente di
+  superficie e orari/altezze di alta e bassa marea del giorno.
 - **ALERT variazione pressione**: avviso quando la pressione cala rapidamente
   (≥3 hPa/3h giallo, ≥6 hPa/3h rosso), su entrambe le stazioni.
 - **Grafico previsioni weekend**: giovedì, venerdì e sabato alle 9:05 il vento
