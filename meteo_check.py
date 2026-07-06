@@ -114,6 +114,15 @@ TZ = ZoneInfo("Europe/Rome")
 # tra quanto il rinforzo di vento puo' raggiungere il circolo.
 CIRCOLO = (44.665, 12.231)  # (lat, lon) approssimati
 
+# Punto al largo di Lido di Spina per i dati marini (Open-Meteo Marine): il
+# circolo e' praticamente sulla costa/valle, serve un punto in mare aperto
+# perche' il modello oceanico restituisca correnti e livello del mare validi.
+PUNTO_MARE = (44.665, 12.35)  # (lat, lon) ~9 km al largo del circolo
+
+# Bollettino periodico "situazione stazioni": pubblicato una volta ogni mezz'ora
+# (slot :00-:29 e :30-:59) nella fascia oraria attiva, SEMPRE, anche se i dati
+# non sono cambiati. Il vento in tempo reale interessa ai soci del circolo.
+
 # Elenco delle stazioni da controllare.
 # Per aggiungere una stazione a nord in futuro basta aggiungere un dict qui.
 #   nome       -> etichetta mostrata nel messaggio
@@ -270,8 +279,96 @@ def bollettino_mattutino():
     if ora_vmax is not None:
         righe.append(f"Max previsto: ~{vmax:.0f} nodi (raffiche fino a "
                      f"{gmax:.0f}) verso le {ora_vmax}:00.")
+
+    # Correnti di superficie e maree di oggi (Open-Meteo Marine, best effort).
+    mare = dati_marini()
+    if mare:
+        righe.append("")
+        c = mare.get("corrente")
+        if c and c.get("dir") is not None:
+            vtxt = (f" (~{c['vel']:.1f} km/h)"
+                    if c.get("vel") is not None else "")
+            righe.append(f"🌊 *Corrente di superficie*: verso "
+                         f"{_dir16(c['dir'])}{vtxt}")
+        maree = mare.get("maree") or []
+        if maree:
+            righe.append("🌙 *Maree di oggi* (livello sul medio mare):")
+            for tipo, ora_hhmm, alt in maree:
+                icona = "🔺" if tipo == "alta" else "🔻"
+                segno = "+" if alt >= 0 else ""
+                righe.append(f"  {icona} {tipo.capitalize()} marea "
+                             f"{ora_hhmm} — {segno}{alt:.2f} m")
+
     righe.append("ℹ️ Previsione indicativa, non sostituisce gli avvisi reali.")
     return "\n".join(righe)
+
+
+def dati_marini():
+    """Corrente di superficie e maree di oggi al largo di Lido di Spina.
+
+    Usa la Marine API di Open-Meteo (modello oceanico SMOC). Ritorna un dict
+    {"corrente": {"dir": gradi, "vel": km/h}|None,
+     "maree": [(tipo, "HH:MM", altezza_m), ...]}
+    oppure None se la richiesta fallisce. La direzione della corrente segue la
+    convenzione oceanografica (verso CUI scorre). Le altezze di marea sono
+    riferite al medio mare (positive sopra, negative sotto).
+    """
+    lat, lon = PUNTO_MARE
+    url = ("https://marine-api.open-meteo.com/v1/marine"
+           f"?latitude={lat}&longitude={lon}"
+           "&hourly=sea_level_height_msl,ocean_current_velocity,"
+           "ocean_current_direction"
+           "&timezone=Europe/Rome&forecast_days=1")
+    try:
+        r = requests.get(url, timeout=30)
+        r.raise_for_status()
+        h = r.json()["hourly"]
+    except (requests.RequestException, KeyError, ValueError) as e:
+        print(f"[errore] dati marini non disponibili: {e}")
+        return None
+
+    ore = h["time"]
+    liv = h.get("sea_level_height_msl") or []
+    cv = h.get("ocean_current_velocity") or []
+    cd = h.get("ocean_current_direction") or []
+
+    # Corrente all'ora del bollettino; se manca, primo valore utile del giorno.
+    corrente = None
+    ora_ora = datetime.now(TZ).hour
+    for i, t in enumerate(ore):
+        if i >= len(cd) or cd[i] is None:
+            continue
+        vel = cv[i] if i < len(cv) else None
+        if int(t[11:13]) == ora_ora:
+            corrente = {"dir": cd[i], "vel": vel}
+            break
+        if corrente is None:  # fallback: prima lettura valida della giornata
+            corrente = {"dir": cd[i], "vel": vel}
+
+    # Maree: massimi (alta) e minimi (bassa) locali della serie oraria di oggi.
+    maree = []
+    for i in range(1, len(liv) - 1):
+        a, b, c = liv[i - 1], liv[i], liv[i + 1]
+        if None in (a, b, c):
+            continue
+        if b >= a and b >= c and (b > a or b > c):
+            maree.append(("alta", ore[i][11:16], b))
+        elif b <= a and b <= c and (b < a or b < c):
+            maree.append(("bassa", ore[i][11:16], b))
+
+    # Collassa run di estremi consecutivi dello stesso tipo (plateau orari):
+    # tiene il piu' alto per l'alta marea, il piu' basso per la bassa.
+    compatti = []
+    for e in maree:
+        if compatti and compatti[-1][0] == e[0]:
+            prec = compatti[-1]
+            piu_estremo = ((e[0] == "alta" and e[2] > prec[2])
+                           or (e[0] == "bassa" and e[2] < prec[2]))
+            compatti[-1] = e if piu_estremo else prec
+        else:
+            compatti.append(e)
+
+    return {"corrente": corrente, "maree": compatti}
 
 
 # --------------------------------------------------------------------------
@@ -579,9 +676,11 @@ def main() -> int:
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio bollettino fallito: {e}")
 
+    letture = {}  # nome -> dati (o None): serve al bollettino periodico
     for st in STAZIONI:
         nome = st["nome"]
         dati = leggi_stazione(st)
+        letture[nome] = dati
         if dati is None:
             continue  # non tocco lo stato se non riesco a leggere
 
@@ -665,9 +764,10 @@ def main() -> int:
         if raf_ora > raf_prima:
             if in_orario and direzioni_ok:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
+                dir_txt = f"{direzione} {freccia(direzione)}".strip()
                 testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
                          f"Oggi la raffica ha raggiunto *{raffica:.1f} nodi* "
-                         f"(soglia {soglia:.0f}).")
+                         f"(soglia {soglia:.0f}) da {dir_txt}.")
                 try:
                     invia_telegram(testo)
                 except Exception as e:  # noqa: BLE001
@@ -676,6 +776,37 @@ def main() -> int:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
                 print(f"[info] soglia raffica superata ma avviso non inviato "
                       f"({motivo})")
+
+    # --- Bollettino periodico stazioni: una volta ogni mezz'ora, in fascia
+    # oraria, SEMPRE (anche a dati invariati) perche' la situazione vento in
+    # tempo reale interessa ai soci. Lo "slot" (:00-:29 / :30-:59) rende la
+    # cadenza robusta ai ritardi del cron di GitHub Actions. ---
+    if in_orario:
+        slot = f"{oggi} {adesso.hour:02d}{'A' if adesso.minute < 30 else 'B'}"
+        if stato.get("_stazioni_slot") != slot:
+            righe = [f"🌬️ *Situazione vento — {adesso:%H:%M}*"]
+            almeno_uno = False
+            for st in STAZIONI:
+                nome = st["nome"]
+                dati = letture.get(nome)
+                if dati is None:
+                    righe.append(f"\n*{nome}*: dati non disponibili")
+                    continue
+                almeno_uno = True
+                dir_txt = f"{dati['direzione']} {freccia(dati['direzione'])}".strip()
+                raffica = dati.get("raffica")
+                raf_txt = (f" — raffica max oggi *{raffica:.1f} nodi*"
+                           if raffica is not None else "")
+                righe.append(f"\n🌬️ *{nome}*\n"
+                             f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}"
+                             f"{raf_txt}")
+            if almeno_uno:
+                try:
+                    invia_telegram("\n".join(righe))
+                    stato["_stazioni_slot"] = slot
+                    cambiato = True
+                except Exception as e:  # noqa: BLE001
+                    print(f"[errore] invio bollettino stazioni fallito: {e}")
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
