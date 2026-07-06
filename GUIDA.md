@@ -29,13 +29,43 @@ seconda della direzione.
 - Solo nella fascia **09:00 – 19:00**
 - Ogni messaggio indica **intensità (nodi), direzione e raffica**
 
-## I tre livelli di avviso
+## 📇 Le schede che ricevi
 
-| Livello | Vento medio | Messaggio |
-|--------|-------------|-----------|
-| 🟢 Navigabile | **da 8 nodi** | dati del vento (intensità, direzione, raffica) |
-| 🟠 Attenzione | **da 20 nodi** | ⚠️ **ALERT VENTO !!!** — *Vento sostenuto: condizioni impegnative, adatte solo a chi ha esperienza. Valutate bene prima di uscire.* |
-| 🔴 Sconsigliato | **da 30 nodi** | 🛑 **ALERT VENTO !!!** — *Vento molto forte: si sconsiglia di uscire in acqua. Pericoloso anche per i più esperti.* |
+In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: la
+**prima riga della scheda** ti dice subito di che tipo si tratta. C'è una scheda
+**informativa** che esce sempre, e tre **ALERT** che scattano solo quando serve.
+
+| Scheda | Titolo (prima riga) | Quando arriva |
+|--------|---------------------|---------------|
+| Situazione vento | 🌬️ **Situazione vento — HH:MM** | ogni 30 minuti (9–19), sempre |
+| Alert vento | 🌬️ **ALERT VENTO — Stazione** | il vento medio supera una soglia |
+| Alert raffica | 🌀 **ALERT RAFFICA — Stazione** | la raffica del giorno supera una soglia |
+| Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
+
+Se un ALERT capita proprio mentre esce la *Situazione vento*, confluisce dentro
+di essa: niente doppioni (vedi più sotto).
+
+## 🌬️ I livelli dell'ALERT VENTO
+
+Quando il vento medio supera una soglia arriva un **ALERT VENTO**, sempre con lo
+stesso titolo **🌬️ ALERT VENTO — Stazione** e un'etichetta che ne dice la forza:
+
+| Soglia | Etichetta | Cosa dice |
+|--------|-----------|-----------|
+| **da 8 nodi** | 🟢 8+ nodi | Prime arie: si comincia a navigare. |
+| **da 10 nodi** | 🟢 10+ nodi | Bella arietta da planata. |
+| **da 15 nodi** | 💨 15+ nodi | Vento teso: divertente ma impegnativo. |
+| **da 20 nodi** | ⚠️ 20+ nodi | Vento sostenuto: solo per chi ha esperienza, valutate bene. |
+| **da 30 nodi** | 🛑 30+ nodi | Vento molto forte: si sconsiglia di uscire, pericoloso anche per i più esperti. |
+
+Esempio di scheda:
+
+> 🌬️ *ALERT VENTO — Porto Corsini*\
+> 🟢 *10+ nodi* — *Bella arietta da planata.*
+>
+> Vento **10.5 nodi** da SSW ↗️ — raffica **16.0 nodi**\
+> 📈 in aumento\
+> ⏱️ Possibile arrivo al circolo tra ~70 min
 
 ## 🌀 ALERT RAFFICA
 
@@ -154,6 +184,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Titoli delle schede più chiari**: gli avvisi ora hanno un titolo di famiglia
+  riconoscibile — **ALERT VENTO**, **ALERT RAFFICA**, **ALERT VARIAZIONE
+  PRESSIONE** — ben distinti dalla **Situazione vento** informativa delle ogni
+  mezz'ora (vedi tabella "Le schede che ricevi").
 - **Situazione vento ogni 30 minuti** (9:00–19:00): vento, direzione e raffica
   delle due stazioni pubblicati sempre, anche a condizioni invariate. Se coincide
   con un avviso, l'avviso confluisce nel bollettino (niente messaggi doppi).

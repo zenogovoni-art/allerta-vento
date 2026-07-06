@@ -30,49 +30,47 @@ import requests
 # --------------------------------------------------------------------------
 
 # Livelli di avviso sul VENTO ATTUALE, dal piu' basso al piu' alto.
-#   soglia       -> nodi oltre i quali scatta il livello
-#   riarmo       -> nodi sotto cui il livello si "disarma" (isteresi: evita
-#                   avvisi ripetuti se il vento oscilla attorno alla soglia)
-#   intestazione -> testo speciale premesso ai dati (None = avviso normale)
+#   soglia      -> nodi oltre i quali scatta il livello
+#   riarmo      -> nodi sotto cui il livello si "disarma" (isteresi: evita
+#                  avvisi ripetuti se il vento oscilla attorno alla soglia)
+#   tag         -> etichetta breve con emoji di gravita' (usata nel bollettino
+#                  "Situazione vento" quando l'avviso vi confluisce)
+#   descrizione -> frase estesa mostrata nell'ALERT VENTO a se' stante
+# Il titolo della scheda ("🌬️ ALERT VENTO — Stazione") e' aggiunto dal codice,
+# uguale per tutti i livelli: cosi' l'avviso e' riconoscibile a colpo d'occhio e
+# distinto dalla "Situazione vento" informativa delle ogni mezz'ora.
 LIVELLI = [
     {
         "soglia": 8.0,
         "riarmo": 7.0,
-        "intestazione": None,
+        "tag": "🟢 *8+ nodi*",
+        "descrizione": "_Prime arie: si comincia a navigare._",
     },
     {
         "soglia": 10.0,
         "riarmo": 9.0,
-        "intestazione": (
-            "🟢 *Vento a 10 nodi*\n"
-            "_Bella arietta da planata._"
-        ),
+        "tag": "🟢 *10+ nodi*",
+        "descrizione": "_Bella arietta da planata._",
     },
     {
         "soglia": 15.0,
         "riarmo": 14.0,
-        "intestazione": (
-            "💨 *Vento teso — 15+ nodi*\n"
-            "_Divertente ma impegnativo._"
-        ),
+        "tag": "💨 *15+ nodi*",
+        "descrizione": "_Vento teso: divertente ma impegnativo._",
     },
     {
         "soglia": 20.0,
         "riarmo": 19.0,
-        "intestazione": (
-            "⚠️ *ALERT VENTO !!!*\n"
-            "_Vento sostenuto: condizioni impegnative, adatte solo a chi ha "
-            "esperienza. Valutate bene prima di uscire._"
-        ),
+        "tag": "⚠️ *20+ nodi*",
+        "descrizione": ("_Vento sostenuto: condizioni impegnative, adatte solo "
+                        "a chi ha esperienza. Valutate bene prima di uscire._"),
     },
     {
         "soglia": 30.0,
         "riarmo": 29.0,
-        "intestazione": (
-            "🛑 *ALERT VENTO !!!*\n"
-            "_Vento molto forte: si sconsiglia di uscire in acqua. Pericoloso "
-            "anche per i piu' esperti._"
-        ),
+        "tag": "🛑 *30+ nodi*",
+        "descrizione": ("_Vento molto forte: si sconsiglia di uscire in acqua. "
+                        "Pericoloso anche per i piu' esperti._"),
     },
 ]
 
@@ -574,13 +572,15 @@ def controlla_pressione(stato: dict) -> bool:
                 print(f"[info] caduta pressione ma fuori orario ({nome})")
                 continue
             if liv_ora >= 2:
-                testo = (f"🔴 *ALERT PRESSIONE — {nome}*\n"
+                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n"
+                         f"🔴 *Calo marcato*\n\n"
                          f"Pressione *{p:.1f} hPa*, in calo di "
                          f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
-                         f"_Calo marcato: possibile peggioramento o groppo in "
-                         f"arrivo, prudenza in acqua._")
+                         f"_Possibile peggioramento o groppo in arrivo, "
+                         f"prudenza in acqua._")
             else:
-                testo = (f"🟡 *Pressione in calo — {nome}*\n"
+                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n"
+                         f"🟡 *Calo moderato*\n\n"
                          f"Pressione *{p:.1f} hPa*, scesa di "
                          f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
                          f"_Probabile rinforzo di vento in arrivo._")
@@ -750,8 +750,7 @@ def main() -> int:
         eta_min = None
         if direzioni_ok:
             if livello_ora >= 1:
-                inte = LIVELLI[livello_ora - 1]["intestazione"]
-                banner = inte.split("\n")[0] if inte else None
+                banner = LIVELLI[livello_ora - 1]["tag"]
                 eta = stima_arrivo_min(st.get("coord"), direzione, vento)
                 if eta is not None:
                     eta_min = max(5, int(round(eta / 5.0) * 5))
@@ -769,24 +768,23 @@ def main() -> int:
                 print(f"[info] avviso {nome} confluito nel bollettino stazioni")
             continue
 
-        # --- Avviso VENTO: solo quando il livello SALE (e direzione OK) ---
+        # --- ALERT VENTO: solo quando il livello SALE (e direzione OK) ---
         if livello_ora > livello_prima:
             if in_orario and direzioni_ok:
-                intestazione = LIVELLI[livello_ora - 1]["intestazione"]
+                liv = LIVELLI[livello_ora - 1]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
                 raffica_txt = (f" — raffica *{raffica:.1f} nodi*"
                                if raffica is not None else "")
-                corpo = (f"🌬️ *{nome}*\n"
-                         f"Vento *{vento:.1f} nodi* da {dir_txt}"
-                         f"{raffica_txt}")
+                corpo = (f"🌬️ *ALERT VENTO — {nome}*\n"
+                         f"{liv['tag']} — {liv['descrizione']}\n\n"
+                         f"Vento *{vento:.1f} nodi* da {dir_txt}{raffica_txt}")
                 if tendenza:
                     corpo += f"\n{tendenza}"
                 if eta_min is not None:
                     corpo += (f"\n⏱️ Possibile arrivo al circolo tra "
                               f"~{eta_min} min")
-                testo = f"{intestazione}\n\n{corpo}" if intestazione else corpo
                 try:
-                    invia_telegram(testo)
+                    invia_telegram(corpo)
                 except Exception as e:  # noqa: BLE001
                     print(f"[errore] invio Telegram fallito: {e}")
             else:
