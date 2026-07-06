@@ -83,13 +83,22 @@ situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
 direzione e raffica massima della giornata — **anche quando le condizioni non
 cambiano**. È un quadro in tempo reale utile prima di decidere se uscire:
 
-> 🌬️ *Situazione vento — 11:30*
-> 🌬️ *Porto Corsini* — Vento **8.7 nodi** da ESE ↖️ — raffica max oggi **22.6 nodi**
-> 🌬️ *Lido di Volano* — Vento **2.7 nodi** da E ⬅️ — raffica max oggi **5.4 nodi**
+> 🌬️ *Situazione vento — 11:30*\
+> 🌬️ *Porto Corsini* — 🟢 *Vento a 10 nodi*\
+> Vento **10.5 nodi** da SSW ↗️ — raffica max oggi **16.0 nodi**\
+> 📈 in aumento · ⏱️ arrivo al circolo ~70 min\
+> 🌬️ *Lido di Volano*\
+> Vento **2.7 nodi** da E ⬅️ — raffica max oggi **5.4 nodi**
 
 A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
 questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
 aggiornato.
+
+Se in quel momento ci sono anche le **condizioni di un avviso** (vento sopra
+soglia o nuova raffica), l'avviso **confluisce dentro il bollettino** — con il
+livello raggiunto, la **tendenza** (in aumento / in calo) e la stima di arrivo
+al circolo — invece di arrivare come messaggio separato: niente doppioni. Tra un
+bollettino e l'altro, invece, gli avvisi partono subito da soli.
 
 ## 🌅 Bollettino del mattino
 
@@ -146,7 +155,8 @@ viene prima di tutto.
 ## 🆕 Ultimi aggiornamenti
 
 - **Situazione vento ogni 30 minuti** (9:00–19:00): vento, direzione e raffica
-  delle due stazioni pubblicati sempre, anche a condizioni invariate.
+  delle due stazioni pubblicati sempre, anche a condizioni invariate. Se coincide
+  con un avviso, l'avviso confluisce nel bollettino (niente messaggi doppi).
 - **Correnti e maree nel bollettino delle 9:00**: direzione della corrente di
   superficie e orari/altezze di alta e bassa marea del giorno.
 - **ALERT variazione pressione**: avviso quando la pressione cala rapidamente
