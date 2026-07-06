@@ -1,14 +1,12 @@
 📢 *INFO VENTO — Novità*
 
-Due nuovi avvisi vento, per seguire meglio quando rinforza 👇
+Due aggiornamenti per seguire meglio le condizioni 👇
 
-🟢 *Vento a 10 nodi* — bella arietta da planata
-💨 *Vento a 15 nodi* — vento teso: divertente ma impegnativo
+🌬️ *Situazione vento ogni 30 minuti*
+Dalle 9:00 alle 19:00 pubblichiamo sempre vento, direzione e raffica di *Porto Corsini* e *Lido di Volano* — anche quando le condizioni non cambiano, così avete il quadro in tempo reale.
 
-Da ora la scala degli avvisi è più dettagliata:
-🟩 8 · 🟢 10 · 🟡 15 · 🟧 20 (sostenuto) · 🟥 30 nodi (molto forte)
-
-🔔 Come sempre l'avviso parte solo quando il vento *sale di livello*: niente messaggi ripetuti se le condizioni restano stabili. Restano attivi anche gli alert di *raffica* e di *pressione*.
+🌊 *Bollettino delle 9:00 più completo*
+Ora include anche la *corrente di superficie* (direzione) e gli orari di *alta e bassa marea* del giorno con relativa altezza. Utile per programmare l'uscita.
 
 ⛵ Buon vento a tutti!
 Dati indicativi e non ufficiali: verificate sempre le condizioni reali prima di uscire.
