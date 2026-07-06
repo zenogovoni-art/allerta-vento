@@ -1,6 +1,6 @@
 {
   "Porto Corsini": {
-    "livello": 1,
+    "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
     "livello_raffica": 1,
@@ -20,7 +20,7 @@
     ]
   },
   "Lido di Volano": {
-    "livello": 2,
+    "livello": 1,
     "vento_max": 0.0,
     "raffica_max": 0.0,
     "livello_raffica": 1,
