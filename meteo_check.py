@@ -817,7 +817,7 @@ def main() -> int:
     # vento/raffica, le sue info confluiscono qui (banner del livello,
     # tendenza, stima di arrivo) invece di un messaggio a se' stante. ---
     if bollettino_dovuto:
-        righe = [f"🌬️ *Situazione vento — {adesso:%H:%M}*"]
+        righe = [f"🌬️ *SITUAZIONE VENTO — {adesso:%H:%M}*"]
         almeno_uno = False
         for st in STAZIONI:
             nome = st["nome"]

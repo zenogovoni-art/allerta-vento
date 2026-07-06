@@ -37,7 +37,7 @@ In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: 
 
 | Scheda | Titolo (prima riga) | Quando arriva |
 |--------|---------------------|---------------|
-| Situazione vento | 🌬️ **Situazione vento — HH:MM** | ogni 30 minuti (9–19), sempre |
+| Situazione vento | 🌬️ **SITUAZIONE VENTO — HH:MM** | ogni 30 minuti (9–19), sempre |
 | Alert vento | 🌬️ **ALERT VENTO — Stazione** | il vento medio supera una soglia |
 | Alert raffica | 🌀 **ALERT RAFFICA — Stazione** | la raffica del giorno supera una soglia |
 | Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
@@ -113,7 +113,7 @@ situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
 direzione e raffica massima della giornata — **anche quando le condizioni non
 cambiano**. È un quadro in tempo reale utile prima di decidere se uscire:
 
-> 🌬️ *Situazione vento — 11:30*\
+> 🌬️ *SITUAZIONE VENTO — 11:30*\
 > 🌬️ *Porto Corsini* — 🟢 *Vento a 10 nodi*\
 > Vento **10.5 nodi** da SSW ↗️ — raffica max oggi **16.0 nodi**\
 > 📈 in aumento · ⏱️ arrivo al circolo ~70 min\
