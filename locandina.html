@@ -8,105 +8,166 @@
   * { box-sizing: border-box; margin: 0; padding: 0;
       -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-family: "Avenir Next", "Century Gothic", Futura, "Segoe UI",
+                 Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
     background: #fff;
-    color: #0c2a3a;
+    color: #12384f;
     display: flex;
     justify-content: center;
-    padding: 0;
   }
   .foglio {
     width: 210mm;
     height: 295mm;
     overflow: hidden;
-    background: linear-gradient(170deg, #0c4a6e 0%, #075985 38%, #f4f8fb 38%, #f4f8fb 100%);
-    padding: 9mm 18mm 7mm;
+    background: linear-gradient(180deg, #eef6fa 0%, #f7fbfd 100%);
     display: flex;
     flex-direction: column;
   }
-  .testata { color: #fff; text-align: center; margin-bottom: 3mm; }
-  .vela { font-size: 30px; line-height: 1; }
-  .testata h1 { font-size: 34px; letter-spacing: 1px; margin: 5px 0 3px; }
-  .testata p { font-size: 16px; opacity: .92; }
 
+  /* ---- Testata full-bleed con onda ---- */
+  .hero {
+    background: linear-gradient(165deg, #052c48 0%, #075985 55%, #0a7fb5 100%);
+    color: #fff;
+    text-align: center;
+    padding: 5mm 18mm 6mm;
+  }
+  .hero .vela { font-size: 28px; line-height: 1; }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin: 4px 0 3px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.25);
+  }
+  .hero p { font-size: 15px; opacity: .95; letter-spacing: .3px; margin-top: 1px; }
+  .onda { display: block; width: 100%; height: 7mm; }
+
+  .contenuto {
+    padding: 0 15mm 4mm;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- Card iscrizione flottante sull'onda ---- */
   .iscrizione {
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 10px 26px rgba(0,0,0,.16);
-    padding: 5mm;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(5,44,72,.22);
+    border: 1px solid #e3eef5;
+    padding: 4.5mm 6mm;
     display: flex;
     align-items: center;
     gap: 6mm;
-    margin-bottom: 4mm;
+    margin: -3mm 0 3.5mm;
+    position: relative;
   }
-  .iscrizione img { width: 32mm; height: 32mm; flex: none; }
-  .iscrizione .txt h2 { font-size: 21px; color: #075985; margin-bottom: 4px; }
-  .iscrizione .txt p { font-size: 14px; line-height: 1.4; }
+  .iscrizione img {
+    width: 31mm; height: 31mm; flex: none;
+    border-radius: 10px; border: 1px solid #e3eef5; padding: 1.5mm;
+  }
+  .iscrizione .txt h2 { font-size: 20px; color: #075985; margin-bottom: 3px; }
+  .iscrizione .txt p { font-size: 13.5px; line-height: 1.4; }
   .link {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 7px;
     font-size: 18px;
     font-weight: 700;
-    color: #0c4a6e;
-    background: #e0f2fe;
-    padding: 6px 12px;
-    border-radius: 8px;
+    letter-spacing: .5px;
+    color: #fff;
+    background: linear-gradient(135deg, #075985, #0a8ac2);
+    padding: 6px 16px;
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(7,89,133,.35);
   }
 
-  .sezione-titolo { font-size: 15px; font-weight: 700; color: #075985;
-    text-transform: uppercase; letter-spacing: 1px; margin: 0 0 3mm; }
-
-  .livelli { display: flex; flex-direction: column; gap: 2.1mm; margin-bottom: 4mm; }
-  .livello { border-radius: 11px; padding: 2.3mm 5mm; color: #fff;
-    display: flex; align-items: center; gap: 4mm; }
-  .livello .n { font-size: 21px; font-weight: 800; flex: none; width: 21mm; line-height: 1.05; }
-  .livello .d { font-size: 12.5px; line-height: 1.3; }
-  .livello .np { display: inline-block; background: rgba(255,255,255,.28);
-    border-radius: 999px; padding: 0 6px; font-size: 9.5px; font-weight: 700;
-    letter-spacing: .5px; vertical-align: middle; margin-left: 4px; }
-  .l-verde  { background: #15803d; }
-  .l-lime   { background: #4d9b2f; }
-  .l-ambra  { background: #ca8a04; }
-  .l-arancio{ background: #ea580c; }
-  .l-rosso  { background: #b91c1c; }
-
+  /* ---- Titoli di sezione ---- */
+  .sezione-titolo {
+    font-size: 14px; font-weight: 700; color: #075985;
+    text-transform: uppercase; letter-spacing: 1.6px;
+    margin: 0 0 2.2mm;
+    display: flex; align-items: center; gap: 3mm;
+  }
+  .sezione-titolo::after {
+    content: ""; flex: 1; height: 2.5px; border-radius: 2px;
+    background: linear-gradient(90deg, #7cc4e4, rgba(124,196,228,0));
+  }
   .sezione-titolo .new {
-    display: inline-block; background: #075985; color: #fff;
-    font-size: 11px; padding: 1px 7px; border-radius: 999px;
-    vertical-align: middle; margin-left: 6px; letter-spacing: .5px;
+    display: inline-block; background: linear-gradient(135deg, #075985, #0a8ac2);
+    color: #fff; font-size: 10.5px; padding: 2px 9px; border-radius: 999px;
+    letter-spacing: 1px; flex: none;
   }
-  .pressione { display: flex; flex-direction: column; gap: 3mm; margin-bottom: 5mm; }
-  .p-riga { border-radius: 12px; padding: 3mm 6mm; color: #fff;
-    display: flex; align-items: center; gap: 5mm; }
-  .p-riga .pv { font-size: 20px; font-weight: 800; flex: none; width: 28mm; line-height: 1.1; }
-  .p-riga .pd { font-size: 13.5px; line-height: 1.35; }
-  .p-giallo { background: #ca8a04; }
-  .p-rosso  { background: #b91c1c; }
-  .p-intro { font-size: 13px; line-height: 1.45; color: #0c2a3a; margin-bottom: 3.5mm; }
 
+  /* ---- Scala ALERT VENTO ---- */
+  .livelli { display: flex; flex-direction: column; gap: 1.7mm; margin-bottom: 3.3mm; }
+  .livello {
+    border-radius: 999px; padding: 1.9mm 3mm 1.9mm 2.2mm; color: #fff;
+    display: flex; align-items: center; gap: 4mm;
+    box-shadow: 0 3px 8px rgba(5,44,72,.14);
+  }
+  .livello .n {
+    font-size: 15.5px; font-weight: 800; flex: none; width: 24mm;
+    text-align: center; line-height: 1.05;
+    background: rgba(255,255,255,.18);
+    border-radius: 999px; padding: 1.6mm 0;
+  }
+  .livello .d { font-size: 12.5px; line-height: 1.3; }
+  .l-verde  { background: linear-gradient(90deg, #14753a, #1d9950); }
+  .l-lime   { background: linear-gradient(90deg, #47912b, #63ad3a); }
+  .l-ambra  { background: linear-gradient(90deg, #b97e05, #d29b13); }
+  .l-arancio{ background: linear-gradient(90deg, #d3500a, #ea6c1c); }
+  .l-rosso  { background: linear-gradient(90deg, #a51818, #c92c2c); }
+
+  /* ---- Card informative ---- */
   .info {
-    background: #fff; border-radius: 12px; padding: 5mm;
-    font-size: 14px; line-height: 1.55; margin-bottom: 5mm;
-    border: 1px solid #d6e3ec;
+    background: #fff; border-radius: 14px; padding: 3.8mm 5.5mm;
+    font-size: 13.5px; line-height: 1.5; margin-bottom: 3.3mm;
+    border: 1px solid #dcebf4;
+    box-shadow: 0 4px 12px rgba(5,44,72,.08);
   }
   .info b { color: #075985; }
 
-  .avviso {
-    background: #fff7ed; border: 1.5px solid #fdba74; border-radius: 10px;
-    padding: 4mm 5mm; font-size: 13px; line-height: 1.5; color: #7c2d12;
+  /* ---- Pressione ---- */
+  .p-intro { font-size: 12.5px; line-height: 1.45; margin-bottom: 2.4mm; }
+  .pressione { display: flex; gap: 4mm; margin-bottom: 3.3mm; }
+  .p-riga {
+    flex: 1; border-radius: 14px; padding: 3mm 4.5mm; color: #fff;
+    display: flex; align-items: center; gap: 4mm;
+    box-shadow: 0 4px 10px rgba(5,44,72,.16);
   }
-  .pie { margin-top: auto; text-align: center; font-size: 12px;
-    color: #5b7689; padding-top: 4mm; }
+  .p-riga .pv { font-size: 17px; font-weight: 800; flex: none; line-height: 1.1; }
+  .p-riga .pd { font-size: 12px; line-height: 1.3; }
+  .p-giallo { background: linear-gradient(135deg, #b97e05, #d29b13); }
+  .p-rosso  { background: linear-gradient(135deg, #a51818, #c92c2c); }
+
+  /* ---- Avviso sicurezza (accento sabbia) ---- */
+  .avviso {
+    background: #fdf6e7; border: 1.5px solid #e5cf9a; border-radius: 12px;
+    padding: 3mm 5mm; font-size: 12.5px; line-height: 1.45; color: #6d4a12;
+  }
+  .pie {
+    margin-top: auto; text-align: center; font-size: 12px;
+    color: #4e7186; padding-top: 1.5mm; letter-spacing: .8px;
+  }
+  .pie b { color: #075985; }
 </style>
 </head>
 <body>
   <div class="foglio">
 
-    <div class="testata">
+    <div class="hero">
       <div class="vela">⛵🌬️</div>
       <h1>INFO VENTO</h1>
       <p>Avvisi vento automatici e gratuiti, direttamente sul tuo telefono</p>
     </div>
+    <svg class="onda" viewBox="0 0 1440 54" preserveAspectRatio="none">
+      <path d="M0,0 L1440,0 L1440,20 C1200,52 1000,8 720,26 C440,44 240,10 0,34 Z"
+            fill="#0a7fb5"/>
+      <path d="M0,0 L1440,0 L1440,12 C1180,44 980,2 720,18 C460,36 220,4 0,26 Z"
+            fill="#075985" opacity=".55"/>
+    </svg>
+
+    <div class="contenuto">
 
     <div class="iscrizione">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAABT0lEQVR42u2aQQ7DIAwEreYBPClfz5PygEgumDWQW3qwK7XLASHwaXDWi1vRB+MQRjHq16JOwdjbatdL9CiqvrvVqJc8GYz6LKqx3/o9GHZMda+u2jjJPpa9pbflfU15uwBVfAZkn8N+yk0h+6+wr3lP9ul6f6K4QnOo9/Hsp88x0feJPiee/W049u3mRMkrUO9NZMSkvu0dlu0FV0H2cXkPQ99X631cfgvkFcd+yfFeXI240Ock1NobcUwmQdT7BM1Z5GatAfSYGT4HwgPsZnaKKvU+3t/D1Yt4Uwf3Qb1PyHtDXNzY9M9gnJJ9ZK1FBw3K729dmHyyT3jXDlevw22y1mb1c9rsFXa1++QV11Pw3628qdP7OWSf0s9Z+vfLGdmnsoepnAestTnsp8kfHpNvqyy9H/7+lOH0mfc5PgfYF/mn3if5e/6XjFF/EvUG9OPEU1hOdPAAAAAASUVORK5CYII=" alt="QR code iscrizione">
@@ -118,7 +179,7 @@
       </div>
     </div>
 
-    <div class="sezione-titolo" style="color:#fff;">Gli ALERT VENTO — la scala di intensità</div>
+    <div class="sezione-titolo">Gli ALERT VENTO — la scala di intensità</div>
     <div class="livelli">
       <div class="livello l-verde">
         <div class="n">8 nodi</div>
@@ -190,7 +251,9 @@
       La sicurezza viene prima di tutto.
     </div>
 
-    <div class="pie">Servizio gratuito per i velisti</div>
+    <div class="pie">⛵ <b>Servizio gratuito per i velisti</b></div>
+
+    </div>
 
   </div>
 </body>
