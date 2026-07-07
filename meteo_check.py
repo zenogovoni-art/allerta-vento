@@ -304,6 +304,26 @@ def bollettino_mattutino():
                 righe.append(f"  ↕️ Escursione della giornata: {esc} cm")
             righe.append("  _I cm dicono quanto il mare sale (+) o "
                          "scende (−) rispetto al livello medio di oggi._")
+            # Nota extra solo quando serve: un'alta sotto media (segno -)
+            # o una bassa sopra media (segno +) altrimenti disorientano.
+            alta_neg = any(t == "alta" and round(a * 100) < 0
+                           for t, _, a in maree)
+            bassa_pos = any(t == "bassa" and round(a * 100) > 0
+                            for t, _, a in maree)
+            if alta_neg:
+                righe.append("  _Un'alta marea può risultare leggermente "
+                             "sotto la media, quindi −, pur essendo "
+                             "un'alta marea: succede quando la giornata è "
+                             "\"in salita\" (il mare cresce nel corso del "
+                             "giorno e il picco notturno resta sotto la "
+                             "media complessiva)._")
+            elif bassa_pos:
+                righe.append("  _Una bassa marea può risultare leggermente "
+                             "sopra la media, quindi +, pur essendo "
+                             "una bassa marea: succede quando la giornata è "
+                             "\"in discesa\" (il mare cala nel corso del "
+                             "giorno e il minimo resta sopra la media "
+                             "complessiva)._")
 
     emoji_luna, fase_luna = fase_lunare()
     righe.append("")
