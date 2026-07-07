@@ -290,15 +290,55 @@ def bollettino_mattutino():
                          f"{_dir16(c['dir'])}{vtxt}")
         maree = mare.get("maree") or []
         if maree:
-            righe.append("🌙 *Maree di oggi* (livello sul medio mare):")
+            righe.append("🌊 *Maree di oggi*:")
             for tipo, ora_hhmm, alt in maree:
                 icona = "🔺" if tipo == "alta" else "🔻"
-                segno = "+" if alt >= 0 else ""
+                cm = round(alt * 100)
+                segno = "+" if cm >= 0 else "−"
                 righe.append(f"  {icona} {tipo.capitalize()} marea "
-                             f"{ora_hhmm} — {segno}{alt:.2f} m")
+                             f"{ora_hhmm} — {segno}{abs(cm)} cm")
+            alte = [alt for tipo, _, alt in maree if tipo == "alta"]
+            basse = [alt for tipo, _, alt in maree if tipo == "bassa"]
+            if alte and basse:
+                esc = round((max(alte) - min(basse)) * 100)
+                righe.append(f"  ↕️ Escursione della giornata: {esc} cm")
+            righe.append("  _I cm dicono quanto il mare sale (+) o "
+                         "scende (−) rispetto al livello medio di oggi._")
+
+    emoji_luna, fase_luna = fase_lunare()
+    righe.append("")
+    righe.append(f"{emoji_luna} *Luna*: {fase_luna}")
 
     righe.append("ℹ️ Previsione indicativa, non sostituisce gli avvisi reali.")
     return "\n".join(righe)
+
+
+def fase_lunare(quando=None):
+    """Fase lunare stimata dal ciclo sinodico medio (~29.53 giorni).
+
+    Ritorna (emoji, testo), es. ("🌔", "crescente — piena tra 3 giorni").
+    L'approssimazione (mezza giornata circa) basta per crescente/calante.
+    """
+    if quando is None:
+        quando = datetime.now(TZ)
+    luna_nuova_rif = datetime(2000, 1, 6, 18, 14, tzinfo=ZoneInfo("UTC"))
+    ciclo = 29.530588853
+    eta = ((quando - luna_nuova_rif).total_seconds() / 86400.0) % ciclo
+
+    emoji = "🌑🌒🌓🌔🌕🌖🌗🌘"[round(eta / ciclo * 8) % 8]
+    if eta < 1.0 or eta > ciclo - 1.0:
+        testo = "nuova"
+    elif abs(eta - ciclo / 2) < 1.0:
+        testo = "piena"
+    elif eta < ciclo / 2:
+        giorni = max(1, round(ciclo / 2 - eta))
+        quando_txt = "domani" if giorni == 1 else f"tra {giorni} giorni"
+        testo = f"crescente — piena {quando_txt}"
+    else:
+        giorni = max(1, round(ciclo - eta))
+        quando_txt = "domani" if giorni == 1 else f"tra {giorni} giorni"
+        testo = f"calante — nuova {quando_txt}"
+    return emoji, testo
 
 
 def dati_marini():
@@ -309,7 +349,9 @@ def dati_marini():
      "maree": [(tipo, "HH:MM", altezza_m), ...]}
     oppure None se la richiesta fallisce. La direzione della corrente segue la
     convenzione oceanografica (verso CUI scorre). Le altezze di marea sono
-    riferite al medio mare (positive sopra, negative sotto).
+    riferite al livello medio della giornata (calcolato dalla serie oraria),
+    non allo zero del modello: cosi' l'alta marea risulta sempre positiva e
+    la bassa sempre negativa, come si aspetta chi legge il bollettino.
     """
     lat, lon = PUNTO_MARE
     url = ("https://marine-api.open-meteo.com/v1/marine"
@@ -344,15 +386,20 @@ def dati_marini():
             corrente = {"dir": cd[i], "vel": vel}
 
     # Maree: massimi (alta) e minimi (bassa) locali della serie oraria di oggi.
+    # Le altezze vengono riportate come scarto dal livello medio della giornata,
+    # perche' lo zero del modello puo' essere spostato anche di decine di cm
+    # rispetto al mare reale (es. tutti i valori negativi con l'alta pressione).
+    validi = [v for v in liv if v is not None]
+    media_giorno = sum(validi) / len(validi) if validi else 0.0
     maree = []
     for i in range(1, len(liv) - 1):
         a, b, c = liv[i - 1], liv[i], liv[i + 1]
         if None in (a, b, c):
             continue
         if b >= a and b >= c and (b > a or b > c):
-            maree.append(("alta", ore[i][11:16], b))
+            maree.append(("alta", ore[i][11:16], b - media_giorno))
         elif b <= a and b <= c and (b < a or b < c):
-            maree.append(("bassa", ore[i][11:16], b))
+            maree.append(("bassa", ore[i][11:16], b - media_giorno))
 
     # Collassa run di estremi consecutivi dello stesso tipo (plateau orari):
     # tiene il piu' alto per l'alta marea, il piu' basso per la bassa.

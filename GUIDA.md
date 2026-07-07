@@ -136,14 +136,21 @@ Ogni mattina verso le **9:00** la **previsione vento della giornata** per Lido d
 Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
 comprese. Viene inviato **tutti i giorni**, giovedì compreso.
 
-Da questo bollettino trovi anche due dati marini utili alla navigazione:
+Da questo bollettino trovi anche alcuni dati marini utili alla navigazione:
 
 - 🌊 **Corrente di superficie** — la direzione verso cui scorre la corrente
   (con velocità indicativa).
-- 🌙 **Maree del giorno** — orari di **alta** e **bassa marea** con la relativa
-  altezza (livello sul medio mare: valori positivi sopra la media, negativi
-  sotto). La previsione tiene conto anche della spinta del vento, non solo della
-  marea astronomica. Orari su base oraria, quindi indicativi al minuto.
+- 🌊 **Maree del giorno** — orari di **alta** e **bassa marea** con l'altezza in
+  **centimetri rispetto al livello medio del mare di oggi**: `+26 cm` vuol dire
+  che il mare sale 26 cm sopra la media della giornata, `−19 cm` che scende
+  19 cm sotto. In più l'**escursione della giornata**, cioè la differenza tra
+  il punto più alto e quello più basso. La previsione tiene conto anche della
+  spinta del vento, non solo della marea astronomica. Orari su base oraria,
+  quindi indicativi al minuto.
+- 🌗 **Fase lunare** — se la luna è **crescente o calante**, con quanti giorni
+  mancano alla luna piena o alla luna nuova. Utile anche perché nei giorni di
+  luna piena e luna nuova le maree sono più marcate (sizigie), mentre ai quarti
+  sono più deboli (quadrature).
 
 ## 📊 Grafico previsioni weekend (giovedì, venerdì, sabato)
 
@@ -191,6 +198,9 @@ viene prima di tutto.
 - **Situazione vento ogni 30 minuti** (9:00–19:00): vento, direzione e raffica
   delle due stazioni pubblicati sempre, anche a condizioni invariate. Se coincide
   con un avviso, l'avviso confluisce nel bollettino (niente messaggi doppi).
+- **Maree più chiare e fase lunare nel bollettino delle 9:00**: altezze di
+  marea in centimetri rispetto al livello medio del giorno (+ sopra, − sotto),
+  escursione della giornata e luna crescente/calante.
 - **Correnti e maree nel bollettino delle 9:00**: direzione della corrente di
   superficie e orari/altezze di alta e bassa marea del giorno.
 - **ALERT variazione pressione**: avviso quando la pressione cala rapidamente
