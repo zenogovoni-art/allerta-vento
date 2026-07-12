@@ -101,6 +101,34 @@ PRESSIONE_LIVELLI = [
 PRESS_FINESTRA_MIN = 195
 PRESS_MIN_SPAN_MIN = 150
 
+# --- ALERT BORA -----------------------------------------------------------
+# La bora scende da nord-est in modo violento: due stazioni "sentinella" a
+# nord-est del circolo (rete meteo-mareografica CPSM / Comune di Venezia,
+# open data aggiornati ogni 5 minuti) la vedono con 1-2 ore di anticipo
+# rispetto a Lido di Spina. L'avviso scatta solo con vento dal settore NE.
+BORA_URL = ("https://dati.venezia.it/sites/default/files/dataset/"
+            "opendata/vento.json")
+BORA_SENTINELLE = [
+    {"id": "1024", "nome": "Sottomarina (Diga Sud Chioggia)",
+     "coord": (45.220, 12.308)},
+    {"id": "1021", "nome": "Piattaforma CNR (largo di Venezia)",
+     "coord": (45.314, 12.508)},
+]
+BORA_SETTORE = (20.0, 90.0)   # gradi di provenienza: da NNE a E
+BORA_MAX_ETA_MIN = 40         # scarto lettura piu' vecchia di cosi' (guasto)
+BORA_LIVELLI = [
+    {"soglia": 20.0, "riarmo": 18.0, "tag": "⚠️ *Bora 20+ nodi*",
+     "descrizione": ("_Bora sostenuta sulle sentinelle a nord-est: puo' "
+                     "arrivare in modo violento. Se siete in acqua con la "
+                     "deriva, valutate il rientro._")},
+    {"soglia": 25.0, "riarmo": 23.0, "tag": "🔴 *Bora 25+ nodi*",
+     "descrizione": ("_Bora forte in avvicinamento: rientrare a riva "
+                     "e' prudente._")},
+    {"soglia": 30.0, "riarmo": 28.0, "tag": "🛑 *Bora 30+ nodi*",
+     "descrizione": ("_Bora molto forte: rientrate subito, condizioni "
+                     "pericolose in arrivo._")},
+]
+
 # Fascia oraria in cui inviare gli avvisi (ora locale italiana, 24h).
 ORA_INIZIO = 9
 ORA_FINE = 19
@@ -576,6 +604,118 @@ def calcola_livello(valore: float, livello_attuale: int, livelli: list) -> int:
 
 
 # --------------------------------------------------------------------------
+# ALERT BORA (sentinelle CPSM a nord-est: Sottomarina e Piattaforma CNR)
+# --------------------------------------------------------------------------
+
+def leggi_bora() -> dict:
+    """Legge il vento delle sentinelle bora dal JSON open data del CPSM.
+
+    Ritorna {id_stazione: {"vento", "raffica" (nodi), "gradi", "quando"}}.
+    Salta le letture invalide (-999) o piu' vecchie di BORA_MAX_ETA_MIN
+    (la rete aggiorna ogni 5 minuti: un dato vecchio indica un guasto).
+    NB: il CPSM pubblica gli orari in ora solare (UTC+1) tutto l'anno.
+    """
+    voluti = {s["id"] for s in BORA_SENTINELLE}
+    try:
+        r = requests.get(BORA_URL, timeout=30)
+        r.raise_for_status()
+        voci = r.json()
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] download vento CPSM fallito: {e}")
+        return {}
+
+    adesso = datetime.now(TZ)
+    out = {}
+    for voce in voci:
+        sid = voce.get("ID_stazione")
+        if sid not in voluti:
+            continue
+        m = re.match(r"\s*([\d.]+)\s*gradi,\s*(-?[\d.]+)\s*m/s,"
+                     r"\s*(-?[\d.]+)\s*m/s",
+                     voce.get("valore") or "")
+        if not m:
+            continue
+        gradi, vento_ms, raffica_ms = map(float, m.groups())
+        if not (0 <= vento_ms < 90 and 0 <= raffica_ms < 90):
+            continue  # -999 o valore assurdo: sensore in avaria
+        try:
+            quando = datetime.strptime(voce["data"], "%Y-%m-%d %H:%M:%S")
+            quando = quando.replace(tzinfo=ZoneInfo("Etc/GMT-1"))
+        except (KeyError, ValueError):
+            continue
+        if (adesso - quando).total_seconds() / 60.0 > BORA_MAX_ETA_MIN:
+            print(f"[bora] lettura vecchia scartata ({voce.get('stazione')})")
+            continue
+        out[sid] = {"vento": vento_ms * 1.94384,
+                    "raffica": raffica_ms * 1.94384,
+                    "gradi": gradi, "quando": quando}
+    return out
+
+
+def controlla_bora(stato: dict, in_orario: bool) -> bool:
+    """Controlla le sentinelle bora e avvisa al salire di soglia.
+
+    Il livello sale solo con vento dal settore NE (BORA_SETTORE): un vento
+    forte da un'altra direzione non e' bora e azzera il livello. Stessa
+    isteresi degli altri alert: niente messaggi ripetuti a condizioni stabili.
+    Ritorna True se lo stato e' cambiato.
+    """
+    letture = leggi_bora()
+    if not letture:
+        return False
+
+    cambiato = False
+    s_bora = stato.setdefault("_bora", {})
+    for sent in BORA_SENTINELLE:
+        dati = letture.get(sent["id"])
+        if dati is None:
+            print(f"[bora] {sent['nome']}: dati non disponibili")
+            continue
+
+        gradi = dati["gradi"]
+        in_settore = BORA_SETTORE[0] <= gradi <= BORA_SETTORE[1]
+        vento_eff = dati["vento"] if in_settore else 0.0
+
+        s = s_bora.setdefault(sent["nome"], {})
+        prima = s.get("livello", 0)
+        ora_liv = calcola_livello(vento_eff, prima, BORA_LIVELLI)
+
+        sigla = _dir16(gradi)
+        print(f"[bora] {sent['nome']}: vento {dati['vento']:.1f} kts da "
+              f"{sigla} ({gradi:.0f} gradi), raffica {dati['raffica']:.1f} "
+              f"kts (liv {prima}->{ora_liv}, settore={in_settore}, "
+              f"orario={in_orario})")
+
+        if ora_liv != prima:
+            s["livello"] = ora_liv
+            cambiato = True
+
+        if ora_liv > prima:
+            if not in_orario:
+                print(f"[info] bora oltre soglia ma fuori orario "
+                      f"({sent['nome']})")
+                continue
+            liv = BORA_LIVELLI[ora_liv - 1]
+            dir_txt = f"{sigla} {freccia(sigla)}".strip()
+            corpo = (f"💨 *ALERT BORA — {sent['nome']}*\n"
+                     f"{liv['tag']}\n\n"
+                     f"Vento *{dati['vento']:.1f} nodi* da {dir_txt} — "
+                     f"raffica *{dati['raffica']:.1f} nodi*")
+            eta = stima_arrivo_min(sent.get("coord"), sigla, dati["vento"])
+            if eta is not None:
+                eta = max(5, int(round(eta / 5.0) * 5))
+                corpo += (f"\n⏱️ Possibile arrivo a Lido di Spina tra "
+                          f"~{eta} min")
+            corpo += f"\n{liv['descrizione']}"
+            try:
+                invia_telegram(corpo)
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] invio alert bora fallito: {e}")
+
+    return cambiato
+
+
+# --------------------------------------------------------------------------
 # CONTROLLO PRESSIONE (workflow separato, sfasato rispetto al vento)
 # --------------------------------------------------------------------------
 
@@ -703,6 +843,18 @@ def main() -> int:
                 f"\n🌬️ *{st['nome']}*\n"
                 f"Vento {dati['vento']:.1f} nodi da {dati['direzione']}"
                 f"{raffica_txt}"
+            )
+        bora = leggi_bora()
+        for sent in BORA_SENTINELLE:
+            dati = bora.get(sent["id"])
+            if dati is None:
+                righe.append(f"\n*{sent['nome']}* (sentinella bora): "
+                             "dati non disponibili")
+                continue
+            righe.append(
+                f"\n💨 *{sent['nome']}* (sentinella bora)\n"
+                f"Vento {dati['vento']:.1f} nodi da {_dir16(dati['gradi'])}"
+                f" — raffica {dati['raffica']:.1f} nodi"
             )
         try:
             invia_telegram("\n".join(righe))
@@ -877,6 +1029,12 @@ def main() -> int:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
                 print(f"[info] soglia raffica superata ma avviso non inviato "
                       f"({motivo})")
+
+    # --- ALERT BORA: sentinelle CPSM a nord-est. Indipendente dalle stazioni
+    # locali: la bora va segnalata appena si vede sulle sentinelle, quindi
+    # parte sempre come messaggio a se' stante (non confluisce nel bollettino).
+    if controlla_bora(stato, in_orario):
+        cambiato = True
 
     # --- Bollettino periodico stazioni: una volta ogni mezz'ora, in fascia
     # oraria, SEMPRE (anche a dati invariati) perche' la situazione vento in

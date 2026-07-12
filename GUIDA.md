@@ -33,7 +33,7 @@ seconda della direzione.
 
 In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: la
 **prima riga della scheda** ti dice subito di che tipo si tratta. C'è una scheda
-**informativa** che esce sempre, e tre **ALERT** che scattano solo quando serve.
+**informativa** che esce sempre, e quattro **ALERT** che scattano solo quando serve.
 
 | Scheda | Titolo (prima riga) | Quando arriva |
 |--------|---------------------|---------------|
@@ -41,6 +41,7 @@ In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: 
 | Alert vento | 🌬️ **ALERT VENTO — Stazione** | il vento medio supera una soglia |
 | Alert raffica | 🌀 **ALERT RAFFICA — Stazione** | la raffica del giorno supera una soglia |
 | Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
+| Alert bora | 💨 **ALERT BORA — Sentinella** | vento forte da NE sulle sentinelle a nord |
 
 Se un ALERT capita proprio mentre esce la *Situazione vento*, confluisce dentro
 di essa: niente doppioni (vedi più sotto).
@@ -105,6 +106,39 @@ in fretta (calo misurato sulle ultime **3 ore**):
 
 Il controllo è automatico durante la giornata, sfasato rispetto a quello del
 vento per non sovrapporsi.
+
+## 💨 ALERT BORA — le sentinelle a nord-est
+
+La **bora** scende da nord-est e arriva in modo **violento**, spesso con poco
+preavviso: per chi naviga in deriva è il vento più temuto. Per vederla
+arrivare **prima** che tocchi i lidi ferraresi, il servizio controlla due
+stazioni "sentinella" a nord-est del circolo, sulla rotta da cui scende la
+bora:
+
+- **Sottomarina (Diga Sud Chioggia)** — anemometro sulla diga foranea di
+  Sottomarina, esposto al mare aperto;
+- **Piattaforma CNR (largo di Venezia)** — la torre oceanografica a ~15 km al
+  largo, che la bora raggiunge ancora prima.
+
+Sono stazioni della **rete meteo-mareografica del Centro Maree di Venezia**
+(la stessa rete istituzionale delle previsioni di acqua alta), con dati
+aggiornati **ogni 5 minuti**.
+
+L'ALERT BORA scatta **solo con vento dal settore nord-est** (da NNE a E) e ha
+tre livelli:
+
+| Livello | Vento medio | Cosa significa |
+|--------|-------------|----------------|
+| ⚠️ Bora 20+ nodi | **≥ 20 nodi** | bora sostenuta a nord: se siete in acqua, valutate il rientro |
+| 🔴 Bora 25+ nodi | **≥ 25 nodi** | bora forte in avvicinamento: rientrare è prudente |
+| 🛑 Bora 30+ nodi | **≥ 30 nodi** | bora molto forte: rientrare subito |
+
+Quando possibile l'avviso include la **stima di arrivo a Lido di Spina**
+(es. "tra ~90 min"): la distanza dalle sentinelle dà in genere **1–2 ore di
+preavviso**. Come gli altri alert, scatta solo **al salire di livello**:
+niente messaggi ripetuti finché la situazione resta stabile. Un vento forte
+da un'altra direzione (es. scirocco da SE) **non** fa scattare l'ALERT BORA:
+per quello ci sono gli alert delle stazioni locali.
 
 ## 🌬️ Situazione vento ogni 30 minuti
 
@@ -191,6 +225,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **ALERT BORA**: due stazioni sentinella a nord-est (Sottomarina Diga Sud e
+  Piattaforma CNR al largo di Venezia) avvisano quando la bora supera 20, 25
+  o 30 nodi, con stima di arrivo a Lido di Spina — in genere 1–2 ore di
+  preavviso.
 - **Titoli delle schede più chiari**: gli avvisi ora hanno un titolo di famiglia
   riconoscibile — **ALERT VENTO**, **ALERT RAFFICA**, **ALERT VARIAZIONE
   PRESSIONE** — ben distinti dalla **Situazione vento** informativa delle ogni
