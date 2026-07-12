@@ -175,6 +175,11 @@ PUNTO_MARE = (44.665, 12.35)  # (lat, lon) ~9 km al largo del circolo
 # Campo "tipo": indica quale lettore usare per quella pagina
 #   "meteosystem" -> pagine Meteosystem/WeatherLink (es. Porto Corsini)
 #   "saratoga"    -> template Saratoga/Meteobridge (es. Lido di Volano)
+#   "gca"         -> Guardia Costiera Ausiliaria Ravenna (Marina di Ravenna)
+# Campo opzionale "riserva": {url, tipo} di una stazione di scorta nello
+# stesso punto. Se la principale non risponde si usano i suoi dati; se la
+# principale funziona, dalla riserva si prende comunque la raffica degli
+# ultimi 10 minuti (raffica_10min), piu' tempestiva della massima giornaliera.
 STAZIONI = [
     {
         "nome": "Porto Corsini",
@@ -183,6 +188,13 @@ STAZIONI = [
         "coord": (44.493, 12.279),    # a sud del circolo (~20 km)
         # Semicerchio sud: venti da E, SE, S, SW, O (e settori intermedi).
         "direzioni": ["E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W"],
+        # Stazione GCA di Marina di Ravenna: stesso punto, dall'altra parte
+        # del canale del porto. Fa da riserva e fornisce la raffica 10 min.
+        "riserva": {
+            "url": ("https://www.guardcostaus-ravenna.it/MeteoPagine/"
+                    "datimeteocompatti.php"),
+            "tipo": "gca",
+        },
     },
     {
         "nome": "Lido di Volano",
@@ -540,19 +552,42 @@ def _parse_saratoga(html: str) -> dict | None:
     }
 
 
+def _parse_gca(html: str) -> dict | None:
+    """Stazione Guardia Costiera Ausiliaria Ravenna (Marina di Ravenna).
+
+    Tabella PHP con i valori gia' in nodi: vento attuale, gradi di
+    provenienza, raffica continua degli ultimi 10 minuti e massima odierna.
+    """
+    testo = _solo_testo(html)
+    m_vento = re.search(r"vento attuale:\s*([\d.,]+)", testo, re.IGNORECASE)
+    m_gradi = re.search(r"Gradi di provenienza del vento:\s*([\d.,]+)",
+                        testo, re.IGNORECASE)
+    m_raf10 = re.search(r"raffica continua:\s*([\d.,]+)",
+                        testo, re.IGNORECASE)
+    m_rafmax = re.search(r"massima del vento di oggi:\s*([\d.,]+)",
+                         testo, re.IGNORECASE)
+    m_press = re.search(r"Pressione:\s*([\d.,]+)", testo, re.IGNORECASE)
+    if not (m_vento and m_gradi):
+        return None
+    return {
+        "vento": _num(m_vento.group(1)),
+        "direzione": _dir16(_num(m_gradi.group(1))),
+        "raffica": _num(m_rafmax.group(1)) if m_rafmax else None,
+        "raffica_10min": _num(m_raf10.group(1)) if m_raf10 else None,
+        "pressione": _num(m_press.group(1)) if m_press else None,
+    }
+
+
 PARSER = {
     "meteosystem": _parse_meteosystem,
     "saratoga": _parse_saratoga,
+    "gca": _parse_gca,
 }
 
 
-def leggi_stazione(st: dict) -> dict | None:
-    """Scarica la pagina della stazione ed estrae vento, direzione, raffica.
-
-    Ritorna {vento, direzione, raffica} oppure None se il download o il
-    parsing falliscono (es. il sito ha cambiato formato).
-    """
-    url = st["url"]
+def _leggi_fonte(fonte: dict) -> dict | None:
+    """Scarica e interpreta una singola pagina stazione (o riserva)."""
+    url = fonte["url"]
     try:
         r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
         r.raise_for_status()
@@ -560,10 +595,34 @@ def leggi_stazione(st: dict) -> dict | None:
         print(f"[errore] download fallito da {url}: {e}")
         return None
 
-    parser = PARSER[st.get("tipo", "meteosystem")]
+    parser = PARSER[fonte.get("tipo", "meteosystem")]
     dati = parser(r.text)
     if dati is None:
         print(f"[errore] impossibile leggere il vento da {url}")
+    return dati
+
+
+def leggi_stazione(st: dict) -> dict | None:
+    """Legge la stazione, con eventuale riserva nello stesso punto.
+
+    Ritorna {vento, direzione, raffica, [raffica_10min]} oppure None se
+    falliscono sia la principale sia la riserva. Se la principale funziona
+    e la riserva pure, dalla riserva si prende la raffica degli ultimi
+    10 minuti (piu' tempestiva della massima giornaliera).
+    """
+    dati = _leggi_fonte(st)
+    ris = st.get("riserva")
+    if ris is None:
+        return dati
+
+    dati_ris = _leggi_fonte(ris)
+    if dati is None and dati_ris is not None:
+        print(f"[info] {st['nome']}: principale giu', uso la riserva "
+              f"({ris['tipo']})")
+        return dati_ris
+    if dati is not None and dati_ris is not None:
+        if dati_ris.get("raffica_10min") is not None:
+            dati["raffica_10min"] = dati_ris["raffica_10min"]
     return dati
 
 
@@ -1029,9 +1088,16 @@ def main() -> int:
         livello_prima = s.get("livello", 0)
         livello_ora = calcola_livello(vento, livello_prima, LIVELLI)
 
+        # Per l'alert raffica preferisco la raffica degli ultimi 10 minuti
+        # (dalla stazione di riserva GCA, se disponibile): e' un dato attuale,
+        # quindi il livello si riarma quando il vento cala e puo' riscattare
+        # nella stessa giornata. La massima giornaliera resta il ripiego.
+        raffica_alert = dati.get("raffica_10min")
+        if raffica_alert is None:
+            raffica_alert = raffica
         raf_prima = s.get("livello_raffica", 0)
-        raf_ora = (calcola_livello(raffica, raf_prima, RAFFICA_LIVELLI)
-                   if raffica is not None else raf_prima)
+        raf_ora = (calcola_livello(raffica_alert, raf_prima, RAFFICA_LIVELLI)
+                   if raffica_alert is not None else raf_prima)
 
         # Tendenza rispetto alla lettura precedente (solo in orario attivo).
         vento_prec = s.get("vento_prec")
@@ -1081,8 +1147,8 @@ def main() -> int:
                     eta_min = max(5, int(round(eta / 5.0) * 5))
             if raf_ora > raf_prima:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
-                raffica_note = (f"🌀 Raffica salita a *{raffica:.1f} nodi* "
-                                f"(soglia {soglia:.0f})")
+                raffica_note = (f"🌀 Raffica salita a *{raffica_alert:.1f} "
+                                f"nodi* (soglia {soglia:.0f})")
         extra[nome] = {"tendenza": tendenza, "banner": banner,
                        "eta_min": eta_min, "raffica_note": raffica_note}
 
@@ -1125,7 +1191,7 @@ def main() -> int:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
                 testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
-                         f"Oggi la raffica ha raggiunto *{raffica:.1f} nodi* "
+                         f"La raffica ha raggiunto *{raffica_alert:.1f} nodi* "
                          f"(soglia {soglia:.0f}) da {dir_txt}.")
                 try:
                     invia_telegram(testo)

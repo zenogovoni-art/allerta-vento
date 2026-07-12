@@ -23,6 +23,17 @@ Apri il link, premi **Iscriviti / Join** e riceverai gli avvisi sul telefono.
 Avere una stazione a sud e una a nord aiuta ad anticipare l'arrivo del vento a
 seconda della direzione.
 
+A Porto Corsini c'è anche una **stazione di riserva**: quella della **Guardia
+Costiera Ausiliaria di Ravenna** (Marina di Ravenna, dall'altra parte del
+canale del porto). Se la stazione principale non risponde, subentra
+automaticamente senza interruzioni del servizio. In più fornisce la **raffica
+degli ultimi 10 minuti** — un dato in tempo reale, più tempestivo della
+massima giornaliera — che rende l'ALERT RAFFICA del settore sud più preciso:
+può riarmarsi quando il vento cala e riscattare nella stessa giornata.
+
+Per l'ALERT BORA si controllano inoltre due stazioni sentinella a nord-est
+(vedi la sezione dedicata).
+
 ## Quando arrivano gli avvisi
 
 - Controllo **ogni 15 minuti**
@@ -225,6 +236,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Stazione di riserva a sud e raffica in tempo reale**: la stazione della
+  Guardia Costiera Ausiliaria di Ravenna (Marina di Ravenna) fa da riserva a
+  Porto Corsini e fornisce la raffica degli ultimi 10 minuti, per un ALERT
+  RAFFICA più tempestivo nel settore sud.
 - **Benvenuto serale ai nuovi iscritti**: ogni sera alle **21:00**, se durante
   il giorno qualcuno si è unito al canale, un messaggio dà il benvenuto per
   nome ai nuovi arrivati (un solo messaggio al giorno, niente disturbo in
