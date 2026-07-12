@@ -1,12 +1,11 @@
-📢 *INFO VENTO — Novità*
+💨 *NOVITÀ: ALERT BORA*
 
-Due aggiornamenti per seguire meglio le condizioni 👇
+La bora è il vento più temuto da chi naviga in deriva: scende da *nord-est* e arriva violenta, spesso con poco preavviso.
 
-🌬️ *Situazione vento ogni 30 minuti*
-Dalle 9:00 alle 19:00 pubblichiamo sempre vento, direzione e raffica di *Porto Corsini* e *Lido di Volano* — anche quando le condizioni non cambiano, così avete il quadro in tempo reale.
+Da oggi INFO VENTO tiene d'occhio due stazioni "sentinella" a nord-est, proprio sulla rotta da cui scende la bora:
+🌊 *Sottomarina (Diga Sud Chioggia)* — l'anemometro sulla diga foranea
+🌊 *Piattaforma CNR* — la torre oceanografica al largo di Venezia
 
-🌊 *Bollettino delle 9:00 più completo*
-Ora include anche la *corrente di superficie* (direzione) e gli orari di *alta e bassa marea* del giorno con relativa altezza. Utile per programmare l'uscita.
+I dati vengono dalla *rete meteo-mareografica del Centro Maree di Venezia* — la stessa rete istituzionale che alimenta le previsioni dell'acqua alta — e sono aggiornati *ogni 5 minuti*.
 
-⛵ Buon vento a tutti!
-Dati indicativi e non ufficiali: verificate sempre le condizioni reali prima di uscire.
+Quando su una sentinella la bora supera *20, 25 o 30 nodi* arriva subito un *ALERT BORA* con la stima di arrivo del vento a Lido di Spina: in genere *1–2 ore di preavviso* per rientrare a riva con calma. ⛵
