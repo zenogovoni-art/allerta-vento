@@ -225,6 +225,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Benvenuto serale ai nuovi iscritti**: ogni sera alle **21:00**, se durante
+  il giorno qualcuno si è unito al canale, un messaggio dà il benvenuto per
+  nome ai nuovi arrivati (un solo messaggio al giorno, niente disturbo in
+  orario di navigazione).
 - **ALERT BORA**: due stazioni sentinella a nord-est (Sottomarina Diga Sud e
   Piattaforma CNR al largo di Venezia) avvisano quando la bora supera 20, 25
   o 30 nodi, con stima di arrivo a Lido di Spina — in genere 1–2 ore di

@@ -101,6 +101,21 @@ PRESSIONE_LIVELLI = [
 PRESS_FINESTRA_MIN = 195
 PRESS_MIN_SPAN_MIN = 150
 
+# --- BENVENUTO SERALE -------------------------------------------------------
+# I nuovi iscritti vengono raccolti durante il giorno (il bot, admin del
+# canale, riceve una notifica a ogni iscrizione) e salutati per nome con un
+# unico messaggio alle BENVENUTO_ORA, per non disturbare durante la giornata.
+BENVENUTO_ORA = 21
+BENVENUTO_TEMPLATE = (
+    "👋 *Benvenuti a bordo!*\n\n"
+    "{iscritti}\n\n"
+    "Grazie per esservi iscritti a *INFO VENTO*! Qui trovate gli alert "
+    "vento, raffica, bora e pressione, il bollettino del mattino e la "
+    "situazione in tempo reale dalle 9 alle 19.\n"
+    "Se il canale vi è utile, giratelo agli amici appassionati di vela: "
+    "più siamo, più diventa utile per tutti. ⛵"
+)
+
 # --- ALERT BORA -----------------------------------------------------------
 # La bora scende da nord-est in modo violento: due stazioni "sentinella" a
 # nord-est del circolo (rete meteo-mareografica CPSM / Comune di Venezia,
@@ -716,6 +731,97 @@ def controlla_bora(stato: dict, in_orario: bool) -> bool:
 
 
 # --------------------------------------------------------------------------
+# BENVENUTO SERALE AI NUOVI ISCRITTI
+# --------------------------------------------------------------------------
+
+def raccogli_nuovi_iscritti(stato: dict) -> bool:
+    """Raccoglie i nuovi iscritti al canale (update chat_member del bot).
+
+    Telegram non permette a un bot di elencare gli iscritti di un canale,
+    ma un bot admin riceve una notifica quando qualcuno si iscrive. Gli
+    update restano disponibili 24 ore: il giro ogni 15 minuti basta con
+    largo margine. I nomi finiscono in stato['_benvenuti']['in_attesa']
+    per il saluto serale. Ritorna True se lo stato e' cambiato.
+    """
+    token = os.environ["TELEGRAM_TOKEN"]
+    chat_id = str(os.environ["TELEGRAM_CHAT_ID"])
+    ben = stato.setdefault("_benvenuti", {})
+    params = {"timeout": 0, "allowed_updates": json.dumps(["chat_member"])}
+    if ben.get("offset"):
+        params["offset"] = ben["offset"]
+    try:
+        r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates",
+                         params=params, timeout=30)
+        r.raise_for_status()
+        dati = r.json()
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] getUpdates fallito: {e}")
+        return False
+    if not dati.get("ok"):
+        print(f"[errore] getUpdates: {dati.get('description')}")
+        return False
+
+    cambiato = False
+    for up in dati["result"]:
+        ben["offset"] = max(ben.get("offset", 0), up["update_id"] + 1)
+        cambiato = True
+        cm = up.get("chat_member")
+        if not cm:
+            continue
+        chat = cm.get("chat", {})
+        # Accetto sia l'id numerico sia lo @username del canale.
+        se_nostro = (str(chat.get("id")) == chat_id
+                     or f"@{chat.get('username', '')}" == chat_id)
+        if not se_nostro:
+            continue
+        vecchio = (cm.get("old_chat_member") or {}).get("status")
+        nuovo_m = cm.get("new_chat_member") or {}
+        if nuovo_m.get("status") != "member" or vecchio == "member":
+            continue  # non e' una nuova iscrizione (es. uscita, promozione)
+        utente = nuovo_m.get("user") or {}
+        if utente.get("is_bot"):
+            continue
+        nome = " ".join(p for p in (utente.get("first_name"),
+                                    utente.get("last_name")) if p).strip()
+        nome = re.sub(r"[*_`\[\]]", "", nome) or "un nuovo velista"
+        attesa = ben.setdefault("in_attesa", [])
+        if utente.get("id") not in {a.get("id") for a in attesa}:
+            attesa.append({"id": utente.get("id"), "nome": nome})
+            print(f"[benvenuto] nuovo iscritto in attesa: {nome}")
+    return cambiato
+
+
+def invia_benvenuti(stato: dict, adesso: datetime) -> bool:
+    """Alle BENVENUTO_ORA saluta per nome gli iscritti raccolti in giornata.
+
+    Un solo messaggio al giorno, e solo se c'e' almeno un nuovo iscritto.
+    Ritorna True se lo stato e' cambiato.
+    """
+    ben = stato.get("_benvenuti") or {}
+    attesa = ben.get("in_attesa") or []
+    if not attesa or adesso.hour < BENVENUTO_ORA:
+        return False
+    oggi = adesso.strftime("%Y-%m-%d")
+    if ben.get("data_invio") == oggi:
+        return False
+
+    nomi = [f"*{a['nome']}*" for a in attesa]
+    if len(nomi) == 1:
+        iscritti = f"Oggi si è unito al canale {nomi[0]}."
+    else:
+        iscritti = ("Oggi si sono uniti al canale "
+                    f"{', '.join(nomi[:-1])} e {nomi[-1]}.")
+    try:
+        invia_telegram(BENVENUTO_TEMPLATE.format(iscritti=iscritti))
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] invio benvenuto fallito: {e}")
+        return False
+    ben["data_invio"] = oggi
+    ben["in_attesa"] = []
+    return True
+
+
+# --------------------------------------------------------------------------
 # CONTROLLO PRESSIONE (workflow separato, sfasato rispetto al vento)
 # --------------------------------------------------------------------------
 
@@ -1034,6 +1140,13 @@ def main() -> int:
     # locali: la bora va segnalata appena si vede sulle sentinelle, quindi
     # parte sempre come messaggio a se' stante (non confluisce nel bollettino).
     if controlla_bora(stato, in_orario):
+        cambiato = True
+
+    # --- Benvenuto ai nuovi iscritti: raccolti a ogni giro (il workflow gira
+    # tutto il giorno), salutati per nome in un unico messaggio serale.
+    if raccogli_nuovi_iscritti(stato):
+        cambiato = True
+    if invia_benvenuti(stato, adesso):
         cambiato = True
 
     # --- Bollettino periodico stazioni: una volta ogni mezz'ora, in fascia
