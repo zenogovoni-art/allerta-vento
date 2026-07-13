@@ -218,6 +218,28 @@ def corrente_boa():
     return None
 
 
+def blocco_corrente_pomeriggio():
+    """Righe con la corrente per il pomeriggio, per la scheda delle 14:00.
+
+    Chi esce al pomeriggio (spesso il vento del mattino e' debole) trova
+    qui l'aggiornamento: previsione Adriac del run piu' recente — alle 14
+    quello di oggi e' ormai pubblicato — piu' la misura attuale della boa.
+    Ritorna una lista di righe, oppure None se non c'e' nessun dato.
+    """
+    righe = []
+    adriac = corrente_adriac()
+    if adriac and "pomeriggio" in adriac:
+        nodi, verso = adriac["pomeriggio"]
+        righe.append(f"🌊 *Corrente per il pomeriggio* (previsione Arpae): "
+                     f"~{nodi:.1f} kn verso {verso}")
+    boa = corrente_boa()
+    if boa:
+        nodi_b, verso_b, hhmm_b = boa
+        righe.append(f"  _Misurata alle {hhmm_b} dalla boa di Cesenatico: "
+                     f"~{nodi_b:.1f} kn verso {verso_b}_")
+    return righe or None
+
+
 # --- BENVENUTO SERALE -------------------------------------------------------
 # I nuovi iscritti vengono raccolti durante il giorno (il bot, admin del
 # canale, riceve una notifica a ogni iscrizione) e salutati per nome con un
@@ -1385,6 +1407,13 @@ def main() -> int:
             if ex.get("raffica_note"):
                 blocco.append(ex["raffica_note"])
             righe.append("\n" + "\n".join(blocco))
+        # Alle 14:00 (primo slot dell'ora) si aggiunge l'aggiornamento della
+        # corrente: spesso il vento del mattino e' debole e si esce al
+        # pomeriggio, e a quest'ora il run Adriac di oggi e' gia' pubblicato.
+        if adesso.hour == 14 and slot.endswith("A"):
+            corrente = blocco_corrente_pomeriggio()
+            if corrente:
+                righe.append("\n" + "\n".join(corrente))
         if almeno_uno:
             try:
                 invia_telegram("\n".join(righe))

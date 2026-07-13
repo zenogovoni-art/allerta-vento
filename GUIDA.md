@@ -169,6 +169,12 @@ A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
 questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
 aggiornato.
 
+La scheda delle **14:00** include in più l'**aggiornamento della corrente per
+il pomeriggio** (previsione Arpae + misura della boa): spesso al mattino il
+vento è debole e si esce dopo pranzo — a quell'ora la previsione della
+corrente è anche più fresca, perché il run del giorno del modello Adriac è
+ormai pubblicato.
+
 Se in quel momento ci sono anche le **condizioni di un avviso** (vento sopra
 soglia o nuova raffica), l'avviso **confluisce dentro il bollettino** — con il
 livello raggiunto, la **tendenza** (in aumento / in calo) e la stima di arrivo
@@ -243,6 +249,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Corrente aggiornata alle 14:00**: la Situazione vento delle 14 include la
+  corrente prevista per il pomeriggio (con la misura live della boa), per chi
+  esce dopo pranzo.
 - **Corrente locale dal modello Arpae**: nel bollettino del mattino la corrente
   davanti a Lido di Spina ora viene dal modello Adriac di Arpae (1 km, con la
   portata reale del Po), divisa in mattina e pomeriggio, con il riscontro
