@@ -3,7 +3,7 @@
     "livello": 0,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 0,
+    "livello_raffica": 1,
     "pressioni": [
       [
         "2026-07-13T05:53:52.920085+02:00",
