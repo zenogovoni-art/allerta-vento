@@ -14,7 +14,7 @@
         1018.5
       ]
     ],
-    "vento_prec": 10.4
+    "vento_prec": 9.6
   },
   "Lido di Volano": {
     "livello": 1,
@@ -31,19 +31,19 @@
         1018.3
       ]
     ],
-    "vento_prec": 8.7
+    "vento_prec": 8.6
   },
   "_data": "2026-07-13",
   "_riepilogo": "2026-07-12",
   "_bollettino": "2026-07-13",
   "_grafico": "2026-07-11",
-  "_stazioni_slot": "2026-07-13 14B",
+  "_stazioni_slot": "2026-07-13 15A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {},
     "Piattaforma CNR (largo di Venezia)": {}
   },
   "_benvenuti": {
-    "offset": 961277662,
+    "offset": 961277663,
     "in_attesa": [
       {
         "id": 407484713,
@@ -52,6 +52,10 @@
       {
         "id": 55281449,
         "nome": "Studio D'Angelo"
+      },
+      {
+        "id": 1251492281,
+        "nome": "Birolo Stefano"
       }
     ]
   }
