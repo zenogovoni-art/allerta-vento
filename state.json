@@ -14,7 +14,7 @@
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 7.2,
+    "vento_max": 7.6,
     "raffica_max": 10.1,
     "livello_raffica": 0,
     "pressioni": [
@@ -23,7 +23,7 @@
         1018.4
       ]
     ],
-    "vento_prec": 7.2
+    "vento_prec": 7.6
   },
   "_data": "2026-07-13",
   "_riepilogo": "2026-07-12",
