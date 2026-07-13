@@ -1,8 +1,8 @@
 {
   "Porto Corsini": {
     "livello": 1,
-    "vento_max": 13.9,
-    "raffica_max": 15.7,
+    "vento_max": 0.0,
+    "raffica_max": 0.0,
     "livello_raffica": 0,
     "pressioni": [
       [
@@ -17,13 +17,12 @@
         "2026-07-13T23:37:25.545695+02:00",
         1016.7
       ]
-    ],
-    "vento_prec": 9.6
+    ]
   },
   "Lido di Volano": {
     "livello": 1,
-    "vento_max": 10.3,
-    "raffica_max": 13.8,
+    "vento_max": 0.0,
+    "raffica_max": 0.0,
     "livello_raffica": 0,
     "pressioni": [
       [
@@ -38,10 +37,9 @@
         "2026-07-13T23:37:25.545695+02:00",
         1016.7
       ]
-    ],
-    "vento_prec": 8.7
+    ]
   },
-  "_data": "2026-07-13",
+  "_data": "2026-07-14",
   "_riepilogo": "2026-07-13",
   "_bollettino": "2026-07-13",
   "_grafico": "2026-07-11",
