@@ -42,5 +42,13 @@
     "Sottomarina (Diga Sud Chioggia)": {},
     "Piattaforma CNR (largo di Venezia)": {}
   },
-  "_benvenuti": {}
+  "_benvenuti": {
+    "offset": 961277661,
+    "in_attesa": [
+      {
+        "id": 407484713,
+        "nome": "Michele"
+      }
+    ]
+  }
 }
