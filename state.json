@@ -17,7 +17,7 @@
     "vento_prec": 9.6
   },
   "Lido di Volano": {
-    "livello": 1,
+    "livello": 2,
     "vento_max": 10.3,
     "raffica_max": 13.8,
     "livello_raffica": 0,
@@ -44,23 +44,7 @@
   },
   "_benvenuti": {
     "offset": 961277664,
-    "in_attesa": [
-      {
-        "id": 407484713,
-        "nome": "Michele"
-      },
-      {
-        "id": 55281449,
-        "nome": "Studio D'Angelo"
-      },
-      {
-        "id": 1251492281,
-        "nome": "Birolo Stefano"
-      },
-      {
-        "id": 242997108,
-        "nome": "Pluto"
-      }
-    ]
+    "in_attesa": [],
+    "data_invio": "2026-07-13"
   }
 }
