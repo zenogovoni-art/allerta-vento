@@ -19,7 +19,7 @@ import math
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -100,6 +100,123 @@ PRESSIONE_LIVELLI = [
 #   MIN_SPAN  -> baseline minima necessaria per poter valutare la tendenza
 PRESS_FINESTRA_MIN = 195
 PRESS_MIN_SPAN_MIN = 150
+
+# --- CORRENTE A LIDO DI SPINA (Arpae) ---------------------------------------
+# Previsione locale dal modello oceanografico Adriac di Arpae (1 km, run
+# giornaliero 00 UTC, +72h orarie, include la portata reale del Po): molto
+# piu' rappresentativo di Open-Meteo per la costa ferrarese. In piu', la boa
+# Nausicaa 2 (largo di Cesenatico) MISURA la corrente superficiale ogni
+# 10 minuti: si mostra come riscontro. Open-Meteo resta il ripiego.
+PUNTO_CORRENTE = (44.665, 12.31)   # ~2 km al largo del circolo
+ADRIAC_URL = ("https://dati-simc.arpae.it/opendata/adriac/"
+              "{data}_adriac_1km_his_2dcur_fc.nc.gz")
+BOA_URL = ("https://apps.arpae.it/REST/meteo_marefe/"
+           "?where=%7B%22anagrafica.nome%22%3A%22Nausicaa%202%22%7D")
+
+
+def corrente_adriac():
+    """Corrente prevista per oggi davanti a Lido di Spina (Arpae Adriac).
+
+    Scarica il run piu' recente disponibile (oggi, altrimenti ieri o
+    l'altro ieri: l'orizzonte di 72 ore copre comunque la giornata),
+    estrae il punto di griglia PUNTO_CORRENTE e riassume mattina (9-13)
+    e pomeriggio (13-19) come media vettoriale.
+
+    Ritorna {"mattina": (nodi, dir16_verso), "pomeriggio": (...)} oppure
+    None (netCDF4 assente, download fallito, nessun dato per oggi).
+    """
+    try:
+        import gzip
+        import netCDF4
+        import numpy as np
+    except ImportError as e:
+        print(f"[info] adriac saltato, libreria mancante: {e}")
+        return None
+
+    oggi = datetime.now(TZ)
+    ds = None
+    for delta in (0, 1, 2):
+        data = (oggi - timedelta(days=delta)).strftime("%Y%m%d")
+        url = ADRIAC_URL.format(data=data)
+        try:
+            r = requests.get(url, timeout=300)
+            r.raise_for_status()
+            ds = netCDF4.Dataset("adriac", memory=gzip.decompress(r.content))
+            print(f"[info] adriac: uso il run {data}")
+            break
+        except Exception as e:  # noqa: BLE001
+            print(f"[info] adriac {data} non disponibile: {e}")
+    if ds is None:
+        return None
+
+    try:
+        lat = ds.variables["lat_rho"][:]
+        lon = ds.variables["lon_rho"][:]
+        j, i = np.unravel_index(
+            np.argmin((lat - PUNTO_CORRENTE[0]) ** 2
+                      + (lon - PUNTO_CORRENTE[1]) ** 2), lat.shape)
+        tvar = ds.variables["ocean_time"]
+        tempi = netCDF4.num2date(tvar[:], tvar.units,
+                                 only_use_cftime_datetimes=False,
+                                 only_use_python_datetimes=True)
+        u = ds.variables["ubar_eastward"][:, j, i]
+        v = ds.variables["vbar_northward"][:, j, i]
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] adriac: estrazione fallita: {e}")
+        ds.close()
+        return None
+
+    out = {}
+    for nome_fascia, (h1, h2) in (("mattina", (9, 13)),
+                                  ("pomeriggio", (13, 19))):
+        us, vs = [], []
+        for k, t in enumerate(tempi):
+            t_loc = t.replace(tzinfo=ZoneInfo("UTC")).astimezone(TZ)
+            if t_loc.date() != oggi.date() or not h1 <= t_loc.hour < h2:
+                continue
+            if np.ma.is_masked(u[k]) or np.ma.is_masked(v[k]):
+                continue
+            us.append(float(u[k]))
+            vs.append(float(v[k]))
+        if not us:
+            continue
+        um, vm = sum(us) / len(us), sum(vs) / len(vs)
+        nodi = math.hypot(um, vm) * 1.94384
+        verso = _dir16(math.degrees(math.atan2(um, vm)) % 360)
+        out[nome_fascia] = (nodi, verso)
+    ds.close()
+    return out or None
+
+
+def corrente_boa():
+    """Corrente superficiale misurata dalla boa Nausicaa 2 (Cesenatico).
+
+    Ritorna (nodi, dir16_verso, "HH:MM") dell'ultima lettura valida di
+    oggi, oppure None. La boa e' ~48 km a SE di Lido di Spina: e' un
+    riscontro della corrente costiera generale, non il dato locale.
+    """
+    try:
+        r = requests.get(BOA_URL, timeout=60)
+        r.raise_for_status()
+        voci = r.json().get("_items") or []
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] boa Nausicaa non raggiungibile: {e}")
+        return None
+    if not voci:
+        return None
+
+    oggi = datetime.now(TZ).strftime("%Y%m%d")
+    dati_oggi = (voci[0].get("dati") or {}).get(oggi) or {}
+    for ora in sorted(dati_oggi.keys(), reverse=True):
+        v = dati_oggi[ora]
+        vel = v.get("intensita_istantanea_corrente_superficie")
+        gradi = v.get("direzione_istantanea_corrente_superficie")
+        if vel is None or gradi is None:
+            continue
+        return (float(vel) * 1.94384, _dir16(float(gradi)),
+                f"{ora[:2]}:{ora[2:]}")
+    return None
+
 
 # --- BENVENUTO SERALE -------------------------------------------------------
 # I nuovi iscritti vengono raccolti durante il giorno (il bot, admin del
@@ -333,16 +450,32 @@ def bollettino_mattutino():
         righe.append(f"Max previsto: ~{vmax:.0f} nodi (raffiche fino a "
                      f"{gmax:.0f}) verso le {ora_vmax}:00.")
 
-    # Correnti di superficie e maree di oggi (Open-Meteo Marine, best effort).
+    # Corrente: previsione locale Arpae Adriac (punto davanti al circolo),
+    # con il riscontro misurato dalla boa Nausicaa 2. Se Adriac non e'
+    # disponibile si ripiega sulla corrente Open-Meteo come prima.
+    # Le maree restano da Open-Meteo Marine (best effort).
     mare = dati_marini()
-    if mare:
+    adriac = corrente_adriac()
+    boa = corrente_boa()
+    if mare or adriac or boa:
         righe.append("")
+    if adriac:
+        parti = [f"{fascia} ~{nodi:.1f} kn verso {verso}"
+                 for fascia, (nodi, verso) in adriac.items()]
+        righe.append("🌊 *Corrente a Lido di Spina* (previsione Arpae): "
+                     + ", ".join(parti))
+    elif mare:
         c = mare.get("corrente")
         if c and c.get("dir") is not None:
             vtxt = (f" (~{c['vel']:.1f} km/h)"
                     if c.get("vel") is not None else "")
             righe.append(f"🌊 *Corrente di superficie*: verso "
                          f"{_dir16(c['dir'])}{vtxt}")
+    if boa:
+        nodi_b, verso_b, hhmm_b = boa
+        righe.append(f"  _Misurata alle {hhmm_b} dalla boa di Cesenatico: "
+                     f"~{nodi_b:.1f} kn verso {verso_b}_")
+    if mare:
         maree = mare.get("maree") or []
         if maree:
             righe.append("🌊 *Maree di oggi*:")
@@ -375,10 +508,11 @@ def bollettino_mattutino():
             elif bassa_pos:
                 righe.append("  _Una bassa marea può risultare leggermente "
                              "sopra la media, quindi +, pur essendo "
-                             "una bassa marea: succede quando la giornata è "
-                             "\"in discesa\" (il mare cala nel corso del "
-                             "giorno e il minimo resta sopra la media "
-                             "complessiva)._")
+                             "una bassa marea: succede quando il livello "
+                             "generale sale o scende molto nel corso della "
+                             "giornata, e quel minimo capita in un momento "
+                             "in cui il mare è comunque sopra la media "
+                             "complessiva._")
 
     emoji_luna, fase_luna = fase_lunare()
     righe.append("")

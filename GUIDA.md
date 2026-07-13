@@ -183,8 +183,15 @@ comprese. Viene inviato **tutti i giorni**, giovedì compreso.
 
 Da questo bollettino trovi anche alcuni dati marini utili alla navigazione:
 
-- 🌊 **Corrente di superficie** — la direzione verso cui scorre la corrente
-  (con velocità indicativa).
+- 🌊 **Corrente a Lido di Spina** — la previsione della corrente di superficie
+  per il punto davanti al circolo, divisa in **mattina (9–13)** e **pomeriggio
+  (13–19)**: intensità in nodi e direzione **verso cui** scorre. Utile per
+  decidere da che lato conviene allungare i bordi. Il dato viene dal modello
+  oceanografico **Adriac di Arpae Emilia-Romagna** (risoluzione 1 km, tiene
+  conto anche della portata reale del Po — il motore principale delle correnti
+  sulla costa ferrarese). Sotto, in corsivo, la **corrente misurata** dalla
+  boa Nausicaa 2 di Arpae (al largo di Cesenatico): è il riscontro reale della
+  corrente costiera generale, non il dato locale.
 - 🌊 **Maree del giorno** — orari di **alta** e **bassa marea** con l'altezza in
   **centimetri rispetto al livello medio del mare di oggi**: `+26 cm` vuol dire
   che il mare sale 26 cm sopra la media della giornata, `−19 cm` che scende
@@ -236,6 +243,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Corrente locale dal modello Arpae**: nel bollettino del mattino la corrente
+  davanti a Lido di Spina ora viene dal modello Adriac di Arpae (1 km, con la
+  portata reale del Po), divisa in mattina e pomeriggio, con il riscontro
+  misurato dalla boa Nausicaa 2 al largo di Cesenatico.
 - **Stazione di riserva a sud e raffica in tempo reale**: la stazione della
   Guardia Costiera Ausiliaria di Ravenna (Marina di Ravenna) fa da riserva a
   Porto Corsini e fornisce la raffica degli ultimi 10 minuti, per un ALERT
