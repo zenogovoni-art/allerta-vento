@@ -3,7 +3,7 @@
     "livello": 0,
     "vento_max": 15.7,
     "raffica_max": 19.1,
-    "livello_raffica": 4,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-07-15T17:59:22.182112+02:00",
@@ -24,7 +24,7 @@
     "livello": 0,
     "vento_max": 12.4,
     "raffica_max": 16.5,
-    "livello_raffica": 1,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-07-15T17:59:22.182112+02:00",
