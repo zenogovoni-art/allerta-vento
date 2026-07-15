@@ -20,7 +20,7 @@
     "livello": 2,
     "vento_max": 12.4,
     "raffica_max": 16.5,
-    "livello_raffica": 1,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-07-15T16:18:38.764734+02:00",
@@ -31,7 +31,7 @@
         1014.6
       ]
     ],
-    "vento_prec": 10.1
+    "vento_prec": 9.1
   },
   "_data": "2026-07-15",
   "_riepilogo": "2026-07-14",
