@@ -54,20 +54,7 @@
   },
   "_benvenuti": {
     "offset": 961277667,
-    "in_attesa": [
-      {
-        "id": 8927781783,
-        "nome": "Flavio Claudio"
-      },
-      {
-        "id": 186995631,
-        "nome": "Niktes"
-      },
-      {
-        "id": 8488732478,
-        "nome": "Matteo Mangherini"
-      }
-    ],
-    "data_invio": "2026-07-13"
+    "in_attesa": [],
+    "data_invio": "2026-07-16"
   }
 }
