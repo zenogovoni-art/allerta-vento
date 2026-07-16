@@ -14,7 +14,7 @@
         1018.3
       ]
     ],
-    "vento_prec": 0.0
+    "vento_prec": 4.3
   },
   "Lido di Volano": {
     "livello": 0,
@@ -31,7 +31,7 @@
         1018.0
       ]
     ],
-    "vento_prec": 1.9
+    "vento_prec": 2.5
   },
   "_data": "2026-07-16",
   "_riepilogo": "2026-07-15",
@@ -45,7 +45,7 @@
     }
   },
   "_benvenuti": {
-    "offset": 961277666,
+    "offset": 961277667,
     "in_attesa": [
       {
         "id": 8927781783,
@@ -54,6 +54,10 @@
       {
         "id": 186995631,
         "nome": "Niktes"
+      },
+      {
+        "id": 8488732478,
+        "nome": "Matteo Mangherini"
       }
     ],
     "data_invio": "2026-07-13"
