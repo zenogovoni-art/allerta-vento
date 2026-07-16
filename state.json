@@ -53,8 +53,13 @@
     }
   },
   "_benvenuti": {
-    "offset": 961277667,
-    "in_attesa": [],
+    "offset": 961277668,
+    "in_attesa": [
+      {
+        "id": 1070029286,
+        "nome": "Stefano Manara"
+      }
+    ],
     "data_invio": "2026-07-16"
   }
 }
