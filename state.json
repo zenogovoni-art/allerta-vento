@@ -14,11 +14,11 @@
         1017.7
       ]
     ],
-    "vento_prec": 2.6
+    "vento_prec": 5.2
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 2.5,
+    "vento_max": 2.9,
     "raffica_max": 10.1,
     "livello_raffica": 0,
     "pressioni": [
@@ -31,7 +31,7 @@
         1017.5
       ]
     ],
-    "vento_prec": 2.5
+    "vento_prec": 2.9
   },
   "_data": "2026-07-16",
   "_riepilogo": "2026-07-15",
@@ -45,8 +45,17 @@
     }
   },
   "_benvenuti": {
-    "offset": 961277664,
-    "in_attesa": [],
+    "offset": 961277666,
+    "in_attesa": [
+      {
+        "id": 8927781783,
+        "nome": "Flavio Claudio"
+      },
+      {
+        "id": 186995631,
+        "nome": "Niktes"
+      }
+    ],
     "data_invio": "2026-07-13"
   }
 }
