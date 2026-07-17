@@ -54,16 +54,7 @@
   },
   "_benvenuti": {
     "offset": 961277669,
-    "in_attesa": [
-      {
-        "id": 1070029286,
-        "nome": "Stefano Manara"
-      },
-      {
-        "id": 954513462,
-        "nome": "Rudy"
-      }
-    ],
-    "data_invio": "2026-07-16"
+    "in_attesa": [],
+    "data_invio": "2026-07-17"
   }
 }
