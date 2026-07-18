@@ -1,9 +1,9 @@
 {
   "Porto Corsini": {
-    "livello": 2,
+    "livello": 3,
     "vento_max": 11.3,
     "raffica_max": 31.3,
-    "livello_raffica": 0,
+    "livello_raffica": 1,
     "pressioni": [
       [
         "2026-07-18T19:31:45.973169+02:00",
@@ -21,7 +21,7 @@
     "vento_prec": 7.0
   },
   "Lido di Volano": {
-    "livello": 1,
+    "livello": 2,
     "vento_max": 14.6,
     "raffica_max": 24.9,
     "livello_raffica": 0,
@@ -51,7 +51,7 @@
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 2
+      "livello": 1
     }
   },
   "_benvenuti": {
