@@ -18,7 +18,7 @@
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 3.5,
+    "vento_max": 4.7,
     "raffica_max": 7.4,
     "livello_raffica": 0,
     "pressioni": [
@@ -31,13 +31,13 @@
         1011.8
       ]
     ],
-    "vento_prec": 3.5
+    "vento_prec": 4.7
   },
   "_data": "2026-07-18",
   "_riepilogo": "2026-07-17",
   "_bollettino": "2026-07-18",
   "_grafico": "2026-07-18",
-  "_stazioni_slot": "2026-07-18 11B",
+  "_stazioni_slot": "2026-07-18 12A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {},
     "Piattaforma CNR (largo di Venezia)": {
