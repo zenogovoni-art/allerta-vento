@@ -19,6 +19,7 @@ import math
 import os
 import re
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -799,6 +800,51 @@ def invia_telegram(testo: str) -> None:
     print("[ok] messaggio Telegram inviato")
 
 
+def pulizia_canale(pulito_fino_a: int) -> int:
+    """Cancella dal canale tutti i messaggi, dal piu' recente all'indietro.
+
+    Telegram non permette a un bot di elencare i messaggi di un canale, ma
+    gli id sono progressivi: invio un messaggio-sonda silenzioso per scoprire
+    l'id piu' recente e poi cancello all'indietro (sonda compresa) a blocchi
+    da 100 con deleteMessages, che ignora gli id gia' inesistenti. Mi fermo
+    a `pulito_fino_a`, l'ultimo id gia' cancellato dalla pulizia precedente.
+    Il bot deve avere il permesso admin "Elimina messaggi" sul canale.
+    Ritorna l'id della sonda: il punto di partenza della prossima pulizia.
+    """
+    token = os.environ["TELEGRAM_TOKEN"]
+    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+    base = f"https://api.telegram.org/bot{token}"
+    r = requests.post(
+        f"{base}/sendMessage",
+        json={"chat_id": chat_id,
+              "text": "\U0001f9f9 Pulizia settimanale del canale...",
+              "disable_notification": True},
+        timeout=30,
+    )
+    r.raise_for_status()
+    sonda = r.json()["result"]["message_id"]
+    ids = list(range(sonda, max(pulito_fino_a, 0), -1))
+    for i in range(0, len(ids), 100):
+        r = requests.post(
+            f"{base}/deleteMessages",
+            json={"chat_id": chat_id, "message_ids": ids[i:i + 100]},
+            timeout=30,
+        )
+        if r.status_code == 429:  # flood limit: aspetto e riprovo una volta
+            attesa = r.json().get("parameters", {}).get("retry_after", 3)
+            time.sleep(attesa)
+            r = requests.post(
+                f"{base}/deleteMessages",
+                json={"chat_id": chat_id, "message_ids": ids[i:i + 100]},
+                timeout=30,
+            )
+        r.raise_for_status()
+        time.sleep(0.2)
+    print(f"[ok] pulizia canale: cancellati i messaggi "
+          f"{max(pulito_fino_a, 0) + 1}..{sonda}")
+    return sonda
+
+
 # --------------------------------------------------------------------------
 # STATO
 # --------------------------------------------------------------------------
@@ -1148,6 +1194,19 @@ def main() -> int:
             return 1
         return 0
 
+    # Modalita' pulizia: svuota subito il canale e termina. Usata dal
+    # pulsante manuale (workflow_dispatch) per testare la pulizia settimanale.
+    if os.environ.get("PULIZIA_CANALE", "").lower() in ("1", "true", "yes"):
+        stato = carica_stato()
+        try:
+            stato["_pulito_fino_a"] = pulizia_canale(
+                stato.get("_pulito_fino_a", 0))
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] pulizia canale fallita: {e}")
+            return 1
+        salva_stato(stato)
+        return 0
+
     # Modalita' test: legge i dati attuali di tutte le stazioni e li invia
     # (anche sotto soglia), poi termina. Utile per verificare che funzioni.
     if os.environ.get("TEST_TELEGRAM", "").lower() in ("1", "true", "yes"):
@@ -1200,6 +1259,19 @@ def main() -> int:
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
         cambiato = True
+
+    # --- Pulizia settimanale: ogni lunedi', al primo run della giornata,
+    # cancella tutti i messaggi della settimana passata cosi' gli iscritti
+    # non si ritrovano la chat intasata. Se fallisce (es. permesso admin
+    # "Elimina messaggi" mancante) riprova al giro successivo (15 min).
+    if adesso.weekday() == 0 and stato.get("_pulizia") != oggi:
+        try:
+            stato["_pulito_fino_a"] = pulizia_canale(
+                stato.get("_pulito_fino_a", 0))
+            stato["_pulizia"] = oggi
+            cambiato = True
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] pulizia canale fallita: {e}")
 
     # --- Bollettino mattutino: una volta al giorno, in mattinata ---
     # Esce TUTTI i giorni (giovedi' compreso): il grafico previsioni weekend

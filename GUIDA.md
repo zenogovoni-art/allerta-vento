@@ -239,6 +239,13 @@ L'avviso parte **solo quando il vento sale di fascia**:
   ALERT;
 - se scende sotto soglia e poi risale → ricevi di nuovo l'avviso.
 
+## 🧹 Pulizia settimanale del canale
+
+Ogni **lunedì**, al primo controllo della giornata, il bot **cancella tutti i
+messaggi della settimana passata**: la chat del canale riparte pulita e gli
+iscritti non si ritrovano centinaia di vecchi messaggi da scorrere. Non serve
+fare nulla: la cronologia sparisce da sola anche dal telefono degli iscritti.
+
 ## ⚠️ Importante
 
 I dati sono **indicativi e non ufficiali**. Servono come indicazione di massima:
@@ -249,6 +256,8 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Pulizia settimanale del canale**: ogni lunedì il bot cancella tutti i
+  messaggi della settimana passata, così la chat resta leggera.
 - **Corrente aggiornata alle 14:00**: la Situazione vento delle 14 include la
   corrente prevista per il pomeriggio (con la misura live della boa), per chi
   esce dopo pranzo.
