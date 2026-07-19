@@ -3,7 +3,7 @@
     "livello": 4,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 2,
+    "livello_raffica": 3,
     "pressioni": [
       [
         "2026-07-19T00:01:49.817692+02:00",
@@ -20,10 +20,10 @@
     ]
   },
   "Lido di Volano": {
-    "livello": 1,
+    "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 1,
+    "livello_raffica": 3,
     "pressioni": [
       [
         "2026-07-19T00:01:49.817692+02:00",
