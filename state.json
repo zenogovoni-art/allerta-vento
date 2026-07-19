@@ -1,7 +1,7 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 6.1,
+    "vento_max": 7.0,
     "raffica_max": 29.5,
     "livello_raffica": 0,
     "pressioni": [
@@ -14,7 +14,7 @@
         1012.0
       ]
     ],
-    "vento_prec": 6.1
+    "vento_prec": 7.0
   },
   "Lido di Volano": {
     "livello": 0,
@@ -31,13 +31,13 @@
         1011.8
       ]
     ],
-    "vento_prec": 4.1
+    "vento_prec": 3.9
   },
   "_data": "2026-07-19",
   "_riepilogo": "2026-07-18",
   "_bollettino": "2026-07-19",
   "_grafico": "2026-07-18",
-  "_stazioni_slot": "2026-07-19 11A",
+  "_stazioni_slot": "2026-07-19 11B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
