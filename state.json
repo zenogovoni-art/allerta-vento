@@ -1,9 +1,9 @@
 {
   "Porto Corsini": {
-    "livello": 4,
+    "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 2,
+    "livello_raffica": 3,
     "pressioni": [
       [
         "2026-07-20T05:59:56.544300+02:00",
@@ -33,7 +33,7 @@
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 2
+      "livello": 1
     }
   },
   "_benvenuti": {
