@@ -1,9 +1,9 @@
 {
   "Porto Corsini": {
-    "livello": 3,
+    "livello": 2,
     "vento_max": 0.0,
     "raffica_max": 0.0,
-    "livello_raffica": 1,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-07-20T05:59:56.544300+02:00",
@@ -30,10 +30,10 @@
   "_stazioni_slot": "2026-07-19 18B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
-      "livello": 2
+      "livello": 1
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 2
+      "livello": 1
     }
   },
   "_benvenuti": {
