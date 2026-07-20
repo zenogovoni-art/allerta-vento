@@ -10,7 +10,7 @@
         1015.3
       ]
     ],
-    "vento_prec": 13.9
+    "vento_prec": 9.6
   },
   "Lido di Volano": {
     "livello": 3,
@@ -23,7 +23,7 @@
         1015.9
       ]
     ],
-    "vento_prec": 16.5
+    "vento_prec": 14.0
   },
   "_data": "2026-07-20",
   "_riepilogo": "2026-07-19",
@@ -35,7 +35,7 @@
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 1
+      "livello": 0
     }
   },
   "_benvenuti": {
