@@ -1,6 +1,6 @@
 {
   "Porto Corsini": {
-    "livello": 2,
+    "livello": 0,
     "vento_max": 15.7,
     "raffica_max": 35.6,
     "livello_raffica": 1,
@@ -10,7 +10,7 @@
         1015.3
       ]
     ],
-    "vento_prec": 13.9
+    "vento_prec": 1.7
   },
   "Lido di Volano": {
     "livello": 0,
@@ -23,13 +23,13 @@
         1015.9
       ]
     ],
-    "vento_prec": 4.1
+    "vento_prec": 6.0
   },
   "_data": "2026-07-20",
   "_riepilogo": "2026-07-19",
   "_bollettino": "2026-07-20",
   "_grafico": "2026-07-18",
-  "_stazioni_slot": "2026-07-20 09A",
+  "_stazioni_slot": "2026-07-20 09B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -39,8 +39,13 @@
     }
   },
   "_benvenuti": {
-    "offset": 961277669,
-    "in_attesa": [],
+    "offset": 961277670,
+    "in_attesa": [
+      {
+        "id": 997053056,
+        "nome": "Taniatanich"
+      }
+    ],
     "data_invio": "2026-07-17"
   }
 }
