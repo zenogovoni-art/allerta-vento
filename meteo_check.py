@@ -787,7 +787,14 @@ def leggi_stazione(st: dict) -> dict | None:
 # TELEGRAM
 # --------------------------------------------------------------------------
 
+# Id del messaggio piu' recente che questo processo ha inviato al canale.
+# Serve alla pulizia settimanale per sapere dove finiscono i messaggi di
+# "ieri": tutto cio' che il bot manda oggi avra' un id piu' alto e va salvato.
+_ULTIMO_MSG_ID = 0
+
+
 def invia_telegram(testo: str) -> None:
+    global _ULTIMO_MSG_ID
     token = os.environ["TELEGRAM_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -797,52 +804,75 @@ def invia_telegram(testo: str) -> None:
         timeout=30,
     )
     r.raise_for_status()
+    mid = r.json().get("result", {}).get("message_id")
+    if isinstance(mid, int):
+        _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, mid)
     print("[ok] messaggio Telegram inviato")
 
 
-def pulizia_canale(pulito_fino_a: int) -> int:
-    """Cancella dal canale tutti i messaggi, dal piu' recente all'indietro.
+def id_corrente_canale() -> int:
+    """Scopre l'id del messaggio piu' recente del canale.
 
-    Telegram non permette a un bot di elencare i messaggi di un canale, ma
-    gli id sono progressivi: invio un messaggio-sonda silenzioso per scoprire
-    l'id piu' recente e poi cancello all'indietro (sonda compresa) a blocchi
-    da 100 con deleteMessages, che ignora gli id gia' inesistenti. Mi fermo
-    a `pulito_fino_a`, l'ultimo id gia' cancellato dalla pulizia precedente.
-    Il bot deve avere il permesso admin "Elimina messaggi" sul canale.
-    Ritorna l'id della sonda: il punto di partenza della prossima pulizia.
+    Telegram non permette a un bot di elencare i messaggi, ma gli id sono
+    progressivi: mando un messaggio-sonda silenzioso e ne leggo l'id. La sonda
+    resta nel canale ma verra' cancellata dalla pulizia che segue.
     """
+    global _ULTIMO_MSG_ID
     token = os.environ["TELEGRAM_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
-    base = f"https://api.telegram.org/bot{token}"
     r = requests.post(
-        f"{base}/sendMessage",
+        f"https://api.telegram.org/bot{token}/sendMessage",
         json={"chat_id": chat_id,
-              "text": "\U0001f9f9 Pulizia settimanale del canale...",
+              "text": "\U0001f9f9 Pulizia del canale...",
               "disable_notification": True},
         timeout=30,
     )
     r.raise_for_status()
     sonda = r.json()["result"]["message_id"]
-    ids = list(range(sonda, max(pulito_fino_a, 0), -1))
+    _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, sonda)
+    return sonda
+
+
+def pulizia_canale(da_id: int, a_id: int) -> None:
+    """Cancella i messaggi del canale con id da (da_id+1) fino ad a_id compreso.
+
+    Cancella all'indietro a blocchi da 100 con deleteMessages, che ignora gli
+    id gia' inesistenti. E' RESILIENTE: se un blocco fallisce (es. contiene solo
+    messaggi non cancellabili) lo salta e prosegue, senza interrompere tutta la
+    pulizia. Il bot deve avere il permesso admin "Elimina messaggi" sul canale.
+    """
+    da_id = max(da_id, 0)
+    if a_id <= da_id:
+        print("[ok] pulizia canale: niente da cancellare")
+        return
+    token = os.environ["TELEGRAM_TOKEN"]
+    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+    base = f"https://api.telegram.org/bot{token}"
+    ids = list(range(a_id, da_id, -1))
+    falliti = 0
     for i in range(0, len(ids), 100):
-        r = requests.post(
-            f"{base}/deleteMessages",
-            json={"chat_id": chat_id, "message_ids": ids[i:i + 100]},
-            timeout=30,
-        )
-        if r.status_code == 429:  # flood limit: aspetto e riprovo una volta
-            attesa = r.json().get("parameters", {}).get("retry_after", 3)
-            time.sleep(attesa)
+        blocco = ids[i:i + 100]
+        try:
             r = requests.post(
                 f"{base}/deleteMessages",
-                json={"chat_id": chat_id, "message_ids": ids[i:i + 100]},
+                json={"chat_id": chat_id, "message_ids": blocco},
                 timeout=30,
             )
-        r.raise_for_status()
+            if r.status_code == 429:  # flood limit: aspetto e riprovo una volta
+                attesa = r.json().get("parameters", {}).get("retry_after", 3)
+                time.sleep(attesa)
+                r = requests.post(
+                    f"{base}/deleteMessages",
+                    json={"chat_id": chat_id, "message_ids": blocco},
+                    timeout=30,
+                )
+            r.raise_for_status()
+        except Exception as e:  # noqa: BLE001 - un blocco storto non ferma il resto
+            falliti += 1
+            print(f"[avviso] blocco {blocco[-1]}..{blocco[0]} non cancellato: {e}")
         time.sleep(0.2)
-    print(f"[ok] pulizia canale: cancellati i messaggi "
-          f"{max(pulito_fino_a, 0) + 1}..{sonda}")
-    return sonda
+    print(f"[ok] pulizia canale: passati i messaggi {da_id + 1}..{a_id} "
+          f"({falliti} blocchi saltati)")
 
 
 # --------------------------------------------------------------------------
@@ -1194,13 +1224,18 @@ def main() -> int:
             return 1
         return 0
 
-    # Modalita' pulizia: svuota subito il canale e termina. Usata dal
-    # pulsante manuale (workflow_dispatch) per testare la pulizia settimanale.
+    # Modalita' pulizia: svuota SUBITO il canale (tutto, fino a questo momento)
+    # e termina. Usata dal pulsante manuale (workflow_dispatch) come reset a
+    # richiesta. A differenza della pulizia del lunedi', qui cancello anche i
+    # messaggi di oggi perche' e' un'azione esplicita e voluta ora.
     if os.environ.get("PULIZIA_CANALE", "").lower() in ("1", "true", "yes"):
         stato = carica_stato()
         try:
-            stato["_pulito_fino_a"] = pulizia_canale(
-                stato.get("_pulito_fino_a", 0))
+            adesso = id_corrente_canale()
+            pulizia_canale(stato.get("_pulito_fino_a", 0), adesso)
+            stato["_pulito_fino_a"] = adesso
+            stato["_ultimo_id"] = adesso
+            stato["_id_fine_ieri"] = adesso  # niente da oggi da preservare
         except Exception as e:  # noqa: BLE001
             print(f"[errore] pulizia canale fallita: {e}")
             return 1
@@ -1258,20 +1293,29 @@ def main() -> int:
             s["vento_max"] = 0.0
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
+        # Fotografo il confine "fine di ieri": l'ultimo id inviato finora. Tutto
+        # cio' che il bot manda da adesso (oggi) avra' un id piu' alto e la
+        # pulizia del lunedi' NON lo tocchera'. (Primo run del giorno: qui non
+        # e' ancora stato inviato nulla, quindi _ultimo_id e' quello di ieri.)
+        stato["_id_fine_ieri"] = stato.get("_ultimo_id", 0)
         cambiato = True
 
     # --- Pulizia settimanale: ogni lunedi', al primo run della giornata,
-    # cancella tutti i messaggi della settimana passata cosi' gli iscritti
-    # non si ritrovano la chat intasata. Se fallisce (es. permesso admin
-    # "Elimina messaggi" mancante) riprova al giro successivo (15 min).
+    # cancella i messaggi delle settimane passate cosi' gli iscritti non si
+    # ritrovano la chat intasata. Cancella FINO all'ultimo messaggio di ieri
+    # (_id_fine_ieri): i messaggi di oggi restano. Imposto il flag _pulizia
+    # in OGNI caso (anche se qualcosa va storto) cosi' NON si ripete durante
+    # la giornata: la pulizia deve girare al massimo una volta al lunedi'.
     if adesso.weekday() == 0 and stato.get("_pulizia") != oggi:
+        ceiling = stato.get("_id_fine_ieri", 0)
         try:
-            stato["_pulito_fino_a"] = pulizia_canale(
-                stato.get("_pulito_fino_a", 0))
-            stato["_pulizia"] = oggi
-            cambiato = True
+            pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling)
+            stato["_pulito_fino_a"] = max(stato.get("_pulito_fino_a", 0),
+                                          ceiling)
         except Exception as e:  # noqa: BLE001
             print(f"[errore] pulizia canale fallita: {e}")
+        stato["_pulizia"] = oggi
+        cambiato = True
 
     # --- Bollettino mattutino: una volta al giorno, in mattinata ---
     # Esce TUTTI i giorni (giovedi' compreso): il grafico previsioni weekend
@@ -1515,6 +1559,12 @@ def main() -> int:
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio riepilogo fallito: {e}")
         stato["_riepilogo"] = oggi
+        cambiato = True
+
+    # Tengo aggiornato l'id piu' recente inviato: e' il confine che domani
+    # diventera' _id_fine_ieri (vedi reset giornaliero e pulizia settimanale).
+    if _ULTIMO_MSG_ID > stato.get("_ultimo_id", 0):
+        stato["_ultimo_id"] = _ULTIMO_MSG_ID
         cambiato = True
 
     if cambiato:

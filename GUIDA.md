@@ -241,10 +241,12 @@ L'avviso parte **solo quando il vento sale di fascia**:
 
 ## 🧹 Pulizia settimanale del canale
 
-Ogni **lunedì**, al primo controllo della giornata, il bot **cancella tutti i
-messaggi della settimana passata**: la chat del canale riparte pulita e gli
-iscritti non si ritrovano centinaia di vecchi messaggi da scorrere. Non serve
-fare nulla: la cronologia sparisce da sola anche dal telefono degli iscritti.
+Ogni **lunedì**, al primo controllo della giornata, il bot **cancella i
+messaggi delle settimane passate**: la chat del canale riparte pulita e gli
+iscritti non si ritrovano centinaia di vecchi messaggi da scorrere. I messaggi
+**di oggi (lunedì) restano**: sparisce solo tutto quello dei giorni precedenti.
+Non serve fare nulla: la cronologia sparisce da sola anche dal telefono degli
+iscritti.
 
 ## ⚠️ Importante
 
