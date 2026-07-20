@@ -48,15 +48,10 @@
   },
   "_benvenuti": {
     "offset": 961277670,
-    "in_attesa": [
-      {
-        "id": 997053056,
-        "nome": "Taniatanich"
-      }
-    ],
-    "data_invio": "2026-07-17"
+    "in_attesa": [],
+    "data_invio": "2026-07-20"
   },
   "_pulito_fino_a": 0,
   "_pulizia": "2026-07-20",
-  "_ultimo_id": 592
+  "_ultimo_id": 593
 }
