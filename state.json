@@ -31,13 +31,13 @@
         1014.8
       ]
     ],
-    "vento_prec": 4.5
+    "vento_prec": 4.7
   },
   "_data": "2026-07-20",
   "_riepilogo": "2026-07-19",
   "_bollettino": "2026-07-20",
   "_grafico": "2026-07-18",
-  "_stazioni_slot": "2026-07-20 14B",
+  "_stazioni_slot": "2026-07-20 15A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -58,5 +58,5 @@
   },
   "_pulito_fino_a": 0,
   "_pulizia": "2026-07-20",
-  "_ultimo_id": 583
+  "_ultimo_id": 584
 }
