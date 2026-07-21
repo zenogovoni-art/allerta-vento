@@ -24,7 +24,7 @@
     "livello": 0,
     "vento_max": 13.4,
     "raffica_max": 17.5,
-    "livello_raffica": 1,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-07-21T17:59:46.173327+02:00",
@@ -51,7 +51,7 @@
       "livello": 1
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 0
+      "livello": 1
     }
   },
   "_benvenuti": {
