@@ -58,10 +58,10 @@ Ogni ALERT arriva sempre come scheda a sé, con un box tutto suo per farlo
 risaltare: se scatta nello stesso momento della *Situazione vento*, viene
 pubblicato **un minuto dopo** (vedi più sotto).
 
-🔔 **Il telefono suona solo per gli ALERT.** Tutte le schede informative
-(Situazione vento, bollettino del mattino, grafici, riepilogo della sera,
-benvenuti) arrivano come **messaggi silenziosi**: le trovi nel canale, ma
-non ti disturbano. Quando senti la notifica di INFO VENTO, è un ALERT.
+🔔 **Il telefono suona per gli ALERT e per la Situazione vento**, i contenuti
+principali del canale. Le schede di contorno (bollettino del mattino,
+grafici, riepilogo della sera, benvenuti) arrivano invece come **messaggi
+silenziosi**: le trovi nel canale, ma non ti disturbano.
 
 ## 🌬️ I livelli dell'ALERT VENTO
 
@@ -290,9 +290,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
-- **Il telefono suona solo per gli ALERT**: tutte le schede informative
-  (Situazione vento, bollettini, grafici, riepilogo) ora arrivano come
-  messaggi silenziosi.
+- **Notifiche sonore solo per l'essenziale**: suonano gli ALERT e la
+  Situazione vento; le schede di contorno (bollettini, grafici, riepilogo,
+  benvenuti) ora arrivano come messaggi silenziosi.
 - **Grafico serale del vento**: il riepilogo delle 19:00 include il grafico
   dell'andamento reale del vento della giornata alle due stazioni.
 - **Fascia migliore per uscire**: il bollettino del mattino indica la

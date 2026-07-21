@@ -838,9 +838,9 @@ def invia_telegram(testo: str, silenzioso: bool = False) -> None:
     """Manda un messaggio al canale.
 
     Con silenzioso=True il messaggio arriva senza suoneria (Telegram
-    "disable_notification"): si usa per i contenuti informativi periodici
-    (situazione vento, bollettino del mattino, riepilogo, benvenuti), cosi'
-    il telefono suona SOLO per gli ALERT.
+    "disable_notification"): si usa per i contenuti di contorno (bollettino
+    del mattino, grafici, riepilogo, benvenuti). Suonano invece gli ALERT
+    e la situazione vento, i contenuti principali del canale.
     """
     global _ULTIMO_MSG_ID
     token = os.environ["TELEGRAM_TOKEN"]
@@ -1735,7 +1735,9 @@ def main() -> int:
                 righe.append("\n" + "\n".join(corrente))
         if almeno_uno:
             try:
-                invia_telegram("\n".join(righe), silenzioso=True)
+                # Con notifica sonora, come gli ALERT: la situazione vento e'
+                # il contenuto principale del canale per i soci.
+                invia_telegram("\n".join(righe))
                 stato["_stazioni_slot"] = slot
                 cambiato = True
                 bollettino_inviato = True
