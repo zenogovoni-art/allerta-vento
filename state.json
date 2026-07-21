@@ -1,6 +1,6 @@
 {
   "Porto Corsini": {
-    "livello": 2,
+    "livello": 1,
     "vento_max": 0.0,
     "raffica_max": 0.0,
     "livello_raffica": 0,
@@ -49,7 +49,7 @@
       "livello": 1
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 1
+      "livello": 0
     }
   },
   "_benvenuti": {
