@@ -9,7 +9,7 @@ Da incollare a mano in Telegram:
 --- Versione standard ---------------------------------------------
 
 ⛵🌬️ INFO VENTO — avvisi vento automatici e gratuiti per Lido di Spina.
-Scala: 🟩8 · 🟢10 · 🟡15 · 🟧20 · 🟥30 nodi, + alert raffica e pressione.
+Scala: ⚠️20 · 🟠25 · 🛑30 nodi, + alert raffica e pressione.
 Stazioni: Porto Corsini e Lido di Volano · attivo 9–19.
 Dati indicativi, non ufficiali.
 
@@ -17,5 +17,5 @@ Dati indicativi, non ufficiali.
 --- Versione ultra-corta ------------------------------------------
 
 ⛵🌬️ INFO VENTO — avvisi vento gratuiti per Lido di Spina.
-🟩8 · 🟢10 · 🟡15 · 🟧20 · 🟥30 nodi + raffica e pressione · 9–19.
+⚠️20 · 🟠25 · 🛑30 nodi + raffica e pressione · 9–19.
 Dati indicativi, non ufficiali.

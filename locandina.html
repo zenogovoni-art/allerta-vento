@@ -112,10 +112,8 @@
     border-radius: 999px; padding: 1.4mm 0;
   }
   .livello .d { font-size: 12.5px; line-height: 1.3; }
-  .l-verde  { background: linear-gradient(90deg, #14753a, #1d9950); }
-  .l-lime   { background: linear-gradient(90deg, #47912b, #63ad3a); }
-  .l-ambra  { background: linear-gradient(90deg, #b97e05, #d29b13); }
   .l-arancio{ background: linear-gradient(90deg, #d3500a, #ea6c1c); }
+  .l-scarlatto{ background: linear-gradient(90deg, #a52a0a, #c93d17); }
   .l-rosso  { background: linear-gradient(90deg, #a51818, #c92c2c); }
 
   /* ---- Card informative ---- */
@@ -181,23 +179,15 @@
 
     <div class="sezione-titolo">Gli ALERT VENTO — la scala di intensità</div>
     <div class="livelli">
-      <div class="livello l-verde">
-        <div class="n">8 nodi</div>
-        <div class="d"><b>Prime arie:</b> si comincia a navigare. Con intensità,
-          direzione e raffica del vento.</div>
-      </div>
-      <div class="livello l-lime">
-        <div class="n">10 nodi</div>
-        <div class="d"><b>🟢 Bella arietta da planata.</b></div>
-      </div>
-      <div class="livello l-ambra">
-        <div class="n">15 nodi</div>
-        <div class="d"><b>💨 Vento teso.</b> Divertente ma impegnativo.</div>
-      </div>
       <div class="livello l-arancio">
         <div class="n">20 nodi</div>
         <div class="d"><b>⚠️ Vento sostenuto.</b> Condizioni impegnative, solo
           per chi ha esperienza.</div>
+      </div>
+      <div class="livello l-scarlatto">
+        <div class="n">25 nodi</div>
+        <div class="d"><b>🟠 Vento forte.</b> Solo per equipaggi molto esperti
+          e ben attrezzati.</div>
       </div>
       <div class="livello l-rosso">
         <div class="n">30 nodi</div>
@@ -206,11 +196,12 @@
       </div>
     </div>
 
-    <div class="sezione-titolo">Situazione vento in tempo reale <span class="new">NOVITÀ</span></div>
+    <div class="sezione-titolo">Situazione vento in tempo reale</div>
     <div class="info" style="margin-bottom:4mm;">
-      🌬️ <b>Situazione vento ogni 30 minuti</b> (ore 9–19): intensità, direzione
-      e raffica di <b>entrambe le stazioni</b>, sempre — anche quando le
-      condizioni non cambiano.<br>
+      🌬️ <b>Situazione vento ogni 15 minuti</b> (ore 9–19): intensità e
+      direzione di <b>entrambe le stazioni</b>, sempre — anche quando le
+      condizioni non cambiano. La raffica compare solo quando è rilevante
+      (scende sotto una soglia e poi risale).<br>
       🌅 <b>Bollettino del mattino</b> con le previsioni del giorno, la
       <b>corrente di superficie</b>, <b>alta e bassa marea</b> (orari e cm sul
       livello medio del giorno) e la <b>fase lunare</b> crescente/calante.
@@ -240,7 +231,7 @@
       e la <b>Piattaforma CNR</b> al largo di Venezia) avvisano quando la bora
       supera <b>20 · 25 · 30 nodi</b> — in genere <b>1–2 ore di preavviso</b>.<br>
       🌀 <b>ALERT RAFFICA</b>: avviso anche quando la raffica di giornata
-      raggiunge <b>15 · 20 · 25 · 30 nodi</b>.<br>
+      raggiunge <b>20 · 25 · 30 nodi</b>.<br>
       📍 Stazioni: <b>Porto Corsini</b> (sud) e <b>Lido di Volano</b> (nord) &nbsp;•&nbsp;
       🕘 Attivo <b>ore 9:00 – 19:00</b> &nbsp;•&nbsp;
       🔄 Controllo <b>ogni 15 minuti</b><br>

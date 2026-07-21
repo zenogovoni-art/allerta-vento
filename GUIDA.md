@@ -48,7 +48,7 @@ In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: 
 
 | Scheda | Titolo (prima riga) | Quando arriva |
 |--------|---------------------|---------------|
-| Situazione vento | 🌬️ **SITUAZIONE VENTO — HH:MM** | ogni 30 minuti (9–19), sempre |
+| Situazione vento | 🌬️ **SITUAZIONE VENTO — HH:MM** | ogni 15 minuti (9–19), sempre |
 | Alert vento | 🌬️ **ALERT VENTO — Stazione** | il vento medio supera una soglia |
 | Alert raffica | 🌀 **ALERT RAFFICA — Stazione** | la raffica del giorno supera una soglia |
 | Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
@@ -64,25 +64,23 @@ stesso titolo **🌬️ ALERT VENTO — Stazione** e un'etichetta che ne dice la
 
 | Soglia | Etichetta | Cosa dice |
 |--------|-----------|-----------|
-| **da 8 nodi** | 🟢 8+ nodi | Prime arie: si comincia a navigare. |
-| **da 10 nodi** | 🟢 10+ nodi | Bella arietta da planata. |
-| **da 15 nodi** | 💨 15+ nodi | Vento teso: divertente ma impegnativo. |
 | **da 20 nodi** | ⚠️ 20+ nodi | Vento sostenuto: solo per chi ha esperienza, valutate bene. |
+| **da 25 nodi** | 🟠 25+ nodi | Vento forte: solo per equipaggi molto esperti e ben attrezzati. |
 | **da 30 nodi** | 🛑 30+ nodi | Vento molto forte: si sconsiglia di uscire, pericoloso anche per i più esperti. |
 
 Esempio di scheda:
 
 > 🌬️ *ALERT VENTO — Porto Corsini*\
-> 🟢 *10+ nodi* — *Bella arietta da planata.*
+> ⚠️ *20+ nodi* — *Vento sostenuto: solo per chi ha esperienza, valutate bene.*
 >
-> Vento **10.5 nodi** da SSW ↗️ — raffica **16.0 nodi**\
+> Vento **21.5 nodi** da SSW ↗️ — raffica **26.0 nodi**\
 > 📈 in aumento\
 > ⏱️ Possibile arrivo al circolo tra ~70 min
 
 ## 🌀 ALERT RAFFICA
 
 Oltre al vento, il bot avvisa quando la **raffica** della giornata raggiunge
-**15, 20, 25 o 30 nodi** (un avviso per soglia, una volta al giorno):
+**20, 25 o 30 nodi** (un avviso per soglia, una volta al giorno):
 
 > 🌀 *ALERT RAFFICA — Porto Corsini*
 > Oggi la raffica ha raggiunto **22.0 nodi** (soglia 20).
@@ -151,23 +149,32 @@ niente messaggi ripetuti finché la situazione resta stabile. Un vento forte
 da un'altra direzione (es. scirocco da SE) **non** fa scattare l'ALERT BORA:
 per quello ci sono gli alert delle stazioni locali.
 
-## 🌬️ Situazione vento ogni 30 minuti
+## 🌬️ Situazione vento ogni 15 minuti
 
-Dalle **9:00 alle 19:00**, ogni **mezz'ora**, il canale pubblica **sempre** la
-situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
-direzione e raffica massima della giornata — **anche quando le condizioni non
-cambiano**. È un quadro in tempo reale utile prima di decidere se uscire:
+Dalle **9:00 alle 19:00**, ogni **15 minuti**, il canale pubblica **sempre** la
+situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento e
+direzione — **anche quando le condizioni non cambiano**. È un quadro in tempo
+reale utile prima di decidere se uscire:
 
-> 🌬️ *SITUAZIONE VENTO — 11:30*\
-> 🌬️ *Porto Corsini* — 🟢 *Vento a 10 nodi*\
-> Vento **10.5 nodi** da SSW ↗️ — raffica max oggi **16.0 nodi**\
+> 🌬️ *SITUAZIONE VENTO — 11:15*\
+> 🌬️ *Porto Corsini* — ⚠️ *20+ nodi*\
+> Vento **20.5 nodi** da SSW ↗️\
 > 📈 in aumento · ⏱️ arrivo al circolo ~70 min\
 > 🌬️ *Lido di Volano*\
-> Vento **2.7 nodi** da E ⬅️ — raffica max oggi **5.4 nodi**
+> Vento **2.7 nodi** da E ⬅️
 
 A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
 questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
 aggiornato.
+
+La **raffica** invece non compare a ogni scheda: con troppi numeri il
+bollettino diventa difficile da leggere al volo. Compare solo quando è
+appena tornata rilevante, cioè quando **scende sotto una soglia (20, 25 o 30
+nodi) e poi risale sopra di essa**:
+
+> 🌬️ *Porto Corsini*\
+> Vento **26.0 nodi** da SSW ↗️\
+> 🌀 Raffica salita a **31.0 nodi** (soglia 30)
 
 La scheda delle **14:00** include in più l'**aggiornamento della corrente per
 il pomeriggio** (previsione Arpae + misura della boa): spesso al mattino il
@@ -233,9 +240,9 @@ o ➖ **stabile**, e una **freccia** che mostra verso dove sta soffiando.
 
 L'avviso parte **solo quando il vento sale di fascia**:
 
-- se il vento supera gli 8 nodi → ricevi l'avviso;
+- se il vento supera i 20 nodi → ricevi l'avviso;
 - se resta più o meno stabile → **non** ricevi altri messaggi;
-- se sale ancora di fascia (es. da 8 a 20, o da 20 a 30) → ricevi il nuovo
+- se sale ancora di fascia (es. da 20 a 25, o da 25 a 30) → ricevi il nuovo
   ALERT;
 - se scende sotto soglia e poi risale → ricevi di nuovo l'avviso.
 
@@ -258,6 +265,16 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Scala vento semplificata a tre livelli (20 · 25 · 30 nodi)**: eliminati
+  gli avvisi a 8 e 10 nodi, troppo frequenti e poco utili come alert; aggiunto
+  un livello intermedio a 25 nodi tra "attenzione" e "sconsigliato uscire".
+- **ALERT RAFFICA a tre livelli (20 · 25 · 30 nodi)**: eliminato il livello a
+  15 nodi.
+- **Situazione vento ogni 15 minuti** (prima ogni 30): il quadro in tempo
+  reale ora è aggiornato al passo del controllo delle stazioni.
+- **Raffica mostrata solo quando conta**: nella Situazione vento la raffica
+  non compare più a ogni scheda, ma solo quando scende sotto una soglia
+  (20/25/30) e poi risale — meno numeri, meno rischio di fraintendere.
 - **Pulizia settimanale del canale**: ogni lunedì il bot cancella tutti i
   messaggi della settimana passata, così la chat resta leggera.
 - **Corrente aggiornata alle 14:00**: la Situazione vento delle 14 include la
@@ -281,11 +298,8 @@ viene prima di tutto.
   preavviso.
 - **Titoli delle schede più chiari**: gli avvisi ora hanno un titolo di famiglia
   riconoscibile — **ALERT VENTO**, **ALERT RAFFICA**, **ALERT VARIAZIONE
-  PRESSIONE** — ben distinti dalla **Situazione vento** informativa delle ogni
-  mezz'ora (vedi tabella "Le schede che ricevi").
-- **Situazione vento ogni 30 minuti** (9:00–19:00): vento, direzione e raffica
-  delle due stazioni pubblicati sempre, anche a condizioni invariate. Se coincide
-  con un avviso, l'avviso confluisce nel bollettino (niente messaggi doppi).
+  PRESSIONE** — ben distinti dalla **Situazione vento** informativa (vedi
+  tabella "Le schede che ricevi").
 - **Maree più chiare e fase lunare nel bollettino delle 9:00**: altezze di
   marea in centimetri rispetto al livello medio del giorno (+ sopra, − sotto),
   escursione della giornata e luna crescente/calante.
@@ -301,14 +315,8 @@ viene prima di tutto.
   direzione negli avvisi.
 - **Stima di arrivo al circolo**: negli avvisi vento, una stima dei minuti
   perché il rinforzo raggiunga Lido di Spina.
-- **ALERT RAFFICA**: avviso quando la raffica di giornata raggiunge 15, 20, 25,
-  30 nodi.
 - **Filtri direzione**: Porto Corsini avvisa per venti da sud (E→S→O), Lido di
   Volano per venti da nord (O→N→E).
-- **Tre livelli di avviso**: oltre all'avviso normale (8 nodi), aggiunti due
-  ALERT di sicurezza a **20 nodi** (attenzione) e **30 nodi** (uscita
-  sconsigliata).
-- **Soglia abbassata a 8 nodi** (prima era 10).
 - **Controllo ogni 15 minuti** (prima ogni 30).
 - **Fascia oraria 09:00 – 19:00** (prima 07:00 – 21:00).
 - **Aggiunta la stazione di Lido di Volano** (nord), in più a Porto Corsini.

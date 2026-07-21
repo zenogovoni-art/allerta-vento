@@ -39,32 +39,22 @@ import requests
 #   descrizione -> frase estesa mostrata nell'ALERT VENTO a se' stante
 # Il titolo della scheda ("🌬️ ALERT VENTO — Stazione") e' aggiunto dal codice,
 # uguale per tutti i livelli: cosi' l'avviso e' riconoscibile a colpo d'occhio e
-# distinto dalla "Situazione vento" informativa delle ogni mezz'ora.
+# distinto dalla "Situazione vento" informativa che esce ogni 15 minuti.
 LIVELLI = [
-    {
-        "soglia": 8.0,
-        "riarmo": 7.0,
-        "tag": "🟢 *8+ nodi*",
-        "descrizione": "_Prime arie: si comincia a navigare._",
-    },
-    {
-        "soglia": 10.0,
-        "riarmo": 9.0,
-        "tag": "🟢 *10+ nodi*",
-        "descrizione": "_Bella arietta da planata._",
-    },
-    {
-        "soglia": 15.0,
-        "riarmo": 14.0,
-        "tag": "💨 *15+ nodi*",
-        "descrizione": "_Vento teso: divertente ma impegnativo._",
-    },
     {
         "soglia": 20.0,
         "riarmo": 19.0,
         "tag": "⚠️ *20+ nodi*",
         "descrizione": ("_Vento sostenuto: condizioni impegnative, adatte solo "
                         "a chi ha esperienza. Valutate bene prima di uscire._"),
+    },
+    {
+        "soglia": 25.0,
+        "riarmo": 24.0,
+        "tag": "🟠 *25+ nodi*",
+        "descrizione": ("_Vento forte: condizioni severe, adatte solo a "
+                        "equipaggi molto esperti e ben attrezzati. Valutate "
+                        "attentamente se uscire._"),
     },
     {
         "soglia": 30.0,
@@ -80,7 +70,6 @@ LIVELLI = [
 # scatta la prima volta che il picco di giornata supera ciascuna soglia (poi si
 # ri-arma quando il dato si azzera a mezzanotte).
 RAFFICA_LIVELLI = [
-    {"soglia": 15.0, "riarmo": 14.0},
     {"soglia": 20.0, "riarmo": 19.0},
     {"soglia": 25.0, "riarmo": 24.0},
     {"soglia": 30.0, "riarmo": 29.0},
@@ -300,9 +289,10 @@ CIRCOLO = (44.665, 12.231)  # (lat, lon) approssimati
 # perche' il modello oceanico restituisca correnti e livello del mare validi.
 PUNTO_MARE = (44.665, 12.35)  # (lat, lon) ~9 km al largo del circolo
 
-# Bollettino periodico "situazione stazioni": pubblicato una volta ogni mezz'ora
-# (slot :00-:29 e :30-:59) nella fascia oraria attiva, SEMPRE, anche se i dati
-# non sono cambiati. Il vento in tempo reale interessa ai soci del circolo.
+# Bollettino periodico "situazione stazioni": pubblicato una volta ogni quarto
+# d'ora (slot :00-:14, :15-:29, :30-:44, :45-:59), al passo del controllo delle
+# stazioni, nella fascia oraria attiva, SEMPRE, anche se i dati non sono
+# cambiati. Il vento in tempo reale interessa ai soci del circolo.
 
 # Elenco delle stazioni da controllare.
 # Per aggiungere una stazione a nord in futuro basta aggiungere un dict qui.
@@ -1332,15 +1322,16 @@ def main() -> int:
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio bollettino fallito: {e}")
 
-    # Il bollettino periodico stazioni esce una volta per "slot" di mezz'ora
-    # (:00-:29 / :30-:59) in fascia oraria. Lo calcolo PRIMA del giro sulle
-    # stazioni: se il bollettino esce in questo run, gli avvisi vento/raffica
-    # non partono come messaggi a se' stanti ma confluiscono nel bollettino
-    # (niente doppioni). Tra un bollettino e l'altro partono subito, da soli.
+    # Il bollettino periodico stazioni esce una volta per "slot" di un quarto
+    # d'ora (:00-:14 / :15-:29 / :30-:44 / :45-:59) in fascia oraria. Lo calcolo
+    # PRIMA del giro sulle stazioni: se il bollettino esce in questo run, gli
+    # avvisi vento/raffica non partono come messaggi a se' stanti ma confluiscono
+    # nel bollettino (niente doppioni). Tra un bollettino e l'altro partono
+    # subito, da soli.
     slot = None
     bollettino_dovuto = False
     if in_orario:
-        slot = f"{oggi} {adesso.hour:02d}{'A' if adesso.minute < 30 else 'B'}"
+        slot = f"{oggi} {adesso.hour:02d}{'ABCD'[adesso.minute // 15]}"
         bollettino_dovuto = stato.get("_stazioni_slot") != slot
 
     letture = {}  # nome -> dati (o None): serve al bollettino periodico
@@ -1487,11 +1478,15 @@ def main() -> int:
     if invia_benvenuti(stato, adesso):
         cambiato = True
 
-    # --- Bollettino periodico stazioni: una volta ogni mezz'ora, in fascia
+    # --- Bollettino periodico stazioni: una volta ogni 15 minuti, in fascia
     # oraria, SEMPRE (anche a dati invariati) perche' la situazione vento in
-    # tempo reale interessa ai soci. Se in questo run scatterebbe un avviso
-    # vento/raffica, le sue info confluiscono qui (banner del livello,
-    # tendenza, stima di arrivo) invece di un messaggio a se' stante. ---
+    # tempo reale interessa ai soci. La raffica NON compare sempre (con troppi
+    # numeri il bollettino confonde): solo quando ex["raffica_note"] segnala
+    # che e' appena risalita sopra una soglia dopo essere scesa sotto il
+    # riarmo (vedi calcolo di raffica_note piu' sopra). Se in questo run
+    # scatterebbe un avviso vento/raffica, le sue info confluiscono qui
+    # (banner del livello, tendenza, stima di arrivo) invece di un messaggio
+    # a se' stante. ---
     if bollettino_dovuto:
         righe = [f"🌬️ *SITUAZIONE VENTO — {adesso:%H:%M}*"]
         almeno_uno = False
@@ -1504,14 +1499,10 @@ def main() -> int:
             almeno_uno = True
             ex = extra.get(nome, {})
             dir_txt = f"{dati['direzione']} {freccia(dati['direzione'])}".strip()
-            raffica = dati.get("raffica")
-            raf_txt = (f" — raffica max oggi *{raffica:.1f} nodi*"
-                       if raffica is not None else "")
             testa = f"🌬️ *{nome}*"
-            if ex.get("banner"):  # livello d'avviso in corso (es. 🟢 Vento 10 nodi)
+            if ex.get("banner"):  # livello d'avviso in corso (es. ⚠️ 20+ nodi)
                 testa += f" — {ex['banner']}"
-            blocco = [testa,
-                      f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}{raf_txt}"]
+            blocco = [testa, f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}"]
             info = []
             tnd = ex.get("tendenza")
             if tnd and ("aumento" in tnd or "calo" in tnd):
