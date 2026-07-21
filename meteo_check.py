@@ -1416,14 +1416,25 @@ def main() -> int:
 
     # Modalita' annuncio: pubblica sul canale il contenuto di annuncio.md e
     # termina. Usata dal workflow annuncio.yml quando il file viene aggiornato.
+    # Se accanto allo script c'e' annuncio_foto.png, dopo il testo viene
+    # inviata anche la foto (didascalia opzionale in annuncio_foto.txt):
+    # per allegare un'immagine basta committarla, per non allegarla toglierla.
     if os.environ.get("INVIA_ANNUNCIO", "").lower() in ("1", "true", "yes"):
         testo = Path(__file__).with_name("annuncio.md").read_text(
             encoding="utf-8").strip()
         if not testo:
             print("[info] annuncio.md vuoto: nessun invio.")
             return 0
+        foto = Path(__file__).with_name("annuncio_foto.png")
+        didascalia_file = Path(__file__).with_name("annuncio_foto.txt")
         try:
             invia_telegram(testo)
+            if foto.exists():
+                didascalia = ""
+                if didascalia_file.exists():
+                    didascalia = didascalia_file.read_text(
+                        encoding="utf-8").strip()
+                invia_foto(foto.read_bytes(), didascalia)
         except Exception as e:  # noqa: BLE001
             print(f"[errore] invio annuncio fallito: {e}")
             return 1

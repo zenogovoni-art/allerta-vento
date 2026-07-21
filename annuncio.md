@@ -1,11 +1,13 @@
-💨 *NOVITÀ: ALERT BORA*
+🆕 *LE NOVITÀ DI OGGI SU INFO VENTO*
 
-La bora è il vento più temuto da chi naviga in deriva: scende da *nord-est* e arriva violenta, spesso con poco preavviso.
+🔔 *Il telefono suona solo per gli ALERT* — tutte le schede informative (Situazione vento, bollettini, grafici, riepilogo della sera) ora arrivano come *messaggi silenziosi*: le trovate nel canale, ma non vi disturbano. Quando sentite la notifica di INFO VENTO, è un ALERT.
 
-Da oggi INFO VENTO tiene d'occhio due stazioni "sentinella" a nord-est, proprio sulla rotta da cui scende la bora:
-🌊 *Sottomarina (Diga Sud Chioggia)* — l'anemometro sulla diga foranea
-🌊 *Piattaforma CNR* — la torre oceanografica al largo di Venezia
+📊 *Grafico della sera* — il riepilogo delle 19:00 ora include il *grafico dell'andamento reale del vento* della giornata alle due stazioni: vento pieno, raffica tratteggiata, soglie d'alert in evidenza.
 
-I dati vengono dalla *rete meteo-mareografica del Centro Maree di Venezia* — la stessa rete istituzionale che alimenta le previsioni dell'acqua alta — e sono aggiornati *ogni 5 minuti*.
+🕐 *Fascia migliore per uscire* — quando la giornata lo permette, il bollettino del mattino indica la *finestra oraria con vento adatto alla deriva* (~6–16 nodi), con intensità media e direzione.
 
-Quando su una sentinella la bora supera *20, 25 o 30 nodi* arriva subito un *ALERT BORA* con la stima di arrivo del vento a Lido di Spina: in genere *1–2 ore di preavviso* per rientrare a riva con calma. ⛵
+💨 *Nota "vento irregolare"* — l'ALERT VENTO ora segnala quando le raffiche superano di molto il vento medio: il vento "a strappi" è insidioso anche quando la media non spaventa.
+
+📈 *Tendenza sempre visibile* — ogni Situazione vento mostra se il vento è in aumento, stazionario o in calo; e gli ALERT arrivano sempre come *scheda a sé*, un minuto dopo, per risaltare meglio.
+
+⛵ E qui sotto trovate la *nuova locandina* di INFO VENTO: condividetela con chi ancora non conosce il canale!
