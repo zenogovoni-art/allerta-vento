@@ -203,8 +203,10 @@ def invia_foto(png: bytes, didascalia: str) -> None:
     url = f"https://api.telegram.org/bot{token}/sendPhoto"
     r = requests.post(
         url,
+        # disable_notification: contenuto informativo, niente suoneria (il
+        # telefono degli iscritti suona solo per gli ALERT).
         data={"chat_id": chat_id, "caption": didascalia,
-              "parse_mode": "Markdown"},
+              "parse_mode": "Markdown", "disable_notification": "true"},
         files={"photo": ("previsioni_weekend.png", png, "image/png")},
         timeout=60,
     )

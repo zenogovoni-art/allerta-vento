@@ -58,6 +58,11 @@ Ogni ALERT arriva sempre come scheda a sé, con un box tutto suo per farlo
 risaltare: se scatta nello stesso momento della *Situazione vento*, viene
 pubblicato **un minuto dopo** (vedi più sotto).
 
+🔔 **Il telefono suona solo per gli ALERT.** Tutte le schede informative
+(Situazione vento, bollettino del mattino, grafici, riepilogo della sera,
+benvenuti) arrivano come **messaggi silenziosi**: le trovi nel canale, ma
+non ti disturbano. Quando senti la notifica di INFO VENTO, è un ALERT.
+
 ## 🌬️ I livelli dell'ALERT VENTO
 
 Quando il vento medio supera una soglia arriva un **ALERT VENTO**, sempre con lo
@@ -77,6 +82,12 @@ Esempio di scheda:
 > Vento **21.5 nodi** da SSW ↗️ — raffica **26.0 nodi**\
 > 📈 in aumento\
 > ⏱️ Possibile arrivo al circolo tra ~70 min
+
+Quando le raffiche superano di molto il vento medio (di oltre il 60%),
+l'ALERT aggiunge una riga di attenzione in più — il vento "a strappi" è
+insidioso in deriva anche quando la media non spaventa:
+
+> 💨 *Vento irregolare: raffiche ben sopra la media*
 
 ## 🌀 ALERT RAFFICA
 
@@ -193,6 +204,16 @@ Ogni mattina verso le **9:00** la **previsione vento della giornata** per Lido d
 Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
 comprese. Viene inviato **tutti i giorni**, giovedì compreso.
 
+Quando la giornata lo permette, il bollettino indica anche la **fascia oraria
+migliore per uscire in deriva**: la finestra (di almeno 2 ore) in cui è
+previsto vento tra ~6 e ~16 nodi senza raffiche violente, con l'intensità
+media e la direzione:
+
+> 🕐 **Fascia migliore per uscire: 13–17** — ~10 nodi da SE.
+
+Se il giorno è tutto bonaccia o tutto vento forte, la riga semplicemente non
+compare.
+
 Da questo bollettino trovi anche alcuni dati marini utili alla navigazione:
 
 - 🌊 **Corrente a Lido di Spina** — la previsione della corrente di superficie
@@ -228,7 +249,11 @@ utile per programmare le uscite del fine settimana. *Previsione indicativa.*
 ## 📊 Riepilogo della sera
 
 Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
-registrati nella giornata.
+registrati nella giornata, accompagnato dal **grafico dell'andamento reale del
+vento**: le letture raccolte ogni 15 minuti dalle due stazioni diventano una
+curva che mostra com'è andata davvero la giornata (vento pieno, raffica
+tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). È il
+complemento "a consuntivo" del grafico delle previsioni weekend.
 
 ## 📈 Tendenza e direzione
 
@@ -265,6 +290,15 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Il telefono suona solo per gli ALERT**: tutte le schede informative
+  (Situazione vento, bollettini, grafici, riepilogo) ora arrivano come
+  messaggi silenziosi.
+- **Grafico serale del vento**: il riepilogo delle 19:00 include il grafico
+  dell'andamento reale del vento della giornata alle due stazioni.
+- **Fascia migliore per uscire**: il bollettino del mattino indica la
+  finestra oraria con vento previsto adatto alla deriva (~6–16 nodi).
+- **Nota "vento irregolare"**: l'ALERT VENTO segnala quando le raffiche
+  superano di molto il vento medio (vento a strappi).
 - **ALERT sganciati dalla Situazione vento**: non confluiscono più nel
   bollettino, arrivano sempre come scheda a sé con un box tutto suo —
   pubblicata un minuto dopo — per essere più riconoscibili, mentre la

@@ -45,6 +45,8 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Chat privata admin per il watchdog guasti stazioni (opzionale)
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
           TEST_TELEGRAM: ${{ inputs.test_telegram }}
           PULIZIA_CANALE: ${{ inputs.pulizia_canale }}
         run: python meteo_check.py

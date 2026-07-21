@@ -75,6 +75,10 @@ RAFFICA_LIVELLI = [
     {"soglia": 30.0, "riarmo": 29.0},
 ]
 
+# Raffica 10' / vento medio: da questo rapporto in su il vento e' "a strappi"
+# e l'ALERT VENTO lo segnala con una riga in piu'.
+RAFFICOSO_FATTORE = 1.6
+
 # Livelli di avviso sulla CADUTA di pressione, normalizzata a 3 ore (hPa).
 # La tendenza barometrica si misura sullo standard delle 3 ore: un calo di
 # 3 hPa/3h mette l'equipaggio in allerta, oltre i 6 hPa/3h e' un calo "molto
@@ -427,6 +431,44 @@ def _dir16(gradi: float) -> str:
     return _COMPASS16[int((gradi + 11.25) // 22.5) % 16]
 
 
+# Fascia consigliata per uscire in deriva, calcolata sulla previsione oraria:
+# vento medio ne' troppo debole ne' vicino alla soglia del primo alert, e
+# raffiche previste non violente.
+FASCIA_VENTO_MIN = 6.0    # nodi: sotto, non si plana e ci si annoia
+FASCIA_VENTO_MAX = 16.0   # nodi: sopra, meglio lasciare ai piu' esperti
+FASCIA_RAFFICA_MAX = 22.0  # nodi: raffiche oltre = vento troppo irregolare
+
+
+def fascia_migliore(ore, ws, wg, wd):
+    """Fascia oraria contigua piu' lunga con vento "da deriva", o None.
+
+    Un'ora e' buona se il vento medio previsto sta tra FASCIA_VENTO_MIN e
+    FASCIA_VENTO_MAX e le raffiche sotto FASCIA_RAFFICA_MAX, dentro l'orario
+    attivo del canale. Serve una fascia di almeno 2 ore.
+    Ritorna (ora_inizio, ora_fine, media_nodi, sigla_direzione).
+    """
+    buone = []
+    for i, t in enumerate(ore):
+        ora = int(t[11:13])
+        if (ORA_INIZIO <= ora < ORA_FINE
+                and FASCIA_VENTO_MIN <= ws[i] <= FASCIA_VENTO_MAX
+                and wg[i] <= FASCIA_RAFFICA_MAX):
+            buone.append((ora, i))
+    if not buone:
+        return None
+    migliore = corrente = [buone[0]]
+    for prec, cur in zip(buone, buone[1:]):
+        corrente = corrente + [cur] if cur[0] == prec[0] + 1 else [cur]
+        if len(corrente) > len(migliore):
+            migliore = corrente
+    if len(migliore) < 2:
+        return None
+    idx = [i for _, i in migliore]
+    media = sum(ws[i] for i in idx) / len(idx)
+    sigla = _dir16(wd[idx[len(idx) // 2]])
+    return migliore[0][0], migliore[-1][0] + 1, media, sigla
+
+
 def bollettino_mattutino():
     """Previsione vento del giorno per il circolo (Open-Meteo). None se fallisce."""
     lat, lon = CIRCOLO
@@ -462,6 +504,15 @@ def bollettino_mattutino():
     if ora_vmax is not None:
         righe.append(f"Max previsto: ~{vmax:.0f} nodi (raffiche fino a "
                      f"{gmax:.0f}) verso le {ora_vmax}:00.")
+
+    # Fascia consigliata per la deriva: solo quando esiste davvero una
+    # finestra di almeno 2 ore con vento "giusto"; se il giorno e' tutto
+    # bonaccia o tutto burrasca, niente riga (il quadro sopra basta).
+    fascia = fascia_migliore(ore, ws, wg, wd)
+    if fascia:
+        f_da, f_a, f_media, f_dir = fascia
+        righe.append(f"🕐 *Fascia migliore per uscire: {f_da}–{f_a}* — "
+                     f"~{f_media:.0f} nodi da {f_dir}.")
 
     # Corrente: previsione locale Arpae Adriac (punto davanti al circolo),
     # con il riscontro misurato dalla boa Nausicaa 2. Se Adriac non e'
@@ -783,14 +834,22 @@ def leggi_stazione(st: dict) -> dict | None:
 _ULTIMO_MSG_ID = 0
 
 
-def invia_telegram(testo: str) -> None:
+def invia_telegram(testo: str, silenzioso: bool = False) -> None:
+    """Manda un messaggio al canale.
+
+    Con silenzioso=True il messaggio arriva senza suoneria (Telegram
+    "disable_notification"): si usa per i contenuti informativi periodici
+    (situazione vento, bollettino del mattino, riepilogo, benvenuti), cosi'
+    il telefono suona SOLO per gli ALERT.
+    """
     global _ULTIMO_MSG_ID
     token = os.environ["TELEGRAM_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     r = requests.post(
         url,
-        json={"chat_id": chat_id, "text": testo, "parse_mode": "Markdown"},
+        json={"chat_id": chat_id, "text": testo, "parse_mode": "Markdown",
+              "disable_notification": silenzioso},
         timeout=30,
     )
     r.raise_for_status()
@@ -798,6 +857,91 @@ def invia_telegram(testo: str) -> None:
     if isinstance(mid, int):
         _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, mid)
     print("[ok] messaggio Telegram inviato")
+
+
+def invia_foto(png: bytes, didascalia: str, silenzioso: bool = False) -> None:
+    """Manda una foto (PNG in memoria) al canale, con didascalia."""
+    global _ULTIMO_MSG_ID
+    token = os.environ["TELEGRAM_TOKEN"]
+    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+    r = requests.post(
+        f"https://api.telegram.org/bot{token}/sendPhoto",
+        data={"chat_id": chat_id, "caption": didascalia,
+              "parse_mode": "Markdown",
+              "disable_notification": json.dumps(silenzioso)},
+        files={"photo": ("grafico.png", png, "image/png")},
+        timeout=60,
+    )
+    r.raise_for_status()
+    mid = r.json().get("result", {}).get("message_id")
+    if isinstance(mid, int):
+        _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, mid)
+    print("[ok] foto Telegram inviata")
+
+
+def invia_telegram_admin(testo: str) -> None:
+    """Messaggio PRIVATO all'admin del canale (non passa dal canale).
+
+    Usa TELEGRAM_ADMIN_CHAT_ID (l'id della chat privata tra admin e bot).
+    Se la variabile non e' configurata non fa nulla: il watchdog e' una
+    funzione opzionale di manutenzione.
+    """
+    admin = os.environ.get("TELEGRAM_ADMIN_CHAT_ID")
+    if not admin:
+        print("[info] TELEGRAM_ADMIN_CHAT_ID non configurato, avviso saltato")
+        return
+    token = os.environ["TELEGRAM_TOKEN"]
+    r = requests.post(
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        json={"chat_id": admin, "text": testo, "parse_mode": "Markdown"},
+        timeout=30,
+    )
+    r.raise_for_status()
+    print("[ok] avviso admin inviato")
+
+
+GUASTO_AVVISO_MIN = 60  # minuti di stazione illeggibile prima dell'avviso
+
+
+def watchdog_stazione(stato: dict, nome: str, ok: bool,
+                      adesso: datetime, in_orario: bool) -> bool:
+    """Avvisa l'admin (in privato) se una stazione resta illeggibile a lungo.
+
+    Il guasto puo' essere della stazione o del parser (pagina cambiata):
+    in entrambi i casi il canale mostrerebbe "dati non disponibili" senza
+    che nessuno se ne accorga. Un solo avviso per guasto, piu' uno quando
+    la stazione torna a rispondere. Il canale non viene toccato.
+    Ritorna True se lo stato e' cambiato.
+    """
+    s = stato.setdefault(nome, {})
+    if ok:
+        if "guasto_da" not in s:
+            return False
+        if s.pop("guasto_avvisato", None):
+            try:
+                invia_telegram_admin(f"✅ *{nome}* è tornata leggibile.")
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] avviso admin fallito: {e}")
+        s.pop("guasto_da", None)
+        return True
+    if not in_orario:
+        return False  # di notte i siti fanno manutenzione: niente conteggi
+    da = s.get("guasto_da")
+    if da is None:
+        s["guasto_da"] = adesso.isoformat()
+        return True
+    minuti = (adesso - datetime.fromisoformat(da)).total_seconds() / 60
+    if not s.get("guasto_avvisato") and minuti >= GUASTO_AVVISO_MIN:
+        try:
+            invia_telegram_admin(
+                f"🛠️ *{nome}* illeggibile da ~{int(minuti)} minuti: "
+                f"stazione guasta o pagina cambiata? Il canale intanto "
+                f"mostra \"dati non disponibili\".")
+            s["guasto_avvisato"] = True
+            return True
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] avviso admin fallito: {e}")
+    return False
 
 
 def id_corrente_canale() -> int:
@@ -1093,7 +1237,8 @@ def invia_benvenuti(stato: dict, adesso: datetime) -> bool:
         iscritti = ("Oggi si sono uniti al canale "
                     f"{', '.join(nomi[:-1])} e {nomi[-1]}.")
     try:
-        invia_telegram(BENVENUTO_TEMPLATE.format(iscritti=iscritti))
+        invia_telegram(BENVENUTO_TEMPLATE.format(iscritti=iscritti),
+                       silenzioso=True)
     except Exception as e:  # noqa: BLE001
         print(f"[errore] invio benvenuto fallito: {e}")
         return False
@@ -1184,6 +1329,76 @@ def controlla_pressione(stato: dict) -> bool:
                 print(f"[errore] invio alert pressione fallito: {e}")
 
     return cambiato
+
+
+# --------------------------------------------------------------------------
+# GRAFICO SERALE - andamento del vento della giornata
+# --------------------------------------------------------------------------
+# Le letture accumulate ogni 15 minuti in stato["_serie"] diventano, all'ora
+# del riepilogo, un grafico dell'andamento reale del vento: il complemento
+# "a consuntivo" del grafico previsioni weekend.
+
+GRAFICO_GIORNO_MIN_PUNTI = 4  # sotto questa soglia il grafico non dice nulla
+
+
+def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
+    """PNG con l'andamento del vento di oggi, o None se dati insufficienti.
+
+    serie: {nome stazione: [["HH:MM", vento, raffica10' | None], ...]}.
+    Matplotlib viene importato qui dentro: serve una volta al giorno e
+    caricarlo a ogni run dei controlli sarebbe uno spreco.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    colori = {"Porto Corsini": "#075985", "Lido di Volano": "#d3500a"}
+    fig, ax = plt.subplots(figsize=(9, 4.8), dpi=150)
+    disegnato = False
+    for nome, punti in serie.items():
+        if len(punti) < GRAFICO_GIORNO_MIN_PUNTI:
+            continue
+        ore = [int(p[0][:2]) + int(p[0][3:]) / 60.0 for p in punti]
+        venti = [p[1] for p in punti]
+        colore = colori.get(nome)
+        ax.plot(ore, venti, label=nome, color=colore, linewidth=2.2)
+        raffiche = [p[2] if p[2] is not None else float("nan") for p in punti]
+        if any(p[2] is not None for p in punti):
+            ax.plot(ore, raffiche, label=f"{nome} — raffica", color=colore,
+                    linewidth=1.3, linestyle="--", alpha=0.65)
+        disegnato = True
+    if not disegnato:
+        plt.close(fig)
+        return None
+
+    # Linee delle soglie d'alert, ma solo quelle vicine ai valori del giorno:
+    # con un massimo di 8 nodi tirare l'asse fino a 30 schiaccerebbe tutto.
+    ymax = ax.get_ylim()[1]
+    for liv in LIVELLI:
+        if liv["soglia"] <= ymax + 2:
+            ax.axhline(liv["soglia"], color="#a51818", linewidth=0.8,
+                       linestyle=":", alpha=0.6)
+            ax.annotate(f"{liv['soglia']:.0f} nodi", xy=(1.0, liv["soglia"]),
+                        xycoords=("axes fraction", "data"),
+                        xytext=(-4, 3), textcoords="offset points",
+                        ha="right", fontsize=8, color="#a51818", alpha=0.8)
+
+    ax.set_title(f"Vento di oggi — {adesso:%d/%m/%Y}", fontsize=13,
+                 fontweight="bold", color="#12384f")
+    ax.set_ylabel("nodi")
+    ax.set_xlabel("ora")
+    ax.set_xlim(ORA_INIZIO, ORA_FINE)
+    ax.set_xticks(range(ORA_INIZIO, ORA_FINE + 1))
+    ax.set_ylim(bottom=0)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="upper left", fontsize=9)
+    fig.tight_layout()
+
+    import io
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png")
+    plt.close(fig)
+    return buf.getvalue()
 
 
 # --------------------------------------------------------------------------
@@ -1283,6 +1498,7 @@ def main() -> int:
             s["vento_max"] = 0.0
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
+        stato.pop("_serie", None)  # serie del grafico serale: riparte da zero
         # Fotografo il confine "fine di ieri": l'ultimo id inviato finora. Tutto
         # cio' che il bot manda da adesso (oggi) avra' un id piu' alto e la
         # pulizia del lunedi' NON lo tocchera'. (Primo run del giorno: qui non
@@ -1316,7 +1532,7 @@ def main() -> int:
         msg = bollettino_mattutino()
         if msg:
             try:
-                invia_telegram(msg)
+                invia_telegram(msg, silenzioso=True)
                 stato["_bollettino"] = oggi
                 cambiato = True
             except Exception as e:  # noqa: BLE001
@@ -1338,6 +1554,8 @@ def main() -> int:
         nome = st["nome"]
         dati = leggi_stazione(st)
         letture[nome] = dati
+        if watchdog_stazione(stato, nome, dati is not None, adesso, in_orario):
+            cambiato = True
         if dati is None:
             continue  # non tocco lo stato se non riesco a leggere
 
@@ -1386,6 +1604,13 @@ def main() -> int:
             s["vento_max"] = max(s.get("vento_max", 0.0), vento)
             if raffica is not None:
                 s["raffica_max"] = max(s.get("raffica_max", 0.0), raffica)
+            # Serie del giorno per il grafico serale: come raffica uso quella
+            # degli ultimi 10 minuti (dato attuale); la massima giornaliera
+            # non ha senso in un grafico orario.
+            raf10 = dati.get("raffica_10min")
+            stato.setdefault("_serie", {}).setdefault(nome, []).append(
+                [f"{adesso:%H:%M}", round(vento, 1),
+                 round(raf10, 1) if raf10 is not None else None])
             cambiato = True
 
         # Direzione "verso il circolo": True se il vento arriva da un settore
@@ -1419,6 +1644,15 @@ def main() -> int:
                          f"Vento *{vento:.1f} nodi* da {dir_txt}{raffica_txt}")
                 if tendenza:
                     corpo += f"\n{tendenza}"
+                # Vento a strappi: se la raffica degli ultimi 10 minuti
+                # supera di molto la media (rapporto >= RAFFICOSO_FATTORE),
+                # il vento e' irregolare — condizione insidiosa in deriva
+                # anche quando la media non spaventa.
+                raf10 = dati.get("raffica_10min")
+                if (raf10 is not None and vento >= 8
+                        and raf10 / vento >= RAFFICOSO_FATTORE):
+                    corpo += ("\n💨 _Vento irregolare: raffiche ben sopra "
+                              "la media_")
                 if eta_min is not None:
                     corpo += (f"\n⏱️ Possibile arrivo al circolo tra "
                               f"~{eta_min} min")
@@ -1490,7 +1724,7 @@ def main() -> int:
                 righe.append("\n" + "\n".join(corrente))
         if almeno_uno:
             try:
-                invia_telegram("\n".join(righe))
+                invia_telegram("\n".join(righe), silenzioso=True)
                 stato["_stazioni_slot"] = slot
                 cambiato = True
                 bollettino_inviato = True
@@ -1526,8 +1760,20 @@ def main() -> int:
                          f"raffica max *{rtxt}*")
         if almeno_uno:
             righe.append("⛵ Buona serata!")
+            # Il riepilogo viaggia come didascalia del grafico della giornata:
+            # un solo messaggio con numeri e andamento. Se il grafico non si
+            # puo' fare (dati troppo scarsi o matplotlib assente), testo e
+            # basta come prima.
+            png = None
             try:
-                invia_telegram("\n".join(righe))
+                png = grafico_giornata(stato.get("_serie") or {}, adesso)
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] grafico giornata fallito: {e}")
+            try:
+                if png:
+                    invia_foto(png, "\n".join(righe), silenzioso=True)
+                else:
+                    invia_telegram("\n".join(righe), silenzioso=True)
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio riepilogo fallito: {e}")
         stato["_riepilogo"] = oggi
