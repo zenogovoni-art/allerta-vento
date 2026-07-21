@@ -54,8 +54,9 @@ In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: 
 | Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
 | Alert bora | 💨 **ALERT BORA — Sentinella** | vento forte da NE sulle sentinelle a nord |
 
-Se un ALERT capita proprio mentre esce la *Situazione vento*, confluisce dentro
-di essa: niente doppioni (vedi più sotto).
+Ogni ALERT arriva sempre come scheda a sé, con un box tutto suo per farlo
+risaltare: se scatta nello stesso momento della *Situazione vento*, viene
+pubblicato **un minuto dopo** (vedi più sotto).
 
 ## 🌬️ I livelli dell'ALERT VENTO
 
@@ -152,29 +153,27 @@ per quello ci sono gli alert delle stazioni locali.
 ## 🌬️ Situazione vento ogni 15 minuti
 
 Dalle **9:00 alle 19:00**, ogni **15 minuti**, il canale pubblica **sempre** la
-situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento e
-direzione — **anche quando le condizioni non cambiano**. È un quadro in tempo
-reale utile prima di decidere se uscire:
+situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
+direzione e tendenza — **anche quando le condizioni non cambiano**. È un
+quadro in tempo reale utile prima di decidere se uscire, tenuto volutamente
+snello:
 
 > 🌬️ *SITUAZIONE VENTO — 11:15*\
-> 🌬️ *Porto Corsini* — ⚠️ *20+ nodi*\
+> 🌬️ *Porto Corsini*\
 > Vento **20.5 nodi** da SSW ↗️\
-> 📈 in aumento · ⏱️ arrivo al circolo ~70 min\
+> 📈 in aumento\
 > 🌬️ *Lido di Volano*\
-> Vento **2.7 nodi** da E ⬅️
+> Vento **2.7 nodi** da E ⬅️\
+> ➖ stazionario
+
+Ogni scheda mostra se il vento, rispetto alla Situazione vento precedente, è
+📈 **in aumento**, ➖ **stazionario** o 📉 **in calo**.
 
 A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
 questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
-aggiornato.
-
-La **raffica** invece non compare a ogni scheda: con troppi numeri il
-bollettino diventa difficile da leggere al volo. Compare solo quando è
-appena tornata rilevante, cioè quando **scende sotto una soglia (20, 25 o 30
-nodi) e poi risale sopra di essa**:
-
-> 🌬️ *Porto Corsini*\
-> Vento **26.0 nodi** da SSW ↗️\
-> 🌀 Raffica salita a **31.0 nodi** (soglia 30)
+aggiornato. Il livello raggiunto, la stima di arrivo al circolo e la raffica
+non compaiono qui: restano nella scheda dell'ALERT, per tenere questo
+bollettino leggero.
 
 La scheda delle **14:00** include in più l'**aggiornamento della corrente per
 il pomeriggio** (previsione Arpae + misura della boa): spesso al mattino il
@@ -182,11 +181,11 @@ vento è debole e si esce dopo pranzo — a quell'ora la previsione della
 corrente è anche più fresca, perché il run del giorno del modello Adriac è
 ormai pubblicato.
 
-Se in quel momento ci sono anche le **condizioni di un avviso** (vento sopra
-soglia o nuova raffica), l'avviso **confluisce dentro il bollettino** — con il
-livello raggiunto, la **tendenza** (in aumento / in calo) e la stima di arrivo
-al circolo — invece di arrivare come messaggio separato: niente doppioni. Tra un
-bollettino e l'altro, invece, gli avvisi partono subito da soli.
+Se in quel momento ci sono anche le **condizioni di un ALERT** (vento sopra
+soglia o nuova raffica), l'ALERT **non confluisce più nel bollettino**: arriva
+come scheda a sé, con un box tutto suo per farlo risaltare, pubblicata **un
+minuto dopo** la Situazione vento. Tra un bollettino e l'altro, invece, gli
+ALERT partono subito da soli.
 
 ## 🌅 Bollettino del mattino
 
@@ -231,10 +230,11 @@ utile per programmare le uscite del fine settimana. *Previsione indicativa.*
 Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
 registrati nella giornata.
 
-## 📈 Tendenza e direzione negli avvisi
+## 📈 Tendenza e direzione
 
-Negli avvisi di vento trovi sempre se il vento è 📈 **in aumento**, 📉 **in calo**
-o ➖ **stabile**, e una **freccia** che mostra verso dove sta soffiando.
+Sia nella **Situazione vento** sia negli **ALERT VENTO** trovi sempre se il
+vento è 📈 **in aumento**, ➖ **stazionario** o 📉 **in calo** rispetto alla
+lettura precedente, e una **freccia** che mostra verso dove sta soffiando.
 
 ## Come "ragiona" il bot (per non riempirti di messaggi)
 
@@ -265,6 +265,13 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **ALERT sganciati dalla Situazione vento**: non confluiscono più nel
+  bollettino, arrivano sempre come scheda a sé con un box tutto suo —
+  pubblicata un minuto dopo — per essere più riconoscibili, mentre la
+  Situazione vento resta più snella.
+- **Tendenza sempre visibile nella Situazione vento**: ogni scheda mostra se
+  il vento, rispetto al bollettino precedente, è 📈 in aumento, ➖
+  stazionario o 📉 in calo.
 - **Scala vento semplificata a tre livelli (20 · 25 · 30 nodi)**: eliminati
   gli avvisi a 8 e 10 nodi, troppo frequenti e poco utili come alert; aggiunto
   un livello intermedio a 25 nodi tra "attenzione" e "sconsigliato uscire".
@@ -272,9 +279,6 @@ viene prima di tutto.
   15 nodi.
 - **Situazione vento ogni 15 minuti** (prima ogni 30): il quadro in tempo
   reale ora è aggiornato al passo del controllo delle stazioni.
-- **Raffica mostrata solo quando conta**: nella Situazione vento la raffica
-  non compare più a ogni scheda, ma solo quando scende sotto una soglia
-  (20/25/30) e poi risale — meno numeri, meno rischio di fraintendere.
 - **Pulizia settimanale del canale**: ogni lunedì il bot cancella tutti i
   messaggi della settimana passata, così la chat resta leggera.
 - **Corrente aggiornata alle 14:00**: la Situazione vento delle 14 include la

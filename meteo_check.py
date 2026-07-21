@@ -1324,18 +1324,16 @@ def main() -> int:
 
     # Il bollettino periodico stazioni esce una volta per "slot" di un quarto
     # d'ora (:00-:14 / :15-:29 / :30-:44 / :45-:59) in fascia oraria. Lo calcolo
-    # PRIMA del giro sulle stazioni: se il bollettino esce in questo run, gli
-    # avvisi vento/raffica non partono come messaggi a se' stanti ma confluiscono
-    # nel bollettino (niente doppioni). Tra un bollettino e l'altro partono
-    # subito, da soli.
+    # PRIMA del giro sulle stazioni.
     slot = None
     bollettino_dovuto = False
     if in_orario:
         slot = f"{oggi} {adesso.hour:02d}{'ABCD'[adesso.minute // 15]}"
         bollettino_dovuto = stato.get("_stazioni_slot") != slot
 
-    letture = {}  # nome -> dati (o None): serve al bollettino periodico
-    extra = {}    # nome -> info avviso (tendenza/banner/eta/raffica) per il bollettino
+    letture = {}          # nome -> dati (o None): serve al bollettino periodico
+    tendenze = {}         # nome -> tendenza (📈/➖/📉) per il bollettino
+    messaggi_alert = []   # avvisi vento/raffica pronti da inviare a se' stanti
     for st in STAZIONI:
         nome = st["nome"]
         dati = leggi_stazione(st)
@@ -1362,14 +1360,14 @@ def main() -> int:
         raf_ora = (calcola_livello(raffica_alert, raf_prima, RAFFICA_LIVELLI)
                    if raffica_alert is not None else raf_prima)
 
-        # Tendenza rispetto alla lettura precedente (solo in orario attivo).
+        # Tendenza rispetto al bollettino precedente (solo in orario attivo).
         vento_prec = s.get("vento_prec")
         tendenza = None
         if in_orario and vento_prec is not None:
             delta = vento - vento_prec
             tendenza = ("📈 in aumento" if delta >= 1
                         else "📉 in calo" if delta <= -1
-                        else "➖ stabile")
+                        else "➖ stazionario")
 
         print(f"[{nome}] vento {vento} kts {direzione} raffica {raffica} kts "
               f"(vento liv {livello_prima}->{livello_ora}, "
@@ -1396,33 +1394,20 @@ def main() -> int:
         direzioni_ok = (st["direzioni"] is None
                         or direzione in st["direzioni"])
 
-        # Info dell'avviso (banner del livello, stima di arrivo, salto di
-        # raffica) da mostrare solo quando la direzione punta verso il circolo.
-        # Le raccolgo qui: servono sia al messaggio d'avviso a se' stante sia,
-        # se in questo run esce il bollettino, per confluire dentro di esso.
-        banner = raffica_note = None
+        tendenze[nome] = tendenza
+
+        # Stima di arrivo al circolo, usata nel messaggio ALERT VENTO qui
+        # sotto (solo se il livello e' salito e la direzione punta verso il
+        # circolo).
         eta_min = None
-        if direzioni_ok:
-            if livello_ora >= 1:
-                banner = LIVELLI[livello_ora - 1]["tag"]
-                eta = stima_arrivo_min(st.get("coord"), direzione, vento)
-                if eta is not None:
-                    eta_min = max(5, int(round(eta / 5.0) * 5))
-            if raf_ora > raf_prima:
-                soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
-                raffica_note = (f"🌀 Raffica salita a *{raffica_alert:.1f} "
-                                f"nodi* (soglia {soglia:.0f})")
-        extra[nome] = {"tendenza": tendenza, "banner": banner,
-                       "eta_min": eta_min, "raffica_note": raffica_note}
+        if direzioni_ok and livello_ora >= 1:
+            eta = stima_arrivo_min(st.get("coord"), direzione, vento)
+            if eta is not None:
+                eta_min = max(5, int(round(eta / 5.0) * 5))
 
-        # Se il bollettino esce in questo run, gli avvisi confluiscono li'
-        # dentro: non mando i messaggi a se' stanti.
-        if bollettino_dovuto:
-            if livello_ora > livello_prima or raf_ora > raf_prima:
-                print(f"[info] avviso {nome} confluito nel bollettino stazioni")
-            continue
-
-        # --- ALERT VENTO: solo quando il livello SALE (e direzione OK) ---
+        # --- ALERT VENTO: solo quando il livello SALE (e direzione OK). E'
+        # sempre un messaggio a se' stante, mai confluito nel bollettino: vedi
+        # invio ritardato di un minuto piu' sotto. ---
         if livello_ora > livello_prima:
             if in_orario and direzioni_ok:
                 liv = LIVELLI[livello_ora - 1]
@@ -1437,10 +1422,7 @@ def main() -> int:
                 if eta_min is not None:
                     corpo += (f"\n⏱️ Possibile arrivo al circolo tra "
                               f"~{eta_min} min")
-                try:
-                    invia_telegram(corpo)
-                except Exception as e:  # noqa: BLE001
-                    print(f"[errore] invio Telegram fallito: {e}")
+                messaggi_alert.append(corpo)
             else:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
                 print(f"[info] superamento vento ma avviso non inviato "
@@ -1456,10 +1438,7 @@ def main() -> int:
                 testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
                          f"La raffica ha raggiunto *{raffica_alert:.1f} nodi* "
                          f"(soglia {soglia:.0f}) da {dir_txt}.")
-                try:
-                    invia_telegram(testo)
-                except Exception as e:  # noqa: BLE001
-                    print(f"[errore] invio Telegram raffica fallito: {e}")
+                messaggi_alert.append(testo)
             else:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
                 print(f"[info] soglia raffica superata ma avviso non inviato "
@@ -1480,13 +1459,11 @@ def main() -> int:
 
     # --- Bollettino periodico stazioni: una volta ogni 15 minuti, in fascia
     # oraria, SEMPRE (anche a dati invariati) perche' la situazione vento in
-    # tempo reale interessa ai soci. La raffica NON compare sempre (con troppi
-    # numeri il bollettino confonde): solo quando ex["raffica_note"] segnala
-    # che e' appena risalita sopra una soglia dopo essere scesa sotto il
-    # riarmo (vedi calcolo di raffica_note piu' sopra). Se in questo run
-    # scatterebbe un avviso vento/raffica, le sue info confluiscono qui
-    # (banner del livello, tendenza, stima di arrivo) invece di un messaggio
-    # a se' stante. ---
+    # tempo reale interessa ai soci. Box snello: solo vento, direzione e
+    # tendenza rispetto al bollettino precedente. Gli alert vento/raffica non
+    # confluiscono piu' qui: partono come messaggi a se' stanti (vedi sotto),
+    # cosi' restano ben visibili. ---
+    bollettino_inviato = False
     if bollettino_dovuto:
         righe = [f"🌬️ *SITUAZIONE VENTO — {adesso:%H:%M}*"]
         almeno_uno = False
@@ -1497,22 +1474,12 @@ def main() -> int:
                 righe.append(f"\n*{nome}*: dati non disponibili")
                 continue
             almeno_uno = True
-            ex = extra.get(nome, {})
             dir_txt = f"{dati['direzione']} {freccia(dati['direzione'])}".strip()
-            testa = f"🌬️ *{nome}*"
-            if ex.get("banner"):  # livello d'avviso in corso (es. ⚠️ 20+ nodi)
-                testa += f" — {ex['banner']}"
-            blocco = [testa, f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}"]
-            info = []
-            tnd = ex.get("tendenza")
-            if tnd and ("aumento" in tnd or "calo" in tnd):
-                info.append(tnd)  # la tendenza "stabile" la ometto (poco utile)
-            if ex.get("eta_min") is not None:
-                info.append(f"⏱️ arrivo al circolo ~{ex['eta_min']} min")
-            if info:
-                blocco.append(" · ".join(info))
-            if ex.get("raffica_note"):
-                blocco.append(ex["raffica_note"])
+            blocco = [f"🌬️ *{nome}*",
+                      f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}"]
+            tnd = tendenze.get(nome)
+            if tnd:
+                blocco.append(tnd)
             righe.append("\n" + "\n".join(blocco))
         # Alle 14:00 (primo slot dell'ora) si aggiunge l'aggiornamento della
         # corrente: spesso il vento del mattino e' debole e si esce al
@@ -1526,8 +1493,22 @@ def main() -> int:
                 invia_telegram("\n".join(righe))
                 stato["_stazioni_slot"] = slot
                 cambiato = True
+                bollettino_inviato = True
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio bollettino stazioni fallito: {e}")
+
+    # --- Alert vento/raffica: messaggi a se' stanti, con un box tutto loro
+    # per farli risaltare. Se in questo run e' uscito anche il bollettino
+    # stazioni, li pubblico un minuto dopo, cosi' arrivano in sequenza chiara
+    # (prima la situazione vento, poi l'eventuale alert). ---
+    if messaggi_alert:
+        if bollettino_inviato:
+            time.sleep(60)
+        for testo in messaggi_alert:
+            try:
+                invia_telegram(testo)
+            except Exception as e:  # noqa: BLE001
+                print(f"[errore] invio Telegram alert fallito: {e}")
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
