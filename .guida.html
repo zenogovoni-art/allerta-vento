@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>INFO VENTO — Guida al servizio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 14mm 16mm; }
+* { box-sizing: border-box; margin: 0; padding: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+:root {
+  --carta: #F4F2EC;
+  --ink: #10233B;
+  --corpo: #33465B;
+  --muted: #5A6B7B;
+  --debole: #8592A0;
+  --accento: #1E5FB4;
+  --hairline: rgba(16,35,59,.16);
+  --giallo: #E0A400;
+  --arancio: #E2571C;
+  --rosso: #C81E24;
+}
+
+body {
+  font-family: "Archivo", Helvetica, Arial, sans-serif;
+  font-size: 15px; line-height: 1.6;
+  background: var(--carta);
+  color: var(--corpo);
+}
+.pagina { max-width: 780px; margin: 0 auto; padding: 40px 28px 48px; }
+@media print { .pagina { max-width: 100%; padding: 0; } }
+
+b, strong { color: var(--ink); font-weight: 700; }
+p { margin: 0 0 10px; }
+ul { margin: 0 0 10px; padding-left: 22px; }
+li { margin-bottom: 5px; }
+a { color: var(--accento); text-decoration: none; }
+a:hover { color: #164A8F; }
+
+.ic {
+  width: 15px; height: 15px; display: inline-block;
+  vertical-align: -2px; color: var(--accento); flex: none;
+}
+
+/* ---- Intestazione documento ---- */
+.testata {
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  padding: 22px 0 18px; margin-bottom: 8px;
+}
+.testata .marchio { display: flex; align-items: center; gap: 13px; }
+.testata .marchio .ic { width: 34px; height: 34px; }
+h1 {
+  font-weight: 900; font-size: 37px; line-height: 1.05;
+  letter-spacing: -.02em; color: var(--ink);
+}
+.sommario { font-weight: 600; font-size: 15px; color: var(--accento); margin-top: 9px; }
+
+/* ---- SectionHeader ---- */
+.sez {
+  display: flex; align-items: center; gap: 10px;
+  font-family: "Space Grotesk", monospace;
+  font-weight: 800; font-size: 13px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--ink);
+  border-top: 1px solid var(--hairline);
+  margin: 26px 0 12px; padding-top: 18px;
+  break-after: avoid; page-break-after: avoid;
+}
+.sez .num {
+  font-weight: 700; font-size: 11px; color: var(--debole);
+  letter-spacing: .1em; flex: none;
+}
+h3 {
+  font-weight: 700; font-size: 18px; color: var(--ink);
+  margin: 16px 0 8px;
+  break-after: avoid; page-break-after: avoid;
+  display: flex; align-items: center; gap: 9px;
+}
+h3 .ic { width: 16px; height: 16px; }
+
+/* ---- AlertRow ---- */
+.alert-riga {
+  display: flex; align-items: flex-start; gap: 16px;
+  border-top: 1px solid var(--hairline);
+  padding: 10px 0;
+  break-inside: avoid; page-break-inside: avoid;
+}
+.alert-righe .alert-riga:first-child { border-top: 0; padding-top: 2px; }
+.alert-righe { margin-bottom: 10px; }
+.pallino {
+  width: 14px; height: 14px; border-radius: 50%;
+  flex: none; transform: translateY(5px);
+}
+.pallino.p12 { width: 12px; height: 12px; }
+.p-giallo  { background: var(--giallo); }
+.p-arancio { background: var(--arancio); }
+.p-rosso   { background: var(--rosso); }
+.alert-riga .n {
+  font-weight: 800; font-size: 19px; color: var(--ink);
+  width: 96px; flex: none; line-height: 1.25;
+}
+.alert-riga .d { font-size: 14.5px; line-height: 1.5; padding-top: 3px; }
+
+/* ---- TelegramCard ---- */
+.tg-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(16,35,59,.12);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0 14px;
+  font-size: 14.5px; line-height: 1.55;
+  break-inside: avoid; page-break-inside: avoid;
+}
+.tg-title {
+  font-family: "Space Grotesk", monospace;
+  font-weight: 700; font-size: 14.5px; color: var(--ink);
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 6px;
+}
+.tg-sub {
+  font-family: "Space Grotesk", monospace;
+  font-weight: 600; font-size: 13.5px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+  margin: 8px 0 2px;
+}
+.tg-card .riga { display: flex; align-items: flex-start; gap: 8px; }
+.tg-card .riga .pallino { transform: translateY(5px); }
+.tg-card .valori { font-family: "Space Grotesk", monospace; }
+
+/* ---- Card elenco schede ---- */
+.scheda-tipo {
+  background: #FFFFFF;
+  border: 1px solid rgba(16,35,59,.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex; align-items: baseline; gap: 11px;
+  break-inside: avoid; page-break-inside: avoid;
+}
+.scheda-tipo .ic { align-self: center; }
+.scheda-tipo .st-titolo {
+  font-family: "Space Grotesk", monospace;
+  font-weight: 700; font-size: 13.5px; color: var(--ink);
+  flex: none; width: 300px;
+}
+.scheda-tipo .st-quando { font-size: 13.5px; color: var(--muted); }
+
+/* ---- Callout ---- */
+.callout {
+  background: #ECE9E0;
+  border-left: 3px solid var(--rosso);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+  break-inside: avoid; page-break-inside: avoid;
+}
+.callout .titolo {
+  font-family: "Space Grotesk", monospace;
+  font-weight: 800; font-size: 13px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--rosso);
+  margin-bottom: 6px;
+}
+
+.handle {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: "Space Grotesk", monospace;
+  font-weight: 700; font-size: 16px; color: var(--accento);
+}
+.nota { font-size: 13.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol>
+<symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10" /> <path d="M7 17 17 7" /></symbol>
+<symbol id="i-chart-column-big" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <rect x="15" y="5" width="4" height="12" rx="1" /> <rect x="7" y="8" width="4" height="9" rx="1" /></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 6v6l4 2" /> <circle cx="12" cy="12" r="10" /></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /> <path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol>
+<symbol id="i-git-branch" viewBox="0 0 24 24"><line x1="6" x2="6" y1="3" y2="15" /> <circle cx="18" cy="6" r="3" /> <circle cx="6" cy="18" r="3" /> <path d="M18 9a9 9 0 0 1-9 9" /></symbol>
+<symbol id="i-layout-list" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" /> <rect width="7" height="7" x="3" y="14" rx="1" /> <path d="M14 4h7" /> <path d="M14 9h7" /> <path d="M14 15h7" /> <path d="M14 20h7" /></symbol>
+<symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol>
+<symbol id="i-radio" viewBox="0 0 24 24"><path d="M16.247 7.761a6 6 0 0 1 0 8.478" /> <path d="M19.075 4.933a10 10 0 0 1 0 14.134" /> <path d="M4.925 19.067a10 10 0 0 1 0-14.134" /> <path d="M7.753 16.239a6 6 0 0 1 0-8.478" /> <circle cx="12" cy="12" r="2" /></symbol>
+<symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></symbol>
+<symbol id="i-sailboat" viewBox="0 0 24 24"><path d="M22 18H2a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4Z" /> <path d="M21 14 10 2 3 14h18Z" /> <path d="M10 2v16" /></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" /> <path d="m21.854 2.147-10.94 10.939" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol>
+<symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M12 2v8" /> <path d="m4.93 10.93 1.41 1.41" /> <path d="M2 18h2" /> <path d="M20 18h2" /> <path d="m19.07 10.93-1.41 1.41" /> <path d="M22 22H2" /> <path d="m8 6 4-4 4 4" /> <path d="M16 18a4 4 0 0 0-8 0" /></symbol>
+<symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2" /> <line x1="12" x2="15" y1="14" y2="11" /> <circle cx="12" cy="14" r="8" /></symbol>
+<symbol id="i-tornado" viewBox="0 0 24 24"><path d="M21 4H3" /> <path d="M18 8H6" /> <path d="M19 12H9" /> <path d="M16 16h-6" /> <path d="M11 20H9" /></symbol>
+<symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M3 6h18" /> <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /> <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /> <line x1="10" x2="10" y1="11" y2="17" /> <line x1="14" x2="14" y1="11" y2="17" /></symbol>
+<symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6" /> <path d="m22 17-8.5-8.5-5 5L2 7" /></symbol>
+<symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6" /> <path d="m22 7-8.5 8.5-5-5L2 17" /></symbol>
+<symbol id="i-waves" viewBox="0 0 24 24"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /></symbol>
+<symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /> <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /> <path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol>
+</svg>
+
+<div class="pagina">
+
+<!-- Intestazione -->
+<div class="testata">
+  <div class="marchio">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    <h1>INFO VENTO — Guida al servizio</h1>
+  </div>
+  <div class="sommario">Avvisi automatici sul vento per i soci, direttamente su Telegram.</div>
+</div>
+
+<!-- Cos'è -->
+<div class="sez"><span class="num">01</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sailboat"/></svg>
+  Cos'è
+</div>
+<p>Un servizio <b>gratuito e automatico</b> che controlla due stazioni meteo della
+nostra zona e pubblica avvisi sul canale Telegram <b>«INFO VENTO»</b>: quando il
+vento si alza, quando la pressione cala in fretta, più previsioni e riepiloghi.
+Nessun PC acceso, nessuna app da installare: basta iscriversi al canale.</p>
+
+<!-- Come iscriversi -->
+<div class="sez"><span class="num">02</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-send"/></svg>
+  Come iscriversi
+</div>
+<p><a class="handle" href="https://t.me/INFOVENTO">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-send"/></svg>
+  t.me/INFOVENTO</a></p>
+<p>Apri il link, premi <b>Iscriviti / Join</b> e riceverai gli avvisi sul telefono.</p>
+
+<!-- Le stazioni controllate -->
+<div class="sez"><span class="num">03</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-map-pin"/></svg>
+  Le stazioni controllate
+</div>
+<ul>
+  <li><b>Porto Corsini</b> (a sud) — Adriatico Wind Club</li>
+  <li><b>Lido di Volano</b> (a nord)</li>
+</ul>
+<p>Avere una stazione a sud e una a nord aiuta ad anticipare l'arrivo del vento a
+seconda della direzione.</p>
+<p>A Porto Corsini c'è anche una <b>stazione di riserva</b>: quella della <b>Guardia
+Costiera Ausiliaria di Ravenna</b> (Marina di Ravenna, dall'altra parte del
+canale del porto). Se la stazione principale non risponde, subentra
+automaticamente senza interruzioni del servizio. In più fornisce la <b>raffica
+degli ultimi 10 minuti</b> — un dato in tempo reale, più tempestivo della
+massima giornaliera — che rende l'ALERT RAFFICA del settore sud più preciso:
+può riarmarsi quando il vento cala e riscattare nella stessa giornata.</p>
+<p>Per l'ALERT BORA si controllano inoltre due stazioni sentinella a nord-est
+(vedi la sezione dedicata).</p>
+
+<!-- Quando arrivano gli avvisi -->
+<div class="sez"><span class="num">04</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-clock"/></svg>
+  Quando arrivano gli avvisi
+</div>
+<ul>
+  <li>Controllo <b>ogni 15 minuti</b></li>
+  <li>Solo nella fascia <b>09:00 – 19:00</b></li>
+  <li>Ogni messaggio indica <b>intensità (nodi), direzione e raffica</b></li>
+</ul>
+
+<!-- Le schede che ricevi -->
+<div class="sez"><span class="num">05</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-layout-list"/></svg>
+  Le schede che ricevi
+</div>
+<p>In cima a ogni messaggio Telegram mostra il nome del canale <b>«INFO VENTO»</b>: la
+<b>prima riga della scheda</b> ti dice subito di che tipo si tratta. C'è una scheda
+<b>informativa</b> che esce sempre, e quattro <b>ALERT</b> che scattano solo quando serve.</p>
+
+<div class="scheda-tipo">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+  <div class="st-titolo">SITUAZIONE VENTO — HH:MM</div>
+  <div class="st-quando">ogni 15 minuti (9–19), sempre</div>
+</div>
+<div class="scheda-tipo">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+  <div class="st-titolo">ALERT VENTO — Stazione</div>
+  <div class="st-quando">il vento medio supera una soglia</div>
+</div>
+<div class="scheda-tipo">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+  <div class="st-titolo">ALERT RAFFICA — Stazione</div>
+  <div class="st-quando">la raffica del giorno supera una soglia</div>
+</div>
+<div class="scheda-tipo">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-gauge"/></svg>
+  <div class="st-titolo">ALERT VARIAZIONE PRESSIONE — Stazione</div>
+  <div class="st-quando">la pressione cala in fretta</div>
+</div>
+<div class="scheda-tipo">
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-tornado"/></svg>
+  <div class="st-titolo">ALERT BORA — Sentinella</div>
+  <div class="st-quando">vento forte da NE sulle sentinelle a nord</div>
+</div>
+
+<p style="margin-top:10px;">Ogni ALERT arriva sempre come scheda a sé, con un box tutto suo per farlo
+risaltare: se scatta nello stesso momento della <i>Situazione vento</i>, viene
+pubblicato <b>un minuto dopo</b> (vedi più sotto).</p>
+<p><b>Il telefono suona solo per gli ALERT.</b> Tutte le schede informative
+(Situazione vento, bollettino del mattino, grafici, riepilogo della sera,
+benvenuti) arrivano come <b>messaggi silenziosi</b>: le trovi nel canale, ma
+non ti disturbano. Quando senti la notifica di INFO VENTO, è un ALERT.</p>
+
+<!-- I livelli dell'ALERT VENTO -->
+<div class="sez"><span class="num">06</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+  I livelli dell'ALERT VENTO
+</div>
+<p>Quando il vento medio supera una soglia arriva un <b>ALERT VENTO</b>, sempre con lo
+stesso titolo <b>ALERT VENTO — Stazione</b> e un'etichetta che ne dice la forza:</p>
+
+<div class="alert-righe">
+  <div class="alert-riga">
+    <span class="pallino p-giallo"></span>
+    <div class="n">20+ nodi</div>
+    <div class="d">Vento sostenuto: solo per chi ha esperienza, valutate bene.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-arancio"></span>
+    <div class="n">25+ nodi</div>
+    <div class="d">Vento forte: solo per equipaggi molto esperti e ben attrezzati.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-rosso"></span>
+    <div class="n">30+ nodi</div>
+    <div class="d">Vento molto forte: si sconsiglia di uscire, pericoloso anche per i più esperti.</div>
+  </div>
+</div>
+
+<p>Esempio di scheda:</p>
+<div class="tg-card">
+  <div class="tg-title">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    ALERT VENTO — Porto Corsini
+  </div>
+  <div class="riga"><span class="pallino p12 p-giallo"></span>
+    <span><i><b>20+ nodi</b> — Vento sostenuto: solo per chi ha esperienza, valutate bene.</i></span></div>
+  <div style="margin-top:6px;">Vento <b class="valori">21.5 nodi</b> da SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg>
+    — raffica <b class="valori">26.0 nodi</b></div>
+  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento</div>
+  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-timer"/></svg> Possibile arrivo al circolo tra ~70 min</div>
+</div>
+
+<p>Quando le raffiche superano di molto il vento medio (di oltre il 60%),
+l'ALERT aggiunge una riga di attenzione in più — il vento "a strappi" è
+insidioso in deriva anche quando la media non spaventa:</p>
+<div class="tg-card">
+  <div class="riga">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:translateY(4px);"><use href="#i-wind"/></svg>
+    <i>Vento irregolare: raffiche ben sopra la media</i></div>
+</div>
+
+<!-- ALERT RAFFICA -->
+<div class="sez"><span class="num">07</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+  Alert raffica
+</div>
+<p>Oltre al vento, il bot avvisa quando la <b>raffica</b> della giornata raggiunge
+<b>20, 25 o 30 nodi</b> (un avviso per soglia, una volta al giorno):</p>
+<div class="tg-card">
+  <div class="tg-title">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+    ALERT RAFFICA — Porto Corsini
+  </div>
+  <div>Oggi la raffica ha raggiunto <b class="valori">22.0 nodi</b> (soglia 20).</div>
+</div>
+<p><b>Attenzione:</b> le stazioni forniscono la raffica <b>massima della giornata</b>, non quella
+dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,
+non necessariamente che stia raffica ora.</p>
+
+<!-- Stima di arrivo al circolo -->
+<div class="sez"><span class="num">08</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-timer"/></svg>
+  Stima di arrivo al circolo
+</div>
+<p>Negli <b>avvisi di vento</b> (non nelle raffiche) trovi una riga come:</p>
+<div class="tg-card">
+  <div class="riga">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:translateY(4px);"><use href="#i-timer"/></svg>
+    <span>Possibile arrivo al circolo tra <b class="valori">~80 min</b></span></div>
+</div>
+<p>È una stima di quanto può metterci il rinforzo ad arrivare al circolo di
+<b>Lido di Spina</b>, calcolata in base a distanza, direzione e intensità del
+vento. Compare solo quando il vento sta effettivamente puntando verso il
+circolo (es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
+<b>indicativo</b>, utile come anticipo.</p>
+
+<!-- ALERT VARIAZIONE PRESSIONE -->
+<div class="sez"><span class="num">09</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-gauge"/></svg>
+  Alert variazione pressione
+</div>
+<p>Un <b>calo rapido della pressione atmosferica</b> è uno dei segnali più affidabili
+di vento in rinforzo o di peggioramento in arrivo. Il servizio tiene d'occhio la
+pressione a <b>Porto Corsini</b> e <b>Lido di Volano</b> e avvisa quando scende troppo
+in fretta (calo misurato sulle ultime <b>3 ore</b>):</p>
+
+<div class="alert-righe">
+  <div class="alert-riga">
+    <span class="pallino p-giallo"></span>
+    <div class="n">≥ 3 hPa<br><span style="font-size:12px;font-weight:600;color:var(--muted);">in 3 ore</span></div>
+    <div class="d"><b>Attenzione</b> — probabile rinforzo di vento.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-rosso"></span>
+    <div class="n">≥ 6 hPa<br><span style="font-size:12px;font-weight:600;color:var(--muted);">in 3 ore</span></div>
+    <div class="d"><b>Alert</b> — peggioramento marcato, possibile groppo: prudenza.</div>
+  </div>
+</div>
+
+<p>Il controllo è automatico durante la giornata, sfasato rispetto a quello del
+vento per non sovrapporsi.</p>
+
+<!-- ALERT BORA -->
+<div class="sez"><span class="num">10</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-tornado"/></svg>
+  Alert bora — le sentinelle a nord-est
+</div>
+<p>La <b>bora</b> scende da nord-est e arriva in modo <b>violento</b>, spesso con poco
+preavviso: per chi naviga in deriva è il vento più temuto. Per vederla
+arrivare <b>prima</b> che tocchi i lidi ferraresi, il servizio controlla due
+stazioni "sentinella" a nord-est del circolo, sulla rotta da cui scende la
+bora:</p>
+<ul>
+  <li><b>Sottomarina (Diga Sud Chioggia)</b> — anemometro sulla diga foranea di
+    Sottomarina, esposto al mare aperto;</li>
+  <li><b>Piattaforma CNR (largo di Venezia)</b> — la torre oceanografica a ~15 km al
+    largo, che la bora raggiunge ancora prima.</li>
+</ul>
+<p>Sono stazioni della <b>rete meteo-mareografica del Centro Maree di Venezia</b>
+(la stessa rete istituzionale delle previsioni di acqua alta), con dati
+aggiornati <b>ogni 5 minuti</b>.</p>
+<p>L'ALERT BORA scatta <b>solo con vento dal settore nord-est</b> (da NNE a E) e ha
+tre livelli:</p>
+
+<div class="alert-righe">
+  <div class="alert-riga">
+    <span class="pallino p-giallo"></span>
+    <div class="n">Bora<br>20+ nodi</div>
+    <div class="d">Bora sostenuta a nord: se siete in acqua, valutate il rientro.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-arancio"></span>
+    <div class="n">Bora<br>25+ nodi</div>
+    <div class="d">Bora forte in avvicinamento: rientrare è prudente.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-rosso"></span>
+    <div class="n">Bora<br>30+ nodi</div>
+    <div class="d">Bora molto forte: rientrare subito.</div>
+  </div>
+</div>
+
+<p>Quando possibile l'avviso include la <b>stima di arrivo a Lido di Spina</b>
+(es. "tra ~90 min"): la distanza dalle sentinelle dà in genere <b>1–2 ore di
+preavviso</b>. Come gli altri alert, scatta solo <b>al salire di livello</b>:
+niente messaggi ripetuti finché la situazione resta stabile. Un vento forte
+da un'altra direzione (es. scirocco da SE) <b>non</b> fa scattare l'ALERT BORA:
+per quello ci sono gli alert delle stazioni locali.</p>
+
+<!-- Situazione vento ogni 15 minuti -->
+<div class="sez"><span class="num">11</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-radio"/></svg>
+  Situazione vento ogni 15 minuti
+</div>
+<p>Dalle <b>9:00 alle 19:00</b>, ogni <b>15 minuti</b>, il canale pubblica <b>sempre</b> la
+situazione di <b>Porto Corsini</b> e <b>Lido di Volano</b> — intensità del vento,
+direzione e tendenza — <b>anche quando le condizioni non cambiano</b>. È un
+quadro in tempo reale utile prima di decidere se uscire, tenuto volutamente
+snello:</p>
+
+<div class="tg-card">
+  <div class="tg-title">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    SITUAZIONE VENTO — 11:15
+  </div>
+  <div class="tg-sub">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    Porto Corsini
+  </div>
+  <div>Vento <b class="valori">20.5 nodi</b> da SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg></div>
+  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento</div>
+  <div class="tg-sub">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    Lido di Volano
+  </div>
+  <div>Vento <b class="valori">2.7 nodi</b> da E
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-left"/></svg></div>
+  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg> stazionario</div>
+</div>
+
+<p>Ogni scheda mostra se il vento, rispetto alla Situazione vento precedente, è
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> <b>in aumento</b>,
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg> <b>stazionario</b> o
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-down"/></svg> <b>in calo</b>.</p>
+
+<p>A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
+questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
+aggiornato. Il livello raggiunto, la stima di arrivo al circolo e la raffica
+non compaiono qui: restano nella scheda dell'ALERT, per tenere questo
+bollettino leggero.</p>
+<p>La scheda delle <b>14:00</b> include in più l'<b>aggiornamento della corrente per
+il pomeriggio</b> (previsione Arpae + misura della boa): spesso al mattino il
+vento è debole e si esce dopo pranzo — a quell'ora la previsione della
+corrente è anche più fresca, perché il run del giorno del modello Adriac è
+ormai pubblicato.</p>
+<p>Se in quel momento ci sono anche le <b>condizioni di un ALERT</b> (vento sopra
+soglia o nuova raffica), l'ALERT <b>non confluisce più nel bollettino</b>: arriva
+come scheda a sé, con un box tutto suo per farlo risaltare, pubblicata <b>un
+minuto dopo</b> la Situazione vento. Tra un bollettino e l'altro, invece, gli
+ALERT partono subito da soli.</p>
+
+<!-- Bollettino del mattino -->
+<div class="sez"><span class="num">12</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sunrise"/></svg>
+  Bollettino del mattino
+</div>
+<p>Ogni mattina verso le <b>9:00</b> la <b>previsione vento della giornata</b> per Lido di
+Spina (fonte Open-Meteo): cosa aspettarsi nelle ore principali, raffiche
+comprese. Viene inviato <b>tutti i giorni</b>, giovedì compreso.</p>
+<p>Quando la giornata lo permette, il bollettino indica anche la <b>fascia oraria
+migliore per uscire in deriva</b>: la finestra (di almeno 2 ore) in cui è
+previsto vento tra ~6 e ~16 nodi senza raffiche violente, con l'intensità
+media e la direzione:</p>
+<div class="tg-card">
+  <div class="riga">
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:translateY(4px);"><use href="#i-clock"/></svg>
+    <span><b>Fascia migliore per uscire: 13–17</b> — <span class="valori">~10 nodi</span> da SE.</span></div>
+</div>
+<p>Se il giorno è tutto bonaccia o tutto vento forte, la riga semplicemente non
+compare.</p>
+<p>Da questo bollettino trovi anche alcuni dati marini utili alla navigazione:</p>
+
+<h3><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+  Corrente a Lido di Spina</h3>
+<p>La previsione della corrente di superficie per il punto davanti al circolo,
+divisa in <b>mattina (9–13)</b> e <b>pomeriggio (13–19)</b>: intensità in nodi e
+direzione <b>verso cui</b> scorre. Utile per decidere da che lato conviene
+allungare i bordi. Il dato viene dal modello oceanografico <b>Adriac di Arpae
+Emilia-Romagna</b> (risoluzione 1 km, tiene conto anche della portata reale del
+Po — il motore principale delle correnti sulla costa ferrarese). Sotto, in
+corsivo, la <b>corrente misurata</b> dalla boa Nausicaa 2 di Arpae (al largo di
+Cesenatico): è il riscontro reale della corrente costiera generale, non il dato
+locale.</p>
+
+<h3><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+  Maree del giorno</h3>
+<p>Orari di <b>alta</b> e <b>bassa marea</b> con l'altezza in <b>centimetri rispetto al
+livello medio del mare di oggi</b>: <span class="valori">+26 cm</span> vuol dire che il mare sale 26 cm
+sopra la media della giornata, <span class="valori">−19 cm</span> che scende 19 cm sotto. In più
+l'<b>escursione della giornata</b>, cioè la differenza tra il punto più alto e
+quello più basso. La previsione tiene conto anche della spinta del vento, non
+solo della marea astronomica. Orari su base oraria, quindi indicativi al
+minuto.</p>
+
+<h3><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-moon"/></svg>
+  Fase lunare</h3>
+<p>Se la luna è <b>crescente o calante</b>, con quanti giorni mancano alla luna
+piena o alla luna nuova. Utile anche perché nei giorni di luna piena e luna
+nuova le maree sono più marcate (sizigie), mentre ai quarti sono più deboli
+(quadrature).</p>
+
+<!-- Grafico previsioni weekend -->
+<div class="sez"><span class="num">13</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart-column-big"/></svg>
+  Grafico previsioni weekend (giovedì, venerdì, sabato)
+</div>
+<p><b>Giovedì, venerdì e sabato verso le 9:05</b>, subito dopo il bollettino, un
+grafico con il vento previsto a <b>Lido di Spina</b> per i <b>giorni che restano del
+weekend</b>: giovedì → ven/sab/dom, venerdì → sab/dom, sabato → domenica. Il giorno
+di oggi non viene ripetuto, perché è già nel bollettino qui sopra. Ogni barra è
+il vento massimo previsto in nodi, con sopra una freccia che indica la direzione:
+utile per programmare le uscite del fine settimana. <i>Previsione indicativa.</i></p>
+
+<!-- Riepilogo della sera -->
+<div class="sez"><span class="num">14</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart-column-big"/></svg>
+  Riepilogo della sera
+</div>
+<p>Ogni sera verso le <b>19:00</b> un riepilogo con <b>vento massimo e raffica massima</b>
+registrati nella giornata, accompagnato dal <b>grafico dell'andamento reale del
+vento</b>: le letture raccolte ogni 15 minuti dalle due stazioni diventano una
+curva che mostra com'è andata davvero la giornata (vento pieno, raffica
+tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). È il
+complemento "a consuntivo" del grafico delle previsioni weekend.</p>
+
+<!-- Tendenza e direzione -->
+<div class="sez"><span class="num">15</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg>
+  Tendenza e direzione
+</div>
+<p>Sia nella <b>Situazione vento</b> sia negli <b>ALERT VENTO</b> trovi sempre se il
+vento è
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> <b>in aumento</b>,
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg> <b>stazionario</b> o
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-down"/></svg> <b>in calo</b>
+rispetto alla lettura precedente, e una <b>freccia</b>
+<svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg>
+che mostra verso dove sta soffiando.</p>
+
+<!-- Come "ragiona" il bot -->
+<div class="sez"><span class="num">16</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-git-branch"/></svg>
+  Come "ragiona" il bot (per non riempirti di messaggi)
+</div>
+<p>L'avviso parte <b>solo quando il vento sale di fascia</b>:</p>
+<ul>
+  <li>se il vento supera i 20 nodi → ricevi l'avviso;</li>
+  <li>se resta più o meno stabile → <b>non</b> ricevi altri messaggi;</li>
+  <li>se sale ancora di fascia (es. da 20 a 25, o da 25 a 30) → ricevi il nuovo ALERT;</li>
+  <li>se scende sotto soglia e poi risale → ricevi di nuovo l'avviso.</li>
+</ul>
+
+<!-- Pulizia settimanale -->
+<div class="sez"><span class="num">17</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trash-2"/></svg>
+  Pulizia settimanale del canale
+</div>
+<p>Ogni <b>lunedì</b>, al primo controllo della giornata, il bot <b>cancella i
+messaggi delle settimane passate</b>: la chat del canale riparte pulita e gli
+iscritti non si ritrovano centinaia di vecchi messaggi da scorrere. I messaggi
+<b>di oggi (lunedì) restano</b>: sparisce solo tutto quello dei giorni precedenti.
+Non serve fare nulla: la cronologia sparisce da sola anche dal telefono degli
+iscritti.</p>
+
+<!-- Importante -->
+<div class="callout">
+  <div class="titolo">Importante</div>
+  <p style="margin:0;">I dati sono <b>indicativi e non ufficiali</b>. Servono come indicazione di massima:
+  <b>verificate sempre le condizioni reali</b> prima di andare in acqua. La sicurezza
+  viene prima di tutto.</p>
+</div>
+
+<!-- Ultimi aggiornamenti -->
+<div class="sez"><span class="num">18</span>
+  <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sparkles"/></svg>
+  Ultimi aggiornamenti
+</div>
+<ul>
+  <li><b>Il telefono suona solo per gli ALERT</b>: tutte le schede informative
+    (Situazione vento, bollettini, grafici, riepilogo) ora arrivano come
+    messaggi silenziosi.</li>
+  <li><b>Grafico serale del vento</b>: il riepilogo delle 19:00 include il grafico
+    dell'andamento reale del vento della giornata alle due stazioni.</li>
+  <li><b>Fascia migliore per uscire</b>: il bollettino del mattino indica la
+    finestra oraria con vento previsto adatto alla deriva (~6–16 nodi).</li>
+  <li><b>Nota "vento irregolare"</b>: l'ALERT VENTO segnala quando le raffiche
+    superano di molto il vento medio (vento a strappi).</li>
+  <li><b>ALERT sganciati dalla Situazione vento</b>: non confluiscono più nel
+    bollettino, arrivano sempre come scheda a sé con un box tutto suo —
+    pubblicata un minuto dopo — per essere più riconoscibili, mentre la
+    Situazione vento resta più snella.</li>
+  <li><b>Tendenza sempre visibile nella Situazione vento</b>: ogni scheda mostra se
+    il vento, rispetto al bollettino precedente, è in aumento, stazionario
+    o in calo.</li>
+  <li><b>Scala vento semplificata a tre livelli (20 · 25 · 30 nodi)</b>: eliminati
+    gli avvisi a 8 e 10 nodi, troppo frequenti e poco utili come alert; aggiunto
+    un livello intermedio a 25 nodi tra "attenzione" e "sconsigliato uscire".</li>
+  <li><b>ALERT RAFFICA a tre livelli (20 · 25 · 30 nodi)</b>: eliminato il livello a
+    15 nodi.</li>
+  <li><b>Situazione vento ogni 15 minuti</b> (prima ogni 30): il quadro in tempo
+    reale ora è aggiornato al passo del controllo delle stazioni.</li>
+  <li><b>Pulizia settimanale del canale</b>: ogni lunedì il bot cancella tutti i
+    messaggi della settimana passata, così la chat resta leggera.</li>
+  <li><b>Corrente aggiornata alle 14:00</b>: la Situazione vento delle 14 include la
+    corrente prevista per il pomeriggio (con la misura live della boa), per chi
+    esce dopo pranzo.</li>
+  <li><b>Corrente locale dal modello Arpae</b>: nel bollettino del mattino la corrente
+    davanti a Lido di Spina ora viene dal modello Adriac di Arpae (1 km, con la
+    portata reale del Po), divisa in mattina e pomeriggio, con il riscontro
+    misurato dalla boa Nausicaa 2 al largo di Cesenatico.</li>
+  <li><b>Stazione di riserva a sud e raffica in tempo reale</b>: la stazione della
+    Guardia Costiera Ausiliaria di Ravenna (Marina di Ravenna) fa da riserva a
+    Porto Corsini e fornisce la raffica degli ultimi 10 minuti, per un ALERT
+    RAFFICA più tempestivo nel settore sud.</li>
+  <li><b>Benvenuto serale ai nuovi iscritti</b>: ogni sera alle <b>21:00</b>, se durante
+    il giorno qualcuno si è unito al canale, un messaggio dà il benvenuto per
+    nome ai nuovi arrivati (un solo messaggio al giorno, niente disturbo in
+    orario di navigazione).</li>
+  <li><b>ALERT BORA</b>: due stazioni sentinella a nord-est (Sottomarina Diga Sud e
+    Piattaforma CNR al largo di Venezia) avvisano quando la bora supera 20, 25
+    o 30 nodi, con stima di arrivo a Lido di Spina — in genere 1–2 ore di
+    preavviso.</li>
+  <li><b>Titoli delle schede più chiari</b>: gli avvisi ora hanno un titolo di famiglia
+    riconoscibile — <b>ALERT VENTO</b>, <b>ALERT RAFFICA</b>, <b>ALERT VARIAZIONE
+    PRESSIONE</b> — ben distinti dalla <b>Situazione vento</b> informativa (vedi
+    la sezione "Le schede che ricevi").</li>
+  <li><b>Maree più chiare e fase lunare nel bollettino delle 9:00</b>: altezze di
+    marea in centimetri rispetto al livello medio del giorno (+ sopra, − sotto),
+    escursione della giornata e luna crescente/calante.</li>
+  <li><b>Correnti e maree nel bollettino delle 9:00</b>: direzione della corrente di
+    superficie e orari/altezze di alta e bassa marea del giorno.</li>
+  <li><b>ALERT variazione pressione</b>: avviso quando la pressione cala rapidamente
+    (≥3 hPa/3h giallo, ≥6 hPa/3h rosso), su entrambe le stazioni.</li>
+  <li><b>Grafico previsioni weekend</b>: giovedì, venerdì e sabato alle 9:05 il vento
+    previsto a Lido di Spina per i giorni che restano del weekend (gio → ven/sab/dom,
+    ven → sab/dom, sab → dom). Il bollettino del mattino ora esce tutti i giorni.</li>
+  <li><b>Bollettino del mattino</b> (~9:00) e <b>riepilogo della sera</b> (~19:00).</li>
+  <li><b>Tendenza</b> del vento (in aumento / in calo / stabile) e <b>freccia</b> della
+    direzione negli avvisi.</li>
+  <li><b>Stima di arrivo al circolo</b>: negli avvisi vento, una stima dei minuti
+    perché il rinforzo raggiunga Lido di Spina.</li>
+  <li><b>Filtri direzione</b>: Porto Corsini avvisa per venti da sud (E→S→O), Lido di
+    Volano per venti da nord (O→N→E).</li>
+  <li><b>Controllo ogni 15 minuti</b> (prima ogni 30).</li>
+  <li><b>Fascia oraria 09:00 – 19:00</b> (prima 07:00 – 21:00).</li>
+  <li><b>Aggiunta la stazione di Lido di Volano</b> (nord), in più a Porto Corsini.</li>
+  <li>Se una stazione è momentaneamente offline, il servizio continua con l'altra.</li>
+</ul>
+
+</div>
+</body>
+</html>

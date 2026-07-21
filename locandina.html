@@ -3,254 +3,345 @@
 <head>
 <meta charset="utf-8">
 <title>Locandina - INFO VENTO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @page { size: A4 portrait; margin: 0; }
-  * { box-sizing: border-box; margin: 0; padding: 0;
-      -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  body {
-    font-family: "Avenir Next", "Century Gothic", Futura, "Segoe UI",
-                 Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
-    background: #fff;
-    color: #12384f;
-    display: flex;
-    justify-content: center;
-  }
-  .foglio {
-    width: 210mm;
-    height: 295mm;
-    overflow: hidden;
-    background: linear-gradient(180deg, #eef6fa 0%, #f7fbfd 100%);
-    display: flex;
-    flex-direction: column;
-  }
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  /* ---- Testata full-bleed con onda ---- */
-  .hero {
-    background: linear-gradient(165deg, #052c48 0%, #075985 55%, #0a7fb5 100%);
-    color: #fff;
-    text-align: center;
-    padding: 4.5mm 18mm 5.5mm;
-  }
-  .hero .vela { font-size: 28px; line-height: 1; }
-  .hero h1 {
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    margin: 4px 0 3px;
-    text-shadow: 0 2px 8px rgba(0,0,0,.25);
-  }
-  .hero p { font-size: 15px; opacity: .95; letter-spacing: .3px; margin-top: 1px; }
-  .onda { display: block; width: 100%; height: 7mm; }
+:root {
+  --carta: #F4F2EC;
+  --ink: #10233B;
+  --corpo: #33465B;
+  --muted: #5A6B7B;
+  --debole: #8592A0;
+  --accento: #1E5FB4;
+  --hairline: rgba(16,35,59,.16);
+  --giallo: #E0A400;
+  --arancio: #E2571C;
+  --rosso: #C81E24;
+}
 
-  .contenuto {
-    padding: 0 15mm 4mm;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
+body {
+  font-family: "Archivo", Helvetica, Arial, sans-serif;
+  background: var(--carta);
+  color: var(--corpo);
+  display: flex;
+  justify-content: center;
+}
+.icona { display: inline-block; vertical-align: middle; flex: none; }
 
-  /* ---- Card iscrizione flottante sull'onda ---- */
-  .iscrizione {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 12px 30px rgba(5,44,72,.22);
-    border: 1px solid #e3eef5;
-    padding: 4.5mm 6mm;
-    display: flex;
-    align-items: center;
-    gap: 6mm;
-    margin: -3mm 0 3.5mm;
-    position: relative;
-  }
-  .iscrizione img {
-    width: 28mm; height: 28mm; flex: none;
-    border-radius: 10px; border: 1px solid #e3eef5; padding: 1.5mm;
-  }
-  .iscrizione .txt h2 { font-size: 20px; color: #075985; margin-bottom: 3px; }
-  .iscrizione .txt p { font-size: 13.5px; line-height: 1.4; }
-  .link {
-    display: inline-block;
-    margin-top: 7px;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    color: #fff;
-    background: linear-gradient(135deg, #075985, #0a8ac2);
-    padding: 6px 16px;
-    border-radius: 999px;
-    box-shadow: 0 3px 10px rgba(7,89,133,.35);
-  }
+.foglio {
+  width: 794px;
+  height: 1123px;
+  overflow: hidden;
+  background: var(--carta);
+  padding: 52px 50px 44px;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* ---- Titoli di sezione ---- */
-  .sezione-titolo {
-    font-size: 14px; font-weight: 700; color: #075985;
-    text-transform: uppercase; letter-spacing: 1.6px;
-    margin: 0 0 2.2mm;
-    display: flex; align-items: center; gap: 3mm;
-  }
-  .sezione-titolo::after {
-    content: ""; flex: 1; height: 2.5px; border-radius: 2px;
-    background: linear-gradient(90deg, #7cc4e4, rgba(124,196,228,0));
-  }
-  .sezione-titolo .new {
-    display: inline-block; background: linear-gradient(135deg, #075985, #0a8ac2);
-    color: #fff; font-size: 10.5px; padding: 2px 9px; border-radius: 999px;
-    letter-spacing: 1px; flex: none;
-  }
+/* ---- Header ---- */
+.header {
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  padding: 20px 0 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.marchio { display: flex; align-items: center; gap: 14px; }
+.marchio .icona { width: 40px; height: 40px; color: var(--accento); }
+.wordmark {
+  font-weight: 900; font-size: 44px; line-height: .9;
+  letter-spacing: -.02em; color: var(--ink);
+}
+.hero-sub {
+  font-weight: 600; font-size: 15px; color: var(--accento);
+  margin-top: 10px;
+}
+.header .etichetta {
+  font-family: "Space Grotesk", monospace;
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--muted);
+  text-align: right; line-height: 1.5; padding-top: 4px; flex: none;
+}
 
-  /* ---- Scala ALERT VENTO ---- */
-  .livelli { display: flex; flex-direction: column; gap: 1.7mm; margin-bottom: 3.3mm; }
-  .livello {
-    border-radius: 999px; padding: 1.9mm 3mm 1.9mm 2.2mm; color: #fff;
-    display: flex; align-items: center; gap: 4mm;
-    box-shadow: 0 3px 8px rgba(5,44,72,.14);
-  }
-  .livello .n {
-    font-size: 15.5px; font-weight: 800; flex: none; width: 24mm;
-    text-align: center; line-height: 1.05;
-    background: rgba(255,255,255,.18);
-    border-radius: 999px; padding: 1.4mm 0;
-  }
-  .livello .d { font-size: 12.5px; line-height: 1.3; }
-  .l-arancio{ background: linear-gradient(90deg, #d3500a, #ea6c1c); }
-  .l-scarlatto{ background: linear-gradient(90deg, #a52a0a, #c93d17); }
-  .l-rosso  { background: linear-gradient(90deg, #a51818, #c92c2c); }
+/* ---- Titoli di sezione ---- */
+.sezione {
+  display: flex; align-items: center; gap: 9px;
+  font-family: "Space Grotesk", monospace;
+  font-weight: 800; font-size: 13px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--ink);
+}
+.sezione .icona { width: 16px; height: 16px; color: var(--accento); }
 
-  /* ---- Card informative ---- */
-  .info {
-    background: #fff; border-radius: 14px; padding: 3.4mm 5.5mm;
-    font-size: 13px; line-height: 1.45; margin-bottom: 3.3mm;
-    border: 1px solid #dcebf4;
-    box-shadow: 0 4px 12px rgba(5,44,72,.08);
-  }
-  .info b { color: #075985; }
+/* ---- Righe alert (pallino + testo) ---- */
+.alert-riga {
+  display: flex; align-items: flex-start; gap: 16px;
+  border-top: 1px solid var(--hairline);
+  padding: 10px 0;
+}
+.alert-riga:first-of-type { border-top: 0; }
+.pallino {
+  width: 14px; height: 14px; border-radius: 50%;
+  flex: none; transform: translateY(2px);
+}
+.pallino.p12 { width: 12px; height: 12px; }
+.p-giallo  { background: var(--giallo); }
+.p-arancio { background: var(--arancio); }
+.p-rosso   { background: var(--rosso); }
+.alert-riga .n {
+  font-weight: 800; font-size: 20px; color: var(--ink);
+  width: 88px; flex: none; line-height: 1.15;
+}
+.alert-riga .n small { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.alert-riga .d { font-size: 13.5px; line-height: 1.45; padding-top: 3px; }
+.alert-riga .d b { color: var(--ink); }
 
-  /* ---- Pressione ---- */
-  .p-intro { font-size: 12.5px; line-height: 1.45; margin-bottom: 2.4mm; }
-  .pressione { display: flex; gap: 4mm; margin-bottom: 3.3mm; }
-  .p-riga {
-    flex: 1; border-radius: 14px; padding: 3mm 4.5mm; color: #fff;
-    display: flex; align-items: center; gap: 4mm;
-    box-shadow: 0 4px 10px rgba(5,44,72,.16);
-  }
-  .p-riga .pv { font-size: 17px; font-weight: 800; flex: none; line-height: 1.1; }
-  .p-riga .pd { font-size: 12px; line-height: 1.3; }
-  .p-giallo { background: linear-gradient(135deg, #b97e05, #d29b13); }
-  .p-rosso  { background: linear-gradient(135deg, #a51818, #c92c2c); }
+/* ---- Griglie 2 colonne ---- */
+.griglia {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 34px;
+}
+.cella { min-width: 0; }
+.corpo-txt { font-size: 12.5px; line-height: 1.5; margin-top: 8px; }
+.corpo-txt b { color: var(--ink); }
+.corpo-txt + .corpo-txt { margin-top: 6px; }
 
-  /* ---- Avviso sicurezza (accento sabbia) ---- */
-  .avviso {
-    background: #fdf6e7; border: 1.5px solid #e5cf9a; border-radius: 12px;
-    padding: 3mm 5mm; font-size: 12.5px; line-height: 1.45; color: #6d4a12;
-  }
-  .pie {
-    margin-top: auto; text-align: center; font-size: 12px;
-    color: #4e7186; padding-top: 1.5mm; letter-spacing: .8px;
-  }
-  .pie b { color: #075985; }
+.mini-riga {
+  display: flex; align-items: flex-start; gap: 12px;
+  border-top: 1px solid var(--hairline);
+  padding: 7px 0; font-size: 12.5px; line-height: 1.4;
+}
+.mini-riga .nv {
+  font-weight: 800; font-size: 14px; color: var(--ink);
+  width: 74px; flex: none; line-height: 1.2;
+  font-family: "Space Grotesk", monospace;
+}
+.mini-riga .d b { color: var(--ink); }
+
+/* ---- Barra scura stazioni ---- */
+.stazioni {
+  background: var(--ink); color: #DCE4EC;
+  border-radius: 10px; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; font-size: 12.5px;
+}
+.stazioni .voce { display: flex; align-items: center; gap: 8px; }
+.stazioni .icona { width: 15px; height: 15px; color: #7FB2E8; }
+.stazioni b { color: #fff; font-weight: 700; }
+.nota-stazioni {
+  font-size: 11.5px; line-height: 1.5; color: var(--muted);
+  margin-top: 9px;
+}
+.nota-stazioni b { color: var(--ink); }
+
+/* ---- CTA ---- */
+.cta {
+  border-top: 3px solid var(--ink);
+  margin-top: 4px; padding-top: 18px;
+  display: flex; align-items: center; gap: 26px;
+}
+.cta img {
+  width: 120px; height: 120px;
+  border: 1.5px solid var(--ink); border-radius: 8px;
+  flex: none; background: #fff;
+}
+.cta h2 { font-weight: 900; font-size: 26px; color: var(--ink); letter-spacing: -.01em; }
+.cta p { font-size: 13.5px; line-height: 1.5; margin-top: 6px; }
+.handle {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: "Space Grotesk", monospace;
+  font-weight: 700; font-size: 16px; color: var(--accento);
+  margin-top: 9px; text-decoration: none;
+}
+.handle:hover { color: #164A8F; }
+.handle .icona { width: 18px; height: 18px; }
+
+/* ---- Disclaimer ---- */
+.disclaimer {
+  margin-top: auto; padding-top: 12px;
+  font-size: 10.5px; line-height: 1.4; color: var(--debole);
+}
+
+.spazio { height: 22px; }
+.spazio-s { height: 12px; }
 </style>
 </head>
 <body>
-  <div class="foglio">
 
-    <div class="hero">
-      <div class="vela">⛵🌬️</div>
-      <h1>INFO VENTO</h1>
-      <p>Avvisi vento automatici e gratuiti, direttamente sul tuo telefono</p>
-    </div>
-    <svg class="onda" viewBox="0 0 1440 54" preserveAspectRatio="none">
-      <path d="M0,0 L1440,0 L1440,20 C1200,52 1000,8 720,26 C440,44 240,10 0,34 Z"
-            fill="#0a7fb5"/>
-      <path d="M0,0 L1440,0 L1440,12 C1180,44 980,2 720,18 C460,36 220,4 0,26 Z"
-            fill="#075985" opacity=".55"/>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 6v6l4 2" /> <circle cx="12" cy="12" r="10" /></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /> <path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol>
+<symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></symbol>
+<symbol id="i-radio" viewBox="0 0 24 24"><path d="M16.247 7.761a6 6 0 0 1 0 8.478" /> <path d="M19.075 4.933a10 10 0 0 1 0 14.134" /> <path d="M4.925 19.067a10 10 0 0 1 0-14.134" /> <path d="M7.753 16.239a6 6 0 0 1 0-8.478" /> <circle cx="12" cy="12" r="2" /></symbol>
+<symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></symbol>
+<symbol id="i-sailboat" viewBox="0 0 24 24"><path d="M22 18H2a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4Z" /> <path d="M21 14 10 2 3 14h18Z" /> <path d="M10 2v16" /></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" /> <path d="m21.854 2.147-10.94 10.939" /></symbol>
+<symbol id="i-tornado" viewBox="0 0 24 24"><path d="M21 4H3" /> <path d="M18 8H6" /> <path d="M19 12H9" /> <path d="M16 16h-6" /> <path d="M11 20H9" /></symbol>
+<symbol id="i-waves" viewBox="0 0 24 24"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /></symbol>
+<symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /> <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /> <path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol>
+</svg>
 
-    <div class="contenuto">
+<div class="foglio">
 
-    <div class="iscrizione">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAABT0lEQVR42u2aQQ7DIAwEreYBPClfz5PygEgumDWQW3qwK7XLASHwaXDWi1vRB+MQRjHq16JOwdjbatdL9CiqvrvVqJc8GYz6LKqx3/o9GHZMda+u2jjJPpa9pbflfU15uwBVfAZkn8N+yk0h+6+wr3lP9ul6f6K4QnOo9/Hsp88x0feJPiee/W049u3mRMkrUO9NZMSkvu0dlu0FV0H2cXkPQ99X631cfgvkFcd+yfFeXI240Ock1NobcUwmQdT7BM1Z5GatAfSYGT4HwgPsZnaKKvU+3t/D1Yt4Uwf3Qb1PyHtDXNzY9M9gnJJ9ZK1FBw3K729dmHyyT3jXDlevw22y1mb1c9rsFXa1++QV11Pw3628qdP7OWSf0s9Z+vfLGdmnsoepnAestTnsp8kfHpNvqyy9H/7+lOH0mfc5PgfYF/mn3if5e/6XjFF/EvUG9OPEU1hOdPAAAAAASUVORK5CYII=" alt="QR code iscrizione">
-      <div class="txt">
-        <h2>Iscriviti in 5 secondi</h2>
-        <p>Inquadra il QR con la fotocamera del telefono, oppure cerca il canale
-           su Telegram:</p>
-        <span class="link">t.me/INFOVENTO</span>
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="marchio">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sailboat"/></svg>
+        <div class="wordmark">INFO VENTO</div>
       </div>
+      <div class="hero-sub">Avvisi vento automatici e gratuiti, direttamente sul tuo telefono</div>
     </div>
-
-    <div class="sezione-titolo">Gli ALERT VENTO — la scala di intensità</div>
-    <div class="livelli">
-      <div class="livello l-arancio">
-        <div class="n">20 nodi</div>
-        <div class="d"><b>⚠️ Vento sostenuto.</b> Condizioni impegnative, solo
-          per chi ha esperienza.</div>
-      </div>
-      <div class="livello l-scarlatto">
-        <div class="n">25 nodi</div>
-        <div class="d"><b>🟠 Vento forte.</b> Solo per equipaggi molto esperti
-          e ben attrezzati.</div>
-      </div>
-      <div class="livello l-rosso">
-        <div class="n">30 nodi</div>
-        <div class="d"><b>🛑 Vento molto forte.</b> Si sconsiglia di uscire,
-          pericoloso anche per i più esperti.</div>
-      </div>
-    </div>
-
-    <div class="sezione-titolo">Situazione vento in tempo reale</div>
-    <div class="info" style="margin-bottom:4mm;">
-      🌬️ <b>Situazione vento ogni 15 minuti</b> (ore 9–19): intensità,
-      direzione e tendenza di <b>entrambe le stazioni</b>, sempre — anche
-      quando le condizioni non cambiano. Gli ALERT arrivano sempre in un box
-      a parte, un minuto dopo.<br>
-      🌅 <b>Bollettino del mattino</b> con le previsioni del giorno, la
-      <b>corrente di superficie</b>, <b>alta e bassa marea</b> (orari e cm sul
-      livello medio del giorno) e la <b>fase lunare</b> crescente/calante.
-    </div>
-
-    <div class="sezione-titolo">Alert variazione di pressione</div>
-    <div class="p-intro">
-      📉 Quando la pressione atmosferica <b>cala rapidamente</b> è uno dei
-      segnali più affidabili di vento in rinforzo in arrivo. Il canale tiene
-      d'occhio la pressione e vi avvisa quando scende troppo in fretta:
-    </div>
-    <div class="pressione">
-      <div class="p-riga p-giallo">
-        <div class="pv">−3 hPa<br>in 3 ore</div>
-        <div class="pd"><b>🟡 Attenzione.</b> Probabile rinforzo di vento in
-          arrivo.</div>
-      </div>
-      <div class="p-riga p-rosso">
-        <div class="pv">−6 hPa<br>in 3 ore</div>
-        <div class="pd"><b>🔴 Prudenza.</b> Peggioramento marcato, possibile
-          groppo.</div>
-      </div>
-    </div>
-
-    <div class="info">
-      💨 <b>ALERT BORA</b>: due stazioni sentinella a nord-est (<b>Sottomarina</b>
-      e la <b>Piattaforma CNR</b> al largo di Venezia) avvisano quando la bora
-      supera <b>20 · 25 · 30 nodi</b> — in genere <b>1–2 ore di preavviso</b>.<br>
-      🌀 <b>ALERT RAFFICA</b>: avviso anche quando la raffica di giornata
-      raggiunge <b>20 · 25 · 30 nodi</b>.<br>
-      📍 Stazioni: <b>Porto Corsini</b> (sud) e <b>Lido di Volano</b> (nord) &nbsp;•&nbsp;
-      🕘 Attivo <b>ore 9:00 – 19:00</b> &nbsp;•&nbsp;
-      🔄 Controllo <b>ogni 15 minuti</b><br>
-      L'avviso parte solo quando il vento <b>sale di livello</b>: niente messaggi
-      ripetuti se le condizioni restano stabili.
-      🔔 <b>Il telefono suona solo per gli ALERT</b>: tutto il resto arriva
-      silenzioso.
-    </div>
-
-    <div class="avviso">
-      ⚠️ <b>Dati indicativi e non ufficiali.</b> Servono come indicazione di
-      massima: verificate sempre le condizioni reali prima di andare in acqua.
-      La sicurezza viene prima di tutto.
-    </div>
-
-    <div class="pie">⛵ <b>Servizio gratuito per i velisti</b></div>
-
-    </div>
-
+    <div class="etichetta">Servizio gratuito<br>per i velisti</div>
   </div>
+
+  <div class="spazio"></div>
+
+  <!-- Scala di intensità -->
+  <div class="sezione">
+    <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    Gli alert vento — la scala di intensità
+  </div>
+  <div class="spazio-s"></div>
+  <div class="alert-riga">
+    <span class="pallino p-giallo"></span>
+    <div class="n">20 nodi</div>
+    <div class="d"><b>Vento sostenuto.</b> Condizioni impegnative, solo per chi ha esperienza.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-arancio"></span>
+    <div class="n">25 nodi</div>
+    <div class="d"><b>Vento forte.</b> Solo per equipaggi molto esperti e ben attrezzati.</div>
+  </div>
+  <div class="alert-riga">
+    <span class="pallino p-rosso"></span>
+    <div class="n">30 nodi</div>
+    <div class="d"><b>Vento molto forte.</b> Si sconsiglia di uscire, pericoloso anche per i più esperti.</div>
+  </div>
+
+  <div class="spazio"></div>
+
+  <!-- Situazione in tempo reale + Alert pressione -->
+  <div class="griglia">
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-radio"/></svg>
+        Situazione in tempo reale
+      </div>
+      <div class="corpo-txt">
+        <b>Situazione vento ogni 15 minuti</b> (ore 9–19): intensità,
+        direzione e tendenza di <b>entrambe le stazioni</b>, sempre — anche
+        quando le condizioni non cambiano. Gli ALERT arrivano sempre in un
+        box a parte, un minuto dopo.
+      </div>
+      <div class="corpo-txt">
+        <b>Bollettino del mattino</b> con le previsioni del giorno, la
+        <b>corrente di superficie</b>, <b>alta e bassa marea</b> (orari e cm
+        sul livello medio del giorno) e la <b>fase lunare</b> crescente/calante.
+      </div>
+    </div>
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-gauge"/></svg>
+        Alert variazione pressione
+      </div>
+      <div class="corpo-txt">
+        Quando la pressione atmosferica <b>cala rapidamente</b> è uno dei
+        segnali più affidabili di vento in rinforzo in arrivo. Il canale
+        tiene d'occhio la pressione e vi avvisa quando scende troppo in fretta:
+      </div>
+      <div class="spazio-s"></div>
+      <div class="mini-riga" style="border-top:0;">
+        <span class="pallino p12 p-giallo"></span>
+        <div class="nv">−3 hPa<br>in 3 ore</div>
+        <div class="d"><b>Attenzione.</b> Probabile rinforzo di vento in arrivo.</div>
+      </div>
+      <div class="mini-riga">
+        <span class="pallino p12 p-rosso"></span>
+        <div class="nv">−6 hPa<br>in 3 ore</div>
+        <div class="d"><b>Prudenza.</b> Peggioramento marcato, possibile groppo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spazio"></div>
+
+  <!-- Alert bora + Alert raffica -->
+  <div class="griglia">
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-tornado"/></svg>
+        Alert bora
+      </div>
+      <div class="corpo-txt">
+        Due stazioni sentinella a nord-est (<b>Sottomarina</b> e la
+        <b>Piattaforma CNR</b> al largo di Venezia) avvisano quando la bora
+        supera <b>20 · 25 · 30 nodi</b> — in genere <b>1–2 ore di preavviso</b>.
+      </div>
+    </div>
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+        Alert raffica
+      </div>
+      <div class="corpo-txt">
+        Avviso anche quando la <b>raffica di giornata</b> raggiunge
+        <b>20 · 25 · 30 nodi</b>.
+      </div>
+    </div>
+  </div>
+
+  <div class="spazio"></div>
+
+  <!-- Barra stazioni -->
+  <div class="stazioni">
+    <div class="voce">
+      <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-map-pin"/></svg>
+      <span><b>Porto Corsini</b> (sud) · <b>Lido di Volano</b> (nord)</span>
+    </div>
+    <div class="voce">
+      <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-clock"/></svg>
+      <span>Attivo <b>9:00 – 19:00</b></span>
+    </div>
+    <div class="voce">
+      <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh-cw"/></svg>
+      <span>Controllo <b>ogni 15 minuti</b></span>
+    </div>
+  </div>
+  <div class="nota-stazioni">
+    L'avviso parte solo quando il vento <b>sale di livello</b>: niente messaggi
+    ripetuti se le condizioni restano stabili.
+    <b>Il telefono suona solo per gli ALERT</b>: tutto il resto arriva silenzioso.
+  </div>
+
+  <div class="spazio"></div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAABT0lEQVR42u2aQQ7DIAwEreYBPClfz5PygEgumDWQW3qwK7XLASHwaXDWi1vRB+MQRjHq16JOwdjbatdL9CiqvrvVqJc8GYz6LKqx3/o9GHZMda+u2jjJPpa9pbflfU15uwBVfAZkn8N+yk0h+6+wr3lP9ul6f6K4QnOo9/Hsp88x0feJPiee/W049u3mRMkrUO9NZMSkvu0dlu0FV0H2cXkPQ99X631cfgvkFcd+yfFeXI240Ock1NobcUwmQdT7BM1Z5GatAfSYGT4HwgPsZnaKKvU+3t/D1Yt4Uwf3Qb1PyHtDXNzY9M9gnJJ9ZK1FBw3K729dmHyyT3jXDlevw22y1mb1c9rsFXa1++QV11Pw3628qdP7OWSf0s9Z+vfLGdmnsoepnAestTnsp8kfHpNvqyy9H/7+lOH0mfc5PgfYF/mn3if5e/6XjFF/EvUG9OPEU1hOdPAAAAAASUVORK5CYII=" alt="QR code iscrizione">
+    <div>
+      <h2>Iscriviti in 5 secondi</h2>
+      <p>Inquadra il QR con la fotocamera del telefono, oppure cerca il canale
+         su Telegram:</p>
+      <a class="handle" href="https://t.me/INFOVENTO">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-send"/></svg>
+        t.me/INFOVENTO
+      </a>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    Dati indicativi e non ufficiali. Servono come indicazione di massima:
+    verificate sempre le condizioni reali prima di andare in acqua.
+    La sicurezza viene prima di tutto. — Servizio gratuito per i velisti.
+  </div>
+
+</div>
 </body>
 </html>

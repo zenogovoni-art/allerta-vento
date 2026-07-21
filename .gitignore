@@ -7,8 +7,7 @@ __pycache__/
 previsioni_weekend.png
 
 # File temporanei della generazione del PDF della guida
-.guida.html
-.guida_style.css
+# (.guida.html ora è il sorgente della guida in stile 1A e viene versionato)
 .guida_preview.png
 
 # File con segreti, da NON caricare mai
