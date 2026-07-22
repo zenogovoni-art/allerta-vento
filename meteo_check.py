@@ -408,6 +408,26 @@ def stima_arrivo_min(coord, direzione: str, vento: float):
     return dist / (componente * 1.852) * 60  # km / (nodi->km/h) -> minuti
 
 
+# I fronti e i rinforzi viaggiano in genere PIU' VELOCI del vento misurato a
+# 10 metri (li guida il vento in quota): il limite basso della forchetta
+# accorcia la stima di questo fattore.
+ETA_FATTORE_VELOCE = 0.7
+
+
+def eta_forchetta(eta) -> str:
+    """Stima d'arrivo come forchetta, es. '~20–30 min'.
+
+    Il limite alto e' la stima alla velocita' del vento al suolo; quello
+    basso tiene conto che il rinforzo puo' arrivare prima. Entrambi
+    arrotondati ai 5 minuti; se coincidono, valore secco.
+    """
+    lento = max(5, int(round(eta / 5.0) * 5))
+    veloce = max(5, int(round(eta * ETA_FATTORE_VELOCE / 5.0) * 5))
+    if veloce == lento:
+        return f"~{lento} min"
+    return f"~{veloce}–{lento} min"
+
+
 # Frecce (8 punte) per le 8 direzioni della bussola.
 _FRECCE = ["⬆️", "↗️", "➡️", "↘️", "⬇️", "↙️", "⬅️", "↖️"]  # N NE E SE S SW W NW
 
@@ -1157,9 +1177,8 @@ def controlla_bora(stato: dict, in_orario: bool) -> bool:
                      f"raffica *{dati['raffica']:.1f} nodi*")
             eta = stima_arrivo_min(sent.get("coord"), sigla, dati["vento"])
             if eta is not None:
-                eta = max(5, int(round(eta / 5.0) * 5))
                 corpo += (f"\n⏱️ Possibile arrivo a Lido di Spina tra "
-                          f"~{eta} min")
+                          f"{eta_forchetta(eta)}")
             corpo += f"\n{liv['descrizione']}"
             try:
                 invia_telegram(corpo)
@@ -1654,11 +1673,11 @@ def main() -> int:
         # Stima di arrivo al circolo, usata nel messaggio ALERT VENTO qui
         # sotto (solo se il livello e' salito e la direzione punta verso il
         # circolo).
-        eta_min = None
+        eta_txt = None
         if direzioni_ok and livello_ora >= 1:
             eta = stima_arrivo_min(st.get("coord"), direzione, vento)
             if eta is not None:
-                eta_min = max(5, int(round(eta / 5.0) * 5))
+                eta_txt = eta_forchetta(eta)
 
         # --- ALERT VENTO: solo quando il livello SALE (e direzione OK). E'
         # sempre un messaggio a se' stante, mai confluito nel bollettino: vedi
@@ -1683,9 +1702,9 @@ def main() -> int:
                         and raf10 / vento >= RAFFICOSO_FATTORE):
                     corpo += ("\n💨 _Vento irregolare: raffiche ben sopra "
                               "la media_")
-                if eta_min is not None:
+                if eta_txt is not None:
                     corpo += (f"\n⏱️ Possibile arrivo al circolo tra "
-                              f"~{eta_min} min")
+                              f"{eta_txt}")
                 messaggi_alert.append(corpo)
             else:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"

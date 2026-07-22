@@ -81,7 +81,7 @@ Esempio di scheda:
 >
 > Vento **21.5 nodi** da SSW ↗️ — raffica **26.0 nodi**\
 > 📈 in aumento\
-> ⏱️ Possibile arrivo al circolo tra ~70 min
+> ⏱️ Possibile arrivo al circolo tra ~50–70 min
 
 Quando le raffiche superano di molto il vento medio (di oltre il 60%),
 l'ALERT aggiunge una riga di attenzione in più — il vento "a strappi" è
@@ -105,12 +105,15 @@ non necessariamente che stia raffica ora.
 
 Negli **avvisi di vento** (non nelle raffiche) trovi una riga come:
 
-> ⏱️ Possibile arrivo al circolo tra ~80 min
+> ⏱️ Possibile arrivo al circolo tra ~55–80 min
 
 È una stima di quanto può metterci il rinforzo ad arrivare al circolo di
 **Lido di Spina**, calcolata in base a distanza, direzione e intensità del
-vento. Compare solo quando il vento sta effettivamente puntando verso il
-circolo (es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
+vento. È una **forchetta**: il valore alto ipotizza che il rinforzo viaggi
+alla velocità del vento misurato, quello basso tiene conto che i fronti si
+muovono spesso più veloci del vento al suolo — prudenza: può arrivare prima.
+Compare solo quando il vento sta effettivamente puntando verso il circolo
+(es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
 **indicativo**, utile come anticipo.
 
 ## 📉 ALERT VARIAZIONE PRESSIONE
@@ -155,7 +158,7 @@ tre livelli:
 | 🛑 Bora 30+ nodi | **≥ 30 nodi** | bora molto forte: rientrare subito |
 
 Quando possibile l'avviso include la **stima di arrivo a Lido di Spina**
-(es. "tra ~90 min"): la distanza dalle sentinelle dà in genere **1–2 ore di
+(es. "tra ~65–90 min"): la distanza dalle sentinelle dà in genere **1–2 ore di
 preavviso**. Come gli altri alert, scatta solo **al salire di livello**:
 niente messaggi ripetuti finché la situazione resta stabile. Un vento forte
 da un'altra direzione (es. scirocco da SE) **non** fa scattare l'ALERT BORA:
@@ -293,6 +296,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Stima di arrivo a forchetta**: la riga "possibile arrivo al circolo"
+  ora dà un intervallo (es. ~55–80 min) — il valore basso ricorda che i
+  fronti spesso viaggiano più veloci del vento al suolo.
 - **ALERT BORA più selettivo**: scatta solo con vento dai settori N, NNE e
   NE (prima il settore arrivava fino a E).
 - **Pulizia giornaliera (prima settimanale)**: nel canale restano solo i
