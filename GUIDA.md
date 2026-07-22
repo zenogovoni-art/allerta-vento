@@ -271,14 +271,17 @@ L'avviso parte **solo quando il vento sale di fascia**:
   ALERT;
 - se scende sotto soglia e poi risale → ricevi di nuovo l'avviso.
 
-## 🧹 Pulizia settimanale del canale
+## 🧹 Pulizia giornaliera del canale
 
-Ogni **lunedì**, al primo controllo della giornata, il bot **cancella i
-messaggi delle settimane passate**: la chat del canale riparte pulita e gli
-iscritti non si ritrovano centinaia di vecchi messaggi da scorrere. I messaggi
-**di oggi (lunedì) restano**: sparisce solo tutto quello dei giorni precedenti.
-Non serve fare nulla: la cronologia sparisce da sola anche dal telefono degli
-iscritti.
+Ogni giorno, al primo controllo della giornata, il bot **cancella i messaggi
+dal penultimo giorno all'indietro**: nel canale restano sempre e solo i
+messaggi **di oggi e di ieri**, così gli iscritti non si ritrovano centinaia
+di vecchi messaggi da scorrere. Non serve fare nulla: la cronologia sparisce
+da sola anche dal telefono degli iscritti.
+
+**Unica eccezione: i Riepiloghi della sera non vengono mai cancellati.**
+Restano nel canale come archivio storico della stagione — con i loro grafici
+dell'andamento del vento saranno utili in futuro per fare statistiche.
 
 ## ⚠️ Importante
 
@@ -290,6 +293,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Pulizia giornaliera (prima settimanale)**: nel canale restano solo i
+  messaggi di oggi e di ieri. I Riepiloghi della sera però non si cancellano
+  mai: restano come archivio storico con i grafici del vento.
 - **Notifiche sonore solo per l'essenziale**: suonano gli ALERT e la
   Situazione vento; le schede di contorno (bollettini, grafici, riepilogo,
   benvenuti) ora arrivano come messaggi silenziosi.

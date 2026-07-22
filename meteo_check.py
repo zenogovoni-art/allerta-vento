@@ -829,12 +829,12 @@ def leggi_stazione(st: dict) -> dict | None:
 # --------------------------------------------------------------------------
 
 # Id del messaggio piu' recente che questo processo ha inviato al canale.
-# Serve alla pulizia settimanale per sapere dove finiscono i messaggi di
+# Serve alla pulizia giornaliera per sapere dove finiscono i messaggi di
 # "ieri": tutto cio' che il bot manda oggi avra' un id piu' alto e va salvato.
 _ULTIMO_MSG_ID = 0
 
 
-def invia_telegram(testo: str, silenzioso: bool = False) -> None:
+def invia_telegram(testo: str, silenzioso: bool = False):
     """Manda un messaggio al canale.
 
     Con silenzioso=True il messaggio arriva senza suoneria (Telegram
@@ -857,9 +857,10 @@ def invia_telegram(testo: str, silenzioso: bool = False) -> None:
     if isinstance(mid, int):
         _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, mid)
     print("[ok] messaggio Telegram inviato")
+    return mid if isinstance(mid, int) else None
 
 
-def invia_foto(png: bytes, didascalia: str, silenzioso: bool = False) -> None:
+def invia_foto(png: bytes, didascalia: str, silenzioso: bool = False):
     """Manda una foto (PNG in memoria) al canale, con didascalia."""
     global _ULTIMO_MSG_ID
     token = os.environ["TELEGRAM_TOKEN"]
@@ -877,6 +878,7 @@ def invia_foto(png: bytes, didascalia: str, silenzioso: bool = False) -> None:
     if isinstance(mid, int):
         _ULTIMO_MSG_ID = max(_ULTIMO_MSG_ID, mid)
     print("[ok] foto Telegram inviata")
+    return mid if isinstance(mid, int) else None
 
 
 def invia_telegram_admin(testo: str) -> None:
@@ -967,8 +969,12 @@ def id_corrente_canale() -> int:
     return sonda
 
 
-def pulizia_canale(da_id: int, a_id: int) -> None:
+def pulizia_canale(da_id: int, a_id: int, salva=()) -> None:
     """Cancella i messaggi del canale con id da (da_id+1) fino ad a_id compreso.
+
+    Gli id in `salva` non vengono MAI cancellati: e' l'eccezione per i
+    riepiloghi serali, che restano nel canale come archivio storico (utili
+    per statistiche future grazie ai grafici che contengono).
 
     Cancella all'indietro a blocchi da 100 con deleteMessages, che ignora gli
     id gia' inesistenti. E' RESILIENTE: se un blocco fallisce (es. contiene solo
@@ -982,7 +988,11 @@ def pulizia_canale(da_id: int, a_id: int) -> None:
     token = os.environ["TELEGRAM_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     base = f"https://api.telegram.org/bot{token}"
-    ids = list(range(a_id, da_id, -1))
+    da_salvare = set(salva)
+    ids = [i for i in range(a_id, da_id, -1) if i not in da_salvare]
+    if not ids:
+        print("[ok] pulizia canale: niente da cancellare")
+        return
     falliti = 0
     for i in range(0, len(ids), 100):
         blocco = ids[i:i + 100]
@@ -1442,13 +1452,15 @@ def main() -> int:
 
     # Modalita' pulizia: svuota SUBITO il canale (tutto, fino a questo momento)
     # e termina. Usata dal pulsante manuale (workflow_dispatch) come reset a
-    # richiesta. A differenza della pulizia del lunedi', qui cancello anche i
-    # messaggi di oggi perche' e' un'azione esplicita e voluta ora.
+    # richiesta. A differenza della pulizia giornaliera, qui cancello anche i
+    # messaggi di oggi e di ieri perche' e' un'azione esplicita e voluta ora.
+    # I riepiloghi serali restano comunque intoccabili (archivio storico).
     if os.environ.get("PULIZIA_CANALE", "").lower() in ("1", "true", "yes"):
         stato = carica_stato()
         try:
             adesso = id_corrente_canale()
-            pulizia_canale(stato.get("_pulito_fino_a", 0), adesso)
+            pulizia_canale(stato.get("_pulito_fino_a", 0), adesso,
+                           salva=stato.get("_riepilogo_ids", []))
             stato["_pulito_fino_a"] = adesso
             stato["_ultimo_id"] = adesso
             stato["_id_fine_ieri"] = adesso  # niente da oggi da preservare
@@ -1510,23 +1522,26 @@ def main() -> int:
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
         stato.pop("_serie", None)  # serie del grafico serale: riparte da zero
-        # Fotografo il confine "fine di ieri": l'ultimo id inviato finora. Tutto
-        # cio' che il bot manda da adesso (oggi) avra' un id piu' alto e la
-        # pulizia del lunedi' NON lo tocchera'. (Primo run del giorno: qui non
-        # e' ancora stato inviato nulla, quindi _ultimo_id e' quello di ieri.)
+        # Fotografo i confini per la pulizia giornaliera: "fine di ieri"
+        # scala a "fine dell'altroieri", e l'ultimo id inviato finora diventa
+        # il nuovo "fine di ieri". (Primo run del giorno: qui non e' ancora
+        # stato inviato nulla, quindi _ultimo_id e' quello di ieri.)
+        stato["_id_fine_altroieri"] = stato.get("_id_fine_ieri", 0)
         stato["_id_fine_ieri"] = stato.get("_ultimo_id", 0)
         cambiato = True
 
-    # --- Pulizia settimanale: ogni lunedi', al primo run della giornata,
-    # cancella i messaggi delle settimane passate cosi' gli iscritti non si
-    # ritrovano la chat intasata. Cancella FINO all'ultimo messaggio di ieri
-    # (_id_fine_ieri): i messaggi di oggi restano. Imposto il flag _pulizia
-    # in OGNI caso (anche se qualcosa va storto) cosi' NON si ripete durante
-    # la giornata: la pulizia deve girare al massimo una volta al lunedi'.
-    if adesso.weekday() == 0 and stato.get("_pulizia") != oggi:
-        ceiling = stato.get("_id_fine_ieri", 0)
+    # --- Pulizia giornaliera: al primo run di ogni giornata cancella i
+    # messaggi dal PENULTIMO giorno all'indietro: restano nel canale oggi e
+    # ieri (confine _id_fine_altroieri), cosi' gli iscritti non si ritrovano
+    # la chat intasata. ECCEZIONE: i riepiloghi serali (_riepilogo_ids) non
+    # si cancellano MAI — restano come archivio storico con i loro grafici.
+    # Imposto il flag _pulizia in OGNI caso (anche se qualcosa va storto)
+    # cosi' NON si ripete durante la giornata.
+    if stato.get("_pulizia") != oggi:
+        ceiling = stato.get("_id_fine_altroieri", 0)
         try:
-            pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling)
+            pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling,
+                           salva=stato.get("_riepilogo_ids", []))
             stato["_pulito_fino_a"] = max(stato.get("_pulito_fino_a", 0),
                                           ceiling)
         except Exception as e:  # noqa: BLE001
@@ -1784,16 +1799,20 @@ def main() -> int:
                 print(f"[errore] grafico giornata fallito: {e}")
             try:
                 if png:
-                    invia_foto(png, "\n".join(righe), silenzioso=True)
+                    mid = invia_foto(png, "\n".join(righe), silenzioso=True)
                 else:
-                    invia_telegram("\n".join(righe), silenzioso=True)
+                    mid = invia_telegram("\n".join(righe), silenzioso=True)
+                # Il riepilogo non va MAI cancellato dalla pulizia: archivio
+                # storico per statistiche future (vedi pulizia_canale).
+                if mid:
+                    stato.setdefault("_riepilogo_ids", []).append(mid)
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio riepilogo fallito: {e}")
         stato["_riepilogo"] = oggi
         cambiato = True
 
     # Tengo aggiornato l'id piu' recente inviato: e' il confine che domani
-    # diventera' _id_fine_ieri (vedi reset giornaliero e pulizia settimanale).
+    # diventera' _id_fine_ieri (vedi reset giornaliero e pulizia giornaliera).
     if _ULTIMO_MSG_ID > stato.get("_ultimo_id", 0):
         stato["_ultimo_id"] = _ULTIMO_MSG_ID
         cambiato = True
