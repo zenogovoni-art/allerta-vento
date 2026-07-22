@@ -145,7 +145,7 @@ Sono stazioni della **rete meteo-mareografica del Centro Maree di Venezia**
 (la stessa rete istituzionale delle previsioni di acqua alta), con dati
 aggiornati **ogni 5 minuti**.
 
-L'ALERT BORA scatta **solo con vento dal settore nord-est** (da NNE a E) e ha
+L'ALERT BORA scatta **solo con vento dai settori N, NNE e NE** e ha
 tre livelli:
 
 | Livello | Vento medio | Cosa significa |
@@ -293,6 +293,8 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **ALERT BORA più selettivo**: scatta solo con vento dai settori N, NNE e
+  NE (prima il settore arrivava fino a E).
 - **Pulizia giornaliera (prima settimanale)**: nel canale restano solo i
   messaggi di oggi e di ieri. I Riepiloghi della sera però non si cancellano
   mai: restano come archivio storico con i grafici del vento.

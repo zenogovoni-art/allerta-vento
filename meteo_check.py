@@ -262,7 +262,9 @@ BORA_SENTINELLE = [
     {"id": "1021", "nome": "Piattaforma CNR (largo di Venezia)",
      "coord": (45.314, 12.508)},
 ]
-BORA_SETTORE = (20.0, 90.0)   # gradi di provenienza: da NNE a E
+# Gradi di provenienza ammessi: solo i settori N, NNE e NE (348.75-56.25,
+# a cavallo del nord). Vento forte da altre direzioni non e' bora.
+BORA_SETTORE = (348.75, 56.25)
 BORA_MAX_ETA_MIN = 40         # scarto lettura piu' vecchia di cosi' (guasto)
 BORA_LIVELLI = [
     {"soglia": 20.0, "riarmo": 18.0, "tag": "⚠️ *Bora 20+ nodi*",
@@ -1105,10 +1107,10 @@ def leggi_bora() -> dict:
 def controlla_bora(stato: dict, in_orario: bool) -> bool:
     """Controlla le sentinelle bora e avvisa al salire di soglia.
 
-    Il livello sale solo con vento dal settore NE (BORA_SETTORE): un vento
-    forte da un'altra direzione non e' bora e azzera il livello. Stessa
-    isteresi degli altri alert: niente messaggi ripetuti a condizioni stabili.
-    Ritorna True se lo stato e' cambiato.
+    Il livello sale solo con vento dai settori N/NNE/NE (BORA_SETTORE, a
+    cavallo del nord): un vento forte da un'altra direzione non e' bora e
+    azzera il livello. Stessa isteresi degli altri alert: niente messaggi
+    ripetuti a condizioni stabili. Ritorna True se lo stato e' cambiato.
     """
     letture = leggi_bora()
     if not letture:
@@ -1123,7 +1125,9 @@ def controlla_bora(stato: dict, in_orario: bool) -> bool:
             continue
 
         gradi = dati["gradi"]
-        in_settore = BORA_SETTORE[0] <= gradi <= BORA_SETTORE[1]
+        # Il settore scavalca il nord (348.75 -> 56.25): dentro se la
+        # provenienza e' oltre l'inizio O sotto la fine.
+        in_settore = gradi >= BORA_SETTORE[0] or gradi <= BORA_SETTORE[1]
         vento_eff = dati["vento"] if in_settore else 0.0
 
         s = s_bora.setdefault(sent["nome"], {})
