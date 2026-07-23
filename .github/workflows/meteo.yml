@@ -53,10 +53,12 @@ jobs:
 
       - name: Salva lo stato aggiornato
         run: |
-          if [[ -n "$(git status --porcelain state.json)" ]]; then
+          # Oltre a state.json si salva anche storico/ (l'archivio CSV delle
+          # letture, scritto una volta al giorno al cambio di data).
+          if [[ -n "$(git status --porcelain state.json storico)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add state.json
+            git add state.json storico
             git commit -m "Aggiorna stato allerta vento [skip ci]"
             git push
           else

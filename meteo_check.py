@@ -1459,6 +1459,42 @@ def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
 
 
 # --------------------------------------------------------------------------
+# ARCHIVIO STORICO - un CSV per anno con tutte le letture della stagione
+# --------------------------------------------------------------------------
+# La serie giornaliera viene azzerata ogni notte: prima di buttarla via la
+# accodo a storico/<anno>.csv (committato dal workflow come state.json).
+# Il canale conserva i grafici, questo file conserva i numeri: e' la materia
+# prima per le statistiche stagionali (giorni uscibili, profilo orario della
+# brezza, rosa dei venti, previsto-vs-reale...).
+
+STORICO_DIR = Path(__file__).with_name("storico")
+
+
+def archivia_serie(serie: dict, data: str) -> None:
+    """Accoda le letture di una giornata al CSV storico dell'anno.
+
+    Una riga per lettura: data, ora, stazione, vento, raffica 10' (vuota se
+    non disponibile), direzione di provenienza. Idempotente per giornata: la
+    chiama solo il reset giornaliero, che poi azzera la serie.
+    """
+    if not serie or not data:
+        return
+    percorso = STORICO_DIR / f"{data[:4]}.csv"
+    STORICO_DIR.mkdir(exist_ok=True)
+    nuovo = not percorso.exists()
+    with percorso.open("a", encoding="utf-8") as f:
+        if nuovo:
+            f.write("data,ora,stazione,vento_nodi,raffica10_nodi,direzione\n")
+        for nome, punti in serie.items():
+            for p in punti:
+                raffica = ("" if len(p) < 3 or p[2] is None else f"{p[2]}")
+                direzione = p[3] if len(p) > 3 and p[3] else ""
+                f.write(f"{data},{p[0]},{nome},{p[1]},{raffica},{direzione}\n")
+    n = sum(len(v) for v in serie.values())
+    print(f"[ok] archivio storico: {n} letture del {data} in {percorso.name}")
+
+
+# --------------------------------------------------------------------------
 # MAIN
 # --------------------------------------------------------------------------
 
@@ -1562,6 +1598,12 @@ def main() -> int:
 
     # Reset giornaliero di massimi e tendenza all'inizio di un nuovo giorno.
     if stato.get("_data") != oggi:
+        # Prima di azzerare la serie, la accodo al CSV storico: e' l'unico
+        # punto in cui i numeri della giornata stanno per sparire.
+        try:
+            archivia_serie(stato.get("_serie") or {}, stato.get("_data") or "")
+        except Exception as e:  # noqa: BLE001
+            print(f"[errore] archivio storico fallito: {e}")
         stato["_data"] = oggi
         for st in STAZIONI:
             s = stato.setdefault(st["nome"], {})
