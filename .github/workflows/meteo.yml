@@ -54,11 +54,15 @@ jobs:
       - name: Salva lo stato aggiornato
         run: |
           # Oltre a state.json si salva anche storico/ (l'archivio CSV delle
-          # letture, scritto una volta al giorno al cambio di data).
-          if [[ -n "$(git status --porcelain state.json storico)" ]]; then
+          # letture, scritto una volta al giorno al cambio di data). La
+          # cartella viene inclusa solo se esiste: passare a git un percorso
+          # inesistente fa fallire il job con "pathspec did not match".
+          paths="state.json"
+          [ -d storico ] && paths="$paths storico"
+          if [[ -n "$(git status --porcelain $paths)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add state.json storico
+            git add $paths
             git commit -m "Aggiorna stato allerta vento [skip ci]"
             git push
           else
