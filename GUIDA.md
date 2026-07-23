@@ -255,8 +255,11 @@ Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima*
 registrati nella giornata, accompagnato dal **grafico dell'andamento reale del
 vento**: le letture raccolte ogni 15 minuti dalle due stazioni diventano una
 curva che mostra com'è andata davvero la giornata (vento pieno, raffica
-tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). È il
-complemento "a consuntivo" del grafico delle previsioni weekend.
+tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). Per
+ogni ora, sopra la curva di ciascuna stazione, una **freccia mostra la
+direzione di provenienza** del vento: la freccia "vola col vento", come nelle
+app meteo (vento da N = freccia che punta in basso). È il complemento "a
+consuntivo" del grafico delle previsioni weekend.
 
 ## 📈 Tendenza e direzione
 
@@ -308,7 +311,8 @@ viene prima di tutto.
   Situazione vento; le schede di contorno (bollettini, grafici, riepilogo,
   benvenuti) ora arrivano come messaggi silenziosi.
 - **Grafico serale del vento**: il riepilogo delle 19:00 include il grafico
-  dell'andamento reale del vento della giornata alle due stazioni.
+  dell'andamento reale del vento della giornata alle due stazioni, con una
+  freccia per ogni ora che mostra la direzione di provenienza.
 - **Fascia migliore per uscire**: il bollettino del mattino indica la
   finestra oraria con vento previsto adatto alla deriva (~6–16 nodi).
 - **Nota "vento irregolare"**: l'ALERT VENTO segnala quando le raffiche

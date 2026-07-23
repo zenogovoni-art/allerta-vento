@@ -1377,7 +1377,11 @@ GRAFICO_GIORNO_MIN_PUNTI = 4  # sotto questa soglia il grafico non dice nulla
 def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
     """PNG con l'andamento del vento di oggi, o None se dati insufficienti.
 
-    serie: {nome stazione: [["HH:MM", vento, raffica10' | None], ...]}.
+    serie: {nome: [["HH:MM", vento, raffica10' | None, direzione], ...]}
+    (il quarto campo puo' mancare nelle serie salvate prima di questa
+    funzione). Sul grafico, una freccia per ogni ora mostra la direzione di
+    PROVENIENZA del vento: la freccia "vola col vento", come le frecce delle
+    app meteo (vento da N = freccia che punta in basso).
     Matplotlib viene importato qui dentro: serve una volta al giorno e
     caricarlo a ogni run dei controlli sarebbe uno spreco.
     """
@@ -1388,6 +1392,7 @@ def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
     colori = {"Porto Corsini": "#075985", "Lido di Volano": "#d3500a"}
     fig, ax = plt.subplots(figsize=(9, 4.8), dpi=150)
     disegnato = False
+    frecce = []  # (x, y, u, v, colore): una per ora per stazione
     for nome, punti in serie.items():
         if len(punti) < GRAFICO_GIORNO_MIN_PUNTI:
             continue
@@ -1399,10 +1404,29 @@ def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
         if any(p[2] is not None for p in punti):
             ax.plot(ore, raffiche, label=f"{nome} — raffica", color=colore,
                     linewidth=1.3, linestyle="--", alpha=0.65)
+        # Una freccia di direzione per ogni ora: il primo punto di ogni ora
+        # (i run non cadono mai esattamente allo scoccare).
+        ora_fatta = set()
+        for p, x, y in zip(punti, ore, venti):
+            sigla = p[3] if len(p) > 3 else None
+            if sigla not in COMPASS or int(x) in ora_fatta:
+                continue
+            ora_fatta.add(int(x))
+            verso = math.radians((COMPASS[sigla] + 180) % 360)
+            frecce.append((x, y, math.sin(verso), math.cos(verso), colore))
         disegnato = True
     if not disegnato:
         plt.close(fig)
         return None
+
+    if frecce:
+        # Le frecce stanno un po' SOPRA la linea del vento, per non coprirla.
+        salto = ax.get_ylim()[1] * 0.06
+        xs, ys, us, vs, cs = zip(*frecce)
+        ax.quiver(xs, [y + salto for y in ys], us, vs, color=cs,
+                  angles="uv", pivot="mid", scale=30, width=0.004,
+                  headwidth=4.5, headlength=5, headaxislength=4.5,
+                  alpha=0.85, zorder=5)
 
     # Linee delle soglie d'alert, ma solo quelle vicine ai valori del giorno:
     # con un massimo di 8 nodi tirare l'asse fino a 30 schiaccerebbe tutto.
@@ -1655,11 +1679,13 @@ def main() -> int:
                 s["raffica_max"] = max(s.get("raffica_max", 0.0), raffica)
             # Serie del giorno per il grafico serale: come raffica uso quella
             # degli ultimi 10 minuti (dato attuale); la massima giornaliera
-            # non ha senso in un grafico orario.
+            # non ha senso in un grafico orario. La direzione serve per le
+            # frecce di provenienza disegnate ora per ora sul grafico.
             raf10 = dati.get("raffica_10min")
             stato.setdefault("_serie", {}).setdefault(nome, []).append(
                 [f"{adesso:%H:%M}", round(vento, 1),
-                 round(raf10, 1) if raf10 is not None else None])
+                 round(raf10, 1) if raf10 is not None else None,
+                 direzione])
             cambiato = True
 
         # Direzione "verso il circolo": True se il vento arriva da un settore
