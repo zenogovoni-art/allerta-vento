@@ -31,13 +31,14 @@
         1013.6
       ]
     ],
-    "vento_prec": 9.3
+    "vento_prec": 9.3,
+    "guasto_da": "2026-07-23T16:01:11.337462+02:00"
   },
   "_data": "2026-07-23",
   "_riepilogo": "2026-07-22",
   "_bollettino": "2026-07-23",
   "_grafico": "2026-07-23",
-  "_stazioni_slot": "2026-07-23 15D",
+  "_stazioni_slot": "2026-07-23 16A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -53,7 +54,7 @@
   },
   "_pulito_fino_a": 637,
   "_pulizia": "2026-07-23",
-  "_ultimo_id": 711,
+  "_ultimo_id": 712,
   "_id_fine_ieri": 680,
   "_id_fine_altroieri": 637,
   "_serie": {
@@ -222,6 +223,12 @@
       ],
       [
         "15:45",
+        11.3,
+        12.2,
+        "SE"
+      ],
+      [
+        "16:01",
         11.3,
         12.2,
         "SE"
