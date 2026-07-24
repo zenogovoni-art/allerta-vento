@@ -82,3 +82,95 @@ data,ora,stazione,vento_nodi,raffica10_nodi,direzione
 2026-07-23,18:31,Lido di Volano,4.3,,SSE
 2026-07-23,18:42,Lido di Volano,4.9,,SSE
 2026-07-23,18:45,Lido di Volano,4.9,,SSE
+2026-07-24,09:01,Porto Corsini,8.7,12.2,E
+2026-07-24,09:04,Porto Corsini,13.0,12.2,ESE
+2026-07-24,09:15,Porto Corsini,11.3,12.2,ESE
+2026-07-24,09:31,Porto Corsini,12.1,12.2,E
+2026-07-24,09:45,Porto Corsini,9.6,13.0,ESE
+2026-07-24,10:01,Porto Corsini,12.1,11.3,ESE
+2026-07-24,10:15,Porto Corsini,11.3,12.2,ESE
+2026-07-24,10:31,Porto Corsini,12.1,11.3,ESE
+2026-07-24,10:45,Porto Corsini,11.3,11.3,ESE
+2026-07-24,11:01,Porto Corsini,12.1,12.2,ESE
+2026-07-24,11:15,Porto Corsini,11.3,12.2,ESE
+2026-07-24,11:29,Porto Corsini,13.9,11.3,SE
+2026-07-24,11:31,Porto Corsini,11.3,11.3,ESE
+2026-07-24,11:45,Porto Corsini,13.9,13.0,SE
+2026-07-24,12:01,Porto Corsini,12.1,12.2,ESE
+2026-07-24,12:15,Porto Corsini,14.8,13.0,ESE
+2026-07-24,12:31,Porto Corsini,13.0,12.2,SE
+2026-07-24,12:45,Porto Corsini,14.8,12.2,ESE
+2026-07-24,13:01,Porto Corsini,13.9,12.2,SSE
+2026-07-24,13:15,Porto Corsini,12.1,13.0,SE
+2026-07-24,13:16,Porto Corsini,12.1,12.2,SE
+2026-07-24,13:31,Porto Corsini,12.1,12.2,SE
+2026-07-24,13:45,Porto Corsini,12.1,13.0,SE
+2026-07-24,14:01,Porto Corsini,12.1,12.2,SE
+2026-07-24,14:15,Porto Corsini,13.0,12.2,SE
+2026-07-24,14:31,Porto Corsini,11.3,10.4,SE
+2026-07-24,14:45,Porto Corsini,8.7,11.3,SE
+2026-07-24,14:51,Porto Corsini,13.0,11.3,SE
+2026-07-24,15:01,Porto Corsini,11.3,13.0,SE
+2026-07-24,15:15,Porto Corsini,12.1,12.2,SE
+2026-07-24,15:31,Porto Corsini,13.0,11.3,SSE
+2026-07-24,15:45,Porto Corsini,13.0,12.2,SE
+2026-07-24,16:01,Porto Corsini,12.1,13.0,SE
+2026-07-24,16:15,Porto Corsini,9.6,12.2,SSE
+2026-07-24,16:31,Porto Corsini,10.4,11.3,SE
+2026-07-24,16:40,Porto Corsini,11.3,11.3,SSE
+2026-07-24,16:45,Porto Corsini,11.3,11.3,SE
+2026-07-24,17:01,Porto Corsini,11.3,11.3,SSE
+2026-07-24,17:15,Porto Corsini,10.4,11.3,SSE
+2026-07-24,17:31,Porto Corsini,10.4,12.2,SE
+2026-07-24,17:45,Porto Corsini,9.6,9.6,SSE
+2026-07-24,18:01,Porto Corsini,10.4,10.4,SSE
+2026-07-24,18:05,Porto Corsini,10.4,10.4,SSE
+2026-07-24,18:15,Porto Corsini,11.3,10.4,SSE
+2026-07-24,18:31,Porto Corsini,12.1,11.3,SSE
+2026-07-24,18:45,Porto Corsini,13.0,12.2,SE
+2026-07-24,09:01,Lido di Volano,1.2,,NNE
+2026-07-24,09:04,Lido di Volano,2.1,,NE
+2026-07-24,09:15,Lido di Volano,11.1,,SE
+2026-07-24,09:31,Lido di Volano,10.7,,ESE
+2026-07-24,09:45,Lido di Volano,8.9,,ESE
+2026-07-24,10:01,Lido di Volano,9.1,,E
+2026-07-24,10:15,Lido di Volano,10.9,,E
+2026-07-24,10:31,Lido di Volano,9.1,,E
+2026-07-24,10:45,Lido di Volano,9.5,,E
+2026-07-24,11:01,Lido di Volano,8.2,,E
+2026-07-24,11:15,Lido di Volano,8.0,,SE
+2026-07-24,11:29,Lido di Volano,7.4,,SE
+2026-07-24,11:31,Lido di Volano,7.4,,SE
+2026-07-24,11:45,Lido di Volano,7.0,,SE
+2026-07-24,12:01,Lido di Volano,7.8,,SSE
+2026-07-24,12:15,Lido di Volano,8.9,,SSE
+2026-07-24,12:31,Lido di Volano,7.6,,ESE
+2026-07-24,12:45,Lido di Volano,8.4,,SE
+2026-07-24,13:01,Lido di Volano,8.6,,SE
+2026-07-24,13:15,Lido di Volano,9.3,,SE
+2026-07-24,13:16,Lido di Volano,9.3,,SE
+2026-07-24,13:31,Lido di Volano,8.6,,SE
+2026-07-24,13:45,Lido di Volano,6.4,,SSE
+2026-07-24,14:01,Lido di Volano,7.8,,SE
+2026-07-24,14:15,Lido di Volano,6.6,,SE
+2026-07-24,14:31,Lido di Volano,8.2,,SE
+2026-07-24,14:45,Lido di Volano,7.2,,SSE
+2026-07-24,14:51,Lido di Volano,8.0,,SE
+2026-07-24,15:01,Lido di Volano,8.7,,SSE
+2026-07-24,15:15,Lido di Volano,8.6,,SE
+2026-07-24,15:31,Lido di Volano,7.8,,SSE
+2026-07-24,15:45,Lido di Volano,8.4,,SSE
+2026-07-24,16:01,Lido di Volano,7.8,,SSE
+2026-07-24,16:15,Lido di Volano,9.9,,SSE
+2026-07-24,16:31,Lido di Volano,8.2,,S
+2026-07-24,16:40,Lido di Volano,7.0,,S
+2026-07-24,16:45,Lido di Volano,7.4,,SSE
+2026-07-24,17:01,Lido di Volano,9.3,,SSE
+2026-07-24,17:15,Lido di Volano,8.4,,S
+2026-07-24,17:31,Lido di Volano,9.9,,SSE
+2026-07-24,17:45,Lido di Volano,9.3,,SSE
+2026-07-24,18:01,Lido di Volano,10.7,,SSE
+2026-07-24,18:05,Lido di Volano,10.7,,SSE
+2026-07-24,18:15,Lido di Volano,9.7,,S
+2026-07-24,18:31,Lido di Volano,9.1,,S
+2026-07-24,18:45,Lido di Volano,11.1,,SSE
