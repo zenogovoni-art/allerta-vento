@@ -1619,14 +1619,16 @@ def main() -> int:
         stato["_id_fine_ieri"] = stato.get("_ultimo_id", 0)
         cambiato = True
 
-    # --- Pulizia giornaliera: al primo run di ogni giornata cancella i
-    # messaggi dal PENULTIMO giorno all'indietro: restano nel canale oggi e
-    # ieri (confine _id_fine_altroieri), cosi' gli iscritti non si ritrovano
-    # la chat intasata. ECCEZIONE: i riepiloghi serali (_riepilogo_ids) non
-    # si cancellano MAI — restano come archivio storico con i loro grafici.
-    # Imposto il flag _pulizia in OGNI caso (anche se qualcosa va storto)
-    # cosi' NON si ripete durante la giornata.
-    if stato.get("_pulizia") != oggi:
+    # --- Pulizia giornaliera: alle 9:00, al primo run della fascia attiva
+    # (insieme al bollettino del mattino: prima si pulisce, poi si pubblica),
+    # cancella i messaggi dal PENULTIMO giorno all'indietro: restano nel
+    # canale oggi e ieri (confine _id_fine_altroieri, fotografato a
+    # mezzanotte), cosi' gli iscritti non si ritrovano la chat intasata.
+    # ECCEZIONE: i riepiloghi serali (_riepilogo_ids) non si cancellano MAI —
+    # restano come archivio storico con i loro grafici. Imposto il flag
+    # _pulizia in OGNI caso (anche se qualcosa va storto) cosi' NON si
+    # ripete durante la giornata.
+    if in_orario and stato.get("_pulizia") != oggi:
         ceiling = stato.get("_id_fine_altroieri", 0)
         try:
             pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling,
