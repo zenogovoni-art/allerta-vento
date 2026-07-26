@@ -42,7 +42,7 @@
     "vento_prec": 3.9
   },
   "_data": "2026-07-26",
-  "_riepilogo": "2026-07-25",
+  "_riepilogo": "2026-07-26",
   "_bollettino": "2026-07-26",
   "_grafico": "2026-07-25",
   "_stazioni_slot": "2026-07-26 18D",
@@ -70,13 +70,14 @@
   },
   "_pulito_fino_a": 767,
   "_pulizia": "2026-07-26",
-  "_ultimo_id": 854,
+  "_ultimo_id": 855,
   "_id_fine_ieri": 812,
   "_id_fine_altroieri": 767,
   "_riepilogo_ids": [
     724,
     767,
-    812
+    812,
+    855
   ],
   "_serie": {
     "Porto Corsini": [
