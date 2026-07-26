@@ -64,21 +64,12 @@
   },
   "_benvenuti": {
     "offset": 961277672,
-    "in_attesa": [
-      {
-        "id": 1604450780,
-        "nome": "Gionata"
-      },
-      {
-        "id": 1736944130,
-        "nome": "yay yey"
-      }
-    ],
-    "data_invio": "2026-07-20"
+    "in_attesa": [],
+    "data_invio": "2026-07-26"
   },
   "_pulito_fino_a": 767,
   "_pulizia": "2026-07-26",
-  "_ultimo_id": 855,
+  "_ultimo_id": 856,
   "_id_fine_ieri": 812,
   "_id_fine_altroieri": 767,
   "_riepilogo_ids": [
