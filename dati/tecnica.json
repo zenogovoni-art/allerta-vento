@@ -1,0 +1,176 @@
+{
+  "_commento": [
+    "Libreria di articoli tecnici per la rubrica '3 NEWS DI VELA' (news 2).",
+    "Usata come riserva nei giorni in cui i feed non offrono un articolo",
+    "fresco di tecnica o regate. Ogni voce: titolo, testo (1-2 righe),",
+    "link (Giornale della Vela, sezione Scuola di vela). Rotazione in",
+    "ordine di lista; per aggiungere un articolo basta accodare una voce."
+  ],
+  "articoli": [
+    {
+      "titolo": "Parla la randa: \"ecco come dovete regolarmi\"",
+      "testo": "La regolazione della randa spiegata dalla diretta interessata: carrello, scotta, vang e tesabase, quando e come usarli davvero.",
+      "link": "https://www.giornaledellavela.com/2022/01/24/regolare-la-randa/"
+    },
+    {
+      "titolo": "Navigare di bolina in crociera: 8 consigli",
+      "testo": "Come fare amicizia con la barca sbandata: otto accorgimenti per una bolina più comoda ed efficiente in crociera.",
+      "link": "https://www.giornaledellavela.com/2026/04/02/navigare-di-bolina/"
+    },
+    {
+      "titolo": "Navigare alle andature portanti con onda",
+      "testo": "I trucchi per essere veloci e ridurre il mal di mare quando si naviga col vento e le onde in poppa.",
+      "link": "https://www.giornaledellavela.com/2026/04/05/navigare-andature-portanti/"
+    },
+    {
+      "titolo": "Il vento apparente: cos'è e perché è fondamentale",
+      "testo": "La differenza tra vento reale e apparente, e perché è quest'ultimo a comandare la regolazione delle vele.",
+      "link": "https://www.giornaledellavela.com/2026/05/02/vento-apparente-cose-e-perche-e-fondamentale-per-regolare-le-vele/"
+    },
+    {
+      "titolo": "Il bompresso: a cosa serve",
+      "testo": "Perché sempre più barche moderne montano il bompresso e che vantaggi porta alle andature portanti con gennaker e Code 0.",
+      "link": "https://www.giornaledellavela.com/2026/03/27/bompresso/"
+    },
+    {
+      "titolo": "Il coltello da marinaio: le regole",
+      "testo": "Quale coltello tenere a bordo, come portarlo e le regole (anche di legge) da conoscere: un attrezzo di sicurezza prima che un accessorio.",
+      "link": "https://www.giornaledellavela.com/2026/04/27/coltello-da-marinaio-regole/"
+    },
+    {
+      "titolo": "Le 20 app da avere prima di salpare (1): a terra",
+      "testo": "Prima puntata della guida alle app per velisti: quelle da consultare a terra, tra meteo, marea e pianificazione.",
+      "link": "https://www.giornaledellavela.com/2026/04/06/app-smartphone-a-terra/"
+    },
+    {
+      "titolo": "Le 20 app da avere prima di salpare (2): in mare",
+      "testo": "Seconda puntata: le app utili in navigazione, dalla cartografia agli strumenti di bordo sullo smartphone.",
+      "link": "https://www.giornaledellavela.com/2026/04/10/app-smartphone-in-mare/"
+    },
+    {
+      "titolo": "Le 20 app da avere prima di salpare (3): in porto",
+      "testo": "Terza puntata: prenotare l'ormeggio, muoversi in porto e risolvere gli imprevisti con il telefono.",
+      "link": "https://www.giornaledellavela.com/2026/04/12/app-smartphone-in-porto/"
+    },
+    {
+      "titolo": "I rischi del sole per i velisti",
+      "testo": "Ore in acqua sotto il sole: come proteggersi davvero dai raggi UV con i capi e le accortezze giuste.",
+      "link": "https://www.giornaledellavela.com/2026/04/01/rischi-del-sole-per-i-velisti/"
+    },
+    {
+      "titolo": "Acqua in sentina, salata: come me la sono cavata",
+      "testo": "Racconto e lezione pratica: trovare la falla, ragionare con metodo e uscirne — un ripasso utile a chiunque vada per mare.",
+      "link": "https://www.giornaledellavela.com/2026/05/24/acqua-in-sentina-salata-ecco-ome-me-la-sono-cavata/"
+    },
+    {
+      "titolo": "VIDEO — Aumentare le prestazioni delle vele",
+      "testo": "Come tirare fuori di più dalle vele che già avete: regolazioni e piccoli interventi che cambiano il rendimento.",
+      "link": "https://www.giornaledellavela.com/2023/02/21/video-aumentare-le-prestazioni-delle-vele/"
+    },
+    {
+      "titolo": "VIDEO — Come si pianifica la rotta",
+      "testo": "La pianificazione della navigazione passo per passo: carte, meteo, punti critici e piani alternativi.",
+      "link": "https://www.giornaledellavela.com/2023/02/17/video-ecco-come-si-pianifica-la-rotta/"
+    },
+    {
+      "titolo": "VIDEO — I segreti delle vele e la manutenzione giusta",
+      "testo": "Come sono fatte le vele moderne e come farle durare: controlli, lavaggio, rimessaggio e i danni da non trascurare.",
+      "link": "https://www.giornaledellavela.com/2023/02/14/video-i-segreti-delle-vele-e-la-giusta-la-manutenzione/"
+    },
+    {
+      "titolo": "VIDEO — Armare il gennaker in crociera",
+      "testo": "Il gennaker senza paura: come si arma, si issa e si ammaina in equipaggio ridotto, per usarlo davvero anche in crociera.",
+      "link": "https://www.giornaledellavela.com/2023/02/11/video-armare-il-gennaker-in-crociera/"
+    },
+    {
+      "titolo": "VIDEO — Regolare il fiocco con vento forte",
+      "testo": "Punto di scotta, carrello e tensione: come depotenziare il fiocco quando il vento cresce, mantenendo la barca in equilibrio.",
+      "link": "https://www.giornaledellavela.com/2023/02/07/video-regolare-il-fiocco-con-vento-forte/"
+    },
+    {
+      "titolo": "VIDEO — La zattera di salvataggio: cosa c'è dentro",
+      "testo": "Apriamo una zattera di salvataggio: cosa contiene davvero, come si attiva e cosa aspettarsi. Da vedere prima di averne bisogno.",
+      "link": "https://www.giornaledellavela.com/2023/02/03/video-la-zattera-di-salvataggio-cosa-ce-dentro/"
+    },
+    {
+      "titolo": "VIDEO — Ridurre le vele con vento forte",
+      "testo": "Mani di terzaroli e riduzione del fiocco: quando farlo (prima che serva!) e con che sequenza, per navigare sicuri col vento teso.",
+      "link": "https://www.giornaledellavela.com/2023/01/31/ridurre-le-vele-con-vento-forte/"
+    },
+    {
+      "titolo": "VIDEO — Manovrare in spazi ristretti",
+      "testo": "In porto tra pontili e barche ormeggiate: uso di motore, abbrivio e vento per manovrare con calma e precisione.",
+      "link": "https://www.giornaledellavela.com/2023/01/27/video-manovrare-in-spazi-ristretti/"
+    },
+    {
+      "titolo": "VIDEO — L'effetto evolutivo dell'elica",
+      "testo": "Il \"piede\" che sposta la poppa: cos'è l'effetto evolutivo e come sfruttarlo per manovre perfette in retromarcia.",
+      "link": "https://www.giornaledellavela.com/2023/01/24/video-leffetto-evolutivo-dellelica-e-il-trucco-delle-manovre-perfette/"
+    },
+    {
+      "titolo": "VIDEO — La manovra giusta per mollare l'ormeggio",
+      "testo": "Uscire dall'ormeggio con vento e corrente: la sequenza corretta delle cime e gli errori più comuni da evitare.",
+      "link": "https://www.giornaledellavela.com/2023/01/20/video-la-manovra-giusta-per-mollare-l-ormeggio/"
+    },
+    {
+      "titolo": "VIDEO — Come controllare il rigging",
+      "testo": "Sartie, arridatoi e coppiglie: il controllo periodico dell'attrezzatura che tiene in piedi l'albero, spiegato in pratica.",
+      "link": "https://www.giornaledellavela.com/2023/01/17/video-controllare-il-rigging-sartie-arridatoi-coppiglie/"
+    },
+    {
+      "titolo": "VIDEO — Le dotazioni di sicurezza da avere a bordo",
+      "testo": "Cosa deve esserci a bordo per legge e cosa conviene avere in più: la rassegna completa delle dotazioni di sicurezza.",
+      "link": "https://www.giornaledellavela.com/2023/01/13/dotazioni-sicurezza/"
+    },
+    {
+      "titolo": "VIDEO — La manutenzione del winch",
+      "testo": "Smontare, pulire e ingrassare un winch passo per passo: mezz'ora di lavoro che allunga la vita a un componente prezioso.",
+      "link": "https://www.giornaledellavela.com/2023/01/10/video-ecco-come-fare-la-manutenzione-del-winch/"
+    },
+    {
+      "titolo": "VIDEO — La coperta di una barca da crociera",
+      "testo": "Giro in coperta con occhio tecnico: attrezzature, rinvii e soluzioni, per capire come è organizzata una barca moderna.",
+      "link": "https://www.giornaledellavela.com/2023/01/06/video-coperta-barca-a-vela/"
+    },
+    {
+      "titolo": "VIDEO — Come regolare l'albero",
+      "testo": "Tensione delle sartie, prebend e chiglia dritta: le basi della regolazione dell'albero per un piano velico efficiente.",
+      "link": "https://www.giornaledellavela.com/2023/01/03/video-come-regolare-lalbero-della-barca-a-vela/"
+    },
+    {
+      "titolo": "VIDEO — Gli interni di una barca da crociera",
+      "testo": "Sotto coperta con occhio critico: layout, materiali e dettagli che fanno la differenza nella vita a bordo.",
+      "link": "https://www.giornaledellavela.com/2022/12/30/interni-di-una-barca-a-vela-da-crociera/"
+    },
+    {
+      "titolo": "Lasca tutto! Sbandiamo meno regolando l'albero",
+      "testo": "Quando la barca sbanda troppo la soluzione può stare nell'albero: come le regolazioni del rig riducono lo sbandamento.",
+      "link": "https://www.giornaledellavela.com/2021/03/25/regolazione-albero/"
+    },
+    {
+      "titolo": "La super tecnica: l'ormeggio a vela",
+      "testo": "Ormeggiare senza motore, come i marinai di una volta: la manovra spiegata nel dettaglio, da provare con condizioni tranquille.",
+      "link": "https://www.giornaledellavela.com/2019/09/17/la-super-tecnica-lormeggio-a-vela-video/"
+    },
+    {
+      "titolo": "Quando la barca sbanda troppo: lasca tutto!",
+      "testo": "Lo sbandamento eccessivo non fa andare più veloci, anzi: perché lascare è quasi sempre la mossa giusta.",
+      "link": "https://www.giornaledellavela.com/2018/01/14/scuola-di-vela-barca-sbanda/"
+    },
+    {
+      "titolo": "La VMG in poppa: quando sfruttarla ti cambia la vita",
+      "testo": "Perché in poppa la rotta diretta non è quasi mai la più veloce: la VMG spiegata semplice, per crociera e regata.",
+      "link": "https://www.giornaledellavela.com/2017/11/14/a-scuola-di-vela-in-crociera-vmg-poppa/"
+    },
+    {
+      "titolo": "Come diventare velisti migliori sui J/70",
+      "testo": "Lezioni dal monotipo più diffuso al mondo: allenamento, ruoli a bordo e regolazioni che valgono su qualsiasi barca.",
+      "link": "https://www.giornaledellavela.com/2023/02/23/come-diventare-dei-velisti-migliori-sui-j-70/"
+    },
+    {
+      "titolo": "Un corso di vela online gratis per i ragazzi",
+      "testo": "Volete che vostro figlio impari la vela? C'è un corso gratuito online pensato per i più giovani: ecco come funziona.",
+      "link": "https://www.giornaledellavela.com/2020/03/28/volete-che-vostro-figlio-impari-la-vela-ce-un-corso-gratis-online-per-lui/"
+    }
+  ]
+}

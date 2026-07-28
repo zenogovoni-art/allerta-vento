@@ -1,0 +1,166 @@
+{
+  "_commento": [
+    "Libreria dei nodi per la rubrica '3 NEWS DI VELA' (news 3).",
+    "Ogni voce: nome (italiano), testo (1-2 righe), link (Animated Knots,",
+    "animazione passo-passo in inglese). Il bot le pubblica in rotazione,",
+    "una al giorno, nell'ordine di questa lista. Per aggiungere un nodo",
+    "basta accodare una voce con lo stesso formato."
+  ],
+  "nodi": [
+    {
+      "nome": "Gassa d'amante",
+      "testo": "Il \"re dei nodi\": crea un'asola che non scorre e non si strozza, e si scioglie con facilità anche dopo un forte carico. Perfetta per scotte e cime d'ormeggio.",
+      "link": "https://www.animatedknots.com/bowline-knot"
+    },
+    {
+      "nome": "Nodo Savoia",
+      "testo": "Il nodo d'arresto per eccellenza, a forma di otto: impedisce alla scotta di sfilarsi da bozzelli e strozzascotte, e si scioglie facilmente anche dopo essere stato sotto carico.",
+      "link": "https://www.animatedknots.com/figure-8-knot"
+    },
+    {
+      "nome": "Nodo parlato",
+      "testo": "Rapidissimo per fissare una cima a un palo o a un anello — è il nodo dei parabordi alla draglia. Con carichi a strattoni conviene rinforzarlo con un mezzo collo.",
+      "link": "https://www.animatedknots.com/clove-hitch-knot-rope-end"
+    },
+    {
+      "nome": "Giro morto e due mezzi colli",
+      "testo": "L'ormeggio a un anello o a una bitta fatto bene: il giro morto assorbe il carico mentre chiudi i due mezzi colli. Tiene anche sotto forte tensione e si scioglie sempre.",
+      "link": "https://www.animatedknots.com/round-turn-two-half-hitches-knot"
+    },
+    {
+      "nome": "Volta di galloccia (ormeggio)",
+      "testo": "Il modo corretto di dare volta all'ormeggio su una galloccia: giro completo alla base, incroci a otto e colpo finale bloccato. Semplice, ma farlo bene fa la differenza.",
+      "link": "https://www.animatedknots.com/cleat-hitch-knot-dock-line"
+    },
+    {
+      "nome": "Volta di drizza in galloccia",
+      "testo": "Come assicurare una drizza alla galloccia dell'albero senza che si incattivi: la variante \"da drizza\" della volta di galloccia, con l'occhio finale per i giri di ricambio.",
+      "link": "https://www.animatedknots.com/cleat-hitch-halyard-knot"
+    },
+    {
+      "nome": "Nodo bandiera",
+      "testo": "Unisce due cime anche di diametro diverso: molto più affidabile del nodo piano per le giunzioni. È il nodo con cui si inferiscono le bandiere, da cui il nome.",
+      "link": "https://www.animatedknots.com/sheet-bend-knot"
+    },
+    {
+      "nome": "Nodo piano",
+      "testo": "Per legare una cima intorno a qualcosa — serrare una vela, chiudere un sacco. Attenzione: mai usarlo per unire due cime sotto carico, può capovolgersi e sfilarsi.",
+      "link": "https://www.animatedknots.com/square-knot"
+    },
+    {
+      "nome": "Due mezzi colli",
+      "testo": "La chiusura più semplice e veloce intorno a un palo o un anello, e la base di tanti altri nodi. Da conoscere a occhi chiusi.",
+      "link": "https://www.animatedknots.com/two-half-hitches-knot"
+    },
+    {
+      "nome": "Nodo d'ancorotto",
+      "testo": "Fissa la cima all'anello dell'ancora e tiene anche con gli strattoni continui del beccheggio. Per dormire tranquilli conviene assicurare il capo con una legatura.",
+      "link": "https://www.animatedknots.com/anchor-hitch-knot"
+    },
+    {
+      "nome": "Nodo Magnus (rolling hitch)",
+      "testo": "Prende carico su un'altra cima o su un tubo e permette di tirare in asse senza scivolare: è il nodo che libera una scotta incattivata sul winch.",
+      "link": "https://www.animatedknots.com/rolling-hitch-knot"
+    },
+    {
+      "nome": "Gassa doppia (sul doppino)",
+      "testo": "Due asole fisse nel mezzo della cima, senza bisogno dei capi: punto di attacco doppio o \"sedia\" d'emergenza per sollevare qualcuno.",
+      "link": "https://www.animatedknots.com/bowline-on-a-bight-knot"
+    },
+    {
+      "nome": "Gassa scorsoia",
+      "testo": "Una gassa d'amante in cui scorre il corrente: un cappio per recuperare oggetti in acqua o serrare intorno a un palo. Si apre subito appena togli il carico.",
+      "link": "https://www.animatedknots.com/running-bowline-knot"
+    },
+    {
+      "nome": "Nodo del camionista",
+      "testo": "Un paranco improvvisato fatto solo di cima: moltiplica la forza di tesatura. Perfetto per rizzare la deriva sul carrello prima di partire.",
+      "link": "https://www.animatedknots.com/truckers-hitch-knot"
+    },
+    {
+      "nome": "Nodo Zeppelin",
+      "testo": "La giunzione elegante: unisce due cime in modo fortissimo e simmetrico, e si scioglie sempre senza fatica, anche dopo carichi violenti o in bagnato.",
+      "link": "https://www.animatedknots.com/zeppelin-bend-knot"
+    },
+    {
+      "nome": "Nodo Carrick",
+      "testo": "L'unione giusta per cime grosse e rigide, come i tonneggi: tiene bene, non si incattivisce e si scioglie anche dopo essere stato bagnato e caricato.",
+      "link": "https://www.animatedknots.com/carrick-bend-knot"
+    },
+    {
+      "nome": "Nodo farfalla",
+      "testo": "Crea un'asola fissa nel mezzo della cima senza usare i capi: punto di attacco intermedio, o per isolare un tratto di cima danneggiato.",
+      "link": "https://www.animatedknots.com/alpine-butterfly-loop-knot"
+    },
+    {
+      "nome": "Nodo d'arresto di Ashley",
+      "testo": "Un nodo d'arresto più voluminoso del Savoia: quando il foro del bozzello è largo e il Savoia rischia di passarci attraverso, questo non passa.",
+      "link": "https://www.animatedknots.com/ashley-stopper-knot"
+    },
+    {
+      "nome": "Nodo buntline",
+      "testo": "Compatto e sicuro per fissare una cima a un anello o a un grillo: si stringe da solo sotto carico. È lo stesso nodo con cui si annoda la cravatta.",
+      "link": "https://www.animatedknots.com/buntline-hitch-knot"
+    },
+    {
+      "nome": "Nodo dell'aspirante (midshipman)",
+      "testo": "Un'asola regolabile che però tiene sotto carico: scorri il nodo per tesare, e resta dove lo lasci. Ottimo per cime di ritenuta e tende da sole.",
+      "link": "https://www.animatedknots.com/midshipmans-hitch-knot"
+    },
+    {
+      "nome": "Nodo ghiacciolo (icicle hitch)",
+      "testo": "Prende su pali lisci e perfino conici, dove il parlato scivola: più tiri, più morde. Il nodo da conoscere quando tutto il resto slitta.",
+      "link": "https://www.animatedknots.com/icicle-hitch-knot-loop-method"
+    },
+    {
+      "nome": "Nodo da briccola (pile hitch)",
+      "testo": "Il modo più veloce in assoluto per dare volta a un palo o a una briccola con un doppino: si fa in due secondi e si disfa altrettanto in fretta.",
+      "link": "https://www.animatedknots.com/pile-hitch-knot"
+    },
+    {
+      "nome": "Nodo del rimorchio (lighterman's)",
+      "testo": "Per dare volta a una bitta con una cima sotto forte carico — un rimorchio, un tonneggio impegnativo: non si blocca mai e si molla in sicurezza anche in tensione.",
+      "link": "https://www.animatedknots.com/lightermans-hitch-knot"
+    },
+    {
+      "nome": "Nodo da lancio (sagola)",
+      "testo": "Appesantisce il capo della sagola per lanciarla lontano: è il nodo del passaggio dell'ormeggio a terra quando la banchina è distante.",
+      "link": "https://www.animatedknots.com/heaving-line-knot"
+    },
+    {
+      "nome": "Pugno di scimmia",
+      "testo": "La classica palla intrecciata in punta alla sagola da lancio: zavorra e ornamento marinaresco insieme. Un piccolo capolavoro di pazienza.",
+      "link": "https://www.animatedknots.com/monkeys-fist-knot"
+    },
+    {
+      "nome": "Nodo costrittore",
+      "testo": "Morde e non molla più: serra sacchi, fissa fasciature provvisorie, tiene fermo il capo di una cima che si sfilaccia in attesa della fasciatura vera.",
+      "link": "https://www.animatedknots.com/constrictor-knot-twisting-method"
+    },
+    {
+      "nome": "Doppio nodo semplice d'arresto",
+      "testo": "L'arresto rapido quando il nodo semplice è troppo piccolo: due passaggi e la cima non si sfila più. È anche la base del nodo del frate.",
+      "link": "https://www.animatedknots.com/double-overhand-stopper-knot"
+    },
+    {
+      "nome": "Gassa spagnola",
+      "testo": "Due asole contrapposte nel mezzo della cima: per imbragare un oggetto o sollevare con due punti di presa. Va rifinita con attenzione, ma è potentissima.",
+      "link": "https://www.animatedknots.com/spanish-bowline-knot"
+    },
+    {
+      "nome": "Impiombatura a occhio",
+      "testo": "Non un nodo ma la regina delle terminazioni: l'asola permanente intrecciata direttamente nei legnoli della cima. Più resistente di qualsiasi nodo.",
+      "link": "https://www.animatedknots.com/eye-splice-knot"
+    },
+    {
+      "nome": "Grillo tessile (soft shackle)",
+      "testo": "Il \"nodo moderno\": un grillo fatto interamente di Dyneema, leggero, fortissimo e gentile con vele e attrezzatura. Si costruisce a mano partendo da una treccia.",
+      "link": "https://www.animatedknots.com/soft-shackle"
+    },
+    {
+      "nome": "Nodo semplice",
+      "testo": "Il nodo più elementare che esista, base di innumerevoli altri: conoscerne pregi e difetti (si strozza sotto carico!) è il primo passo di ogni nodista.",
+      "link": "https://www.animatedknots.com/overhand-knot"
+    }
+  ]
+}

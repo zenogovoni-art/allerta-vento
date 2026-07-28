@@ -1,0 +1,55 @@
+name: 3 news di vela
+
+# NIENTE cron di GitHub: come per il grafico weekend, l'orario preciso
+# (10:20 italiane) e' garantito da uno SCHEDULER ESTERNO (cron-job.org)
+# che chiama la workflow_dispatch API tutti i giorni nei mesi 5-9.
+# Lo script ha comunque le sue guardie: fuori stagione non pubblica e
+# non invia mai due volte nello stesso giorno.
+on:
+  workflow_dispatch:
+    inputs:
+      forza:
+        description: "Forza l'invio (ignora stagione e flag giornaliero)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # serve per ri-committare state.json
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: allerta-vento   # stesso gruppo degli altri: niente commit sovrapposti
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Pubblica le 3 news
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          NEWS_FORZA: ${{ inputs.forza }}
+        run: python news_vela.py
+
+      - name: Salva lo stato aggiornato
+        run: |
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          if [[ -n "$(git status --porcelain state.json)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "Aggiorna stato news vela [skip ci]"
+            git push
+          else
+            echo "Nessun cambiamento di stato."
+          fi

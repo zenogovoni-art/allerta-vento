@@ -249,6 +249,24 @@ di oggi non viene ripetuto, perché è già nel bollettino qui sopra. Ogni barra
 il vento massimo previsto in nodi, con sopra una freccia che indica la direzione:
 utile per programmare le uscite del fine settimana. *Previsione indicativa.*
 
+## 📰 3 news di vela (ogni giorno alle 10:20)
+
+Ogni giorno alle **10:20**, da maggio a settembre, tre notizie di vela da
+leggere in spiaggia aspettando il vento:
+
+- ⛵ **Barche e progetti** — la presentazione più fresca di una nuova barca
+  **a vela** o di un progetto (solo vela, niente motore), dalle testate
+  Giornale della Vela e Farevela;
+- 🎓 **Tecnica & regate** — una spiegazione tecnica (manovre, regolazioni,
+  componenti) oppure una notizia di regata, dai giri del mondo alle classi
+  olimpiche;
+- 🪢 **Il nodo del giorno** — un nodo marinaro con spiegazione in italiano e
+  link all'**animazione passo-passo** per impararlo davvero.
+
+Per ogni notizia: titolo, due righe per capire di cosa si tratta e il link
+all'articolo completo. Il messaggio arriva **silenzioso** — è lettura da
+ombrellone, non un alert.
+
 ## 📊 Riepilogo della sera
 
 Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
@@ -299,6 +317,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **3 news di vela ogni giorno alle 10:20**: barche nuove (solo vela!),
+  tecnica o regate, e il nodo del giorno con animazione — lettura da
+  spiaggia in attesa del vento.
 - **Stima di arrivo a forchetta**: la riga "possibile arrivo al circolo"
   ora dà un intervallo (es. ~55–80 min) — il valore basso ricorda che i
   fronti spesso viaggiano più veloci del vento al suolo.
