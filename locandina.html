@@ -111,6 +111,24 @@ body {
 .corpo-txt b { color: var(--ink); }
 .corpo-txt + .corpo-txt { margin-top: 6px; }
 
+/* ---- TelegramCard compatta (esempio di scheda) ---- */
+.tg-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(16,35,59,.12);
+  border-radius: 10px;
+  padding: 7px 11px;
+  margin-top: 7px;
+  font-size: 12px; line-height: 1.45;
+}
+.tg-card .icona { width: 13px; height: 13px; }
+.tg-card b { color: var(--ink); }
+.tg-card .valori { font-family: "Space Grotesk", monospace; font-weight: 700; }
+.tg-nota {
+  font-size: 11px; line-height: 1.4; color: var(--muted);
+  margin-top: 5px;
+}
+.tg-nota b { color: var(--corpo); }
+
 .mini-riga {
   display: flex; align-items: flex-start; gap: 12px;
   border-top: 1px solid var(--hairline);
@@ -187,6 +205,8 @@ body {
 <symbol id="i-chart-column-big" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <rect x="15" y="5" width="4" height="12" rx="1" /> <rect x="7" y="8" width="4" height="9" rx="1" /></symbol>
 <symbol id="i-newspaper" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /> <path d="M18 14h-8" /> <path d="M15 18h-5" /> <path d="M10 6h8v4h-8V6Z" /></symbol>
 <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2" /> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></symbol>
+<symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6" /> <path d="m22 7-8.5 8.5-5-5L2 17" /></symbol>
+<symbol id="i-arrow-down-right" viewBox="0 0 24 24"><path d="M7 17h10V7" /> <path d="m7 7 10 10" /></symbol>
 </svg>
 
 <div class="foglio">
@@ -237,15 +257,28 @@ body {
         Situazione in tempo reale
       </div>
       <div class="corpo-txt">
-        <b>Situazione vento ogni 15 minuti</b> (ore 9–19): intensità,
-        direzione e tendenza di <b>entrambe le stazioni</b>, sempre — anche
-        quando le condizioni non cambiano. Gli ALERT arrivano sempre in un
-        box a parte, un minuto dopo.
+        <b>Situazione vento ogni 15 minuti</b> (9–19) da <b>entrambe le
+        stazioni</b>, sempre — con <b>corrente e marea</b>:
+      </div>
+      <div class="tg-card">
+        <div>
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+          <b>Porto Corsini</b> — <span class="valori">20.5 nodi</span> da SSW
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento
+        </div>
+        <div>
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+          <b>Corrente</b> <span class="valori">~0.4 kn</span>
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-down-right"/></svg> SE · marea in salita
+        </div>
+      </div>
+      <div class="tg-nota">
+        La freccia della corrente punta <b>dove va</b> — quella del vento,
+        <b>da dove</b> arriva.
       </div>
       <div class="corpo-txt">
-        <b>Bollettino del mattino</b> con le previsioni del giorno, la
-        <b>corrente di superficie</b>, <b>alta e bassa marea</b> (orari e cm
-        sul livello medio del giorno) e la <b>fase lunare</b> crescente/calante.
+        <b>Bollettino del mattino</b> con previsioni, maree e fase lunare;
+        alle <b>14:00</b> la corrente del pomeriggio.
       </div>
     </div>
     <div class="cella">
