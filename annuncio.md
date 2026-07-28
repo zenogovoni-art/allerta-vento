@@ -1,13 +1,7 @@
-🆕 *NOVITÀ SU INFO VENTO: LE 3 NEWS DI VELA*
+💡 *INFO VENTO LO COSTRUIAMO INSIEME*
 
-📰 Da oggi, *ogni giorno alle 10:20*, tre notizie di vela scelte per voi — da leggere sotto l'ombrellone aspettando che entri il vento:
+Questo canale è nato per i velisti e cresce con i velisti: molte delle funzioni che usate ogni giorno — la Situazione vento ogni 15 minuti, il grafico della sera, le 3 news — sono nate proprio da osservazioni e richieste di chi lo usa.
 
-⛵ *Barche e progetti* — le novità dai cantieri, solo barche _a vela_
-🎓 *Tecnica & regate* — una manovra spiegata bene, una regolazione, oppure le regate del momento
-🪢 *Il nodo del giorno* — un nodo marinaro con la spiegazione e il link all'_animazione passo-passo_ per impararlo davvero
+✉️ Avete un *suggerimento*, una *miglioria* o una *funzione che vi piacerebbe avere*? Scrivetemi a *zenogovoni@annunziata.it*: leggo tutto e proverò a implementare le idee migliori.
 
-Per ogni notizia trovate titolo, due righe per capire di cosa si tratta e il link all'articolo completo.
-
-🔕 Il messaggio arriva _silenzioso_, come tutti i contenuti di lettura: il telefono continua a suonare solo per gli ALERT e la Situazione vento.
-
-⛵ Buona lettura e buon vento!
+⛵ Grazie a chi vorrà contribuire — e come sempre, buon vento!
