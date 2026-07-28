@@ -20,7 +20,7 @@ import os
 import re
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, time as dt_time, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -97,27 +97,46 @@ PRESS_MIN_SPAN_MIN = 150
 
 # --- CORRENTE A LIDO DI SPINA (Arpae) ---------------------------------------
 # Previsione locale dal modello oceanografico Adriac di Arpae (1 km, run
-# giornaliero 00 UTC, +72h orarie, include la portata reale del Po): molto
-# piu' rappresentativo di Open-Meteo per la costa ferrarese. In piu', la boa
-# Nausicaa 2 (largo di Cesenatico) MISURA la corrente superficiale ogni
-# 10 minuti: si mostra come riscontro. Open-Meteo resta il ripiego.
+# giornaliero 00 UTC, +72h ORARIE — verificato sul file: 72 istanti a passo
+# 3600 s): molto piu' rappresentativo di Open-Meteo per la costa ferrarese.
+# Il file pesa ~65 MB, quindi si scarica UNA VOLTA AL GIORNO e la serie oraria
+# sul punto viene messa in cache in state.json (chiave "_corrente"): a ogni
+# giro dei 15 minuti si legge dalla cache, senza traffico.
+#
+# Piu' frequenza NON si puo' avere dai modelli (Adriac, Copernicus e Open-Meteo
+# girano tutti una volta al giorno), quindi il dato "vivo" ogni 15 minuti viene
+# dalle MISURE:
+#   - boa Nausicaa 2 (Cesenatico): unica che misura la corrente, ogni 10 min,
+#     ma e' a 48 km a SE -> dice l'andamento della corrente costiera in
+#     generale, non il dato locale;
+#   - mareografo di Porto Garibaldi: livello del mare ogni 10 min a ~2 km dal
+#     circolo -> da' la FASE DI MAREA misurata sul posto (in salita = flusso
+#     verso NW, in calo = verso SE).
+# Attenzione: gli orari delle API Arpae sono in UTC (verificato).
 PUNTO_CORRENTE = (44.665, 12.31)   # ~2 km al largo del circolo
 ADRIAC_URL = ("https://dati-simc.arpae.it/opendata/adriac/"
               "{data}_adriac_1km_his_2dcur_fc.nc.gz")
 BOA_URL = ("https://apps.arpae.it/REST/meteo_marefe/"
            "?where=%7B%22anagrafica.nome%22%3A%22Nausicaa%202%22%7D")
+MAREA_URL = ("https://apps.arpae.it/REST/meteo_marefe/"
+             "?where=%7B%22anagrafica.nome%22%3A%22Porto%20Garibaldi%22%7D")
+MAREA_FINESTRA_MIN = 90   # minuti su cui si calcola la pendenza del livello
+MAREA_STANCA_CM = 3.0     # sotto questa variazione oraria: marea "stanca"
+CORRENTE_MIN_KN = 0.1     # sotto: "trascurabile", la direzione non ha senso
+UTC = ZoneInfo("UTC")
 
 
-def corrente_adriac():
-    """Corrente prevista per oggi davanti a Lido di Spina (Arpae Adriac).
+def _adesso_utc() -> datetime:
+    """Istante attuale in UTC, senza fuso (come gli orari delle API Arpae)."""
+    return datetime.now(TZ).astimezone(UTC).replace(tzinfo=None)
 
-    Scarica il run piu' recente disponibile (oggi, altrimenti ieri o
-    l'altro ieri: l'orizzonte di 72 ore copre comunque la giornata),
-    estrae il punto di griglia PUNTO_CORRENTE e riassume mattina (9-13)
-    e pomeriggio (13-19) come media vettoriale.
 
-    Ritorna {"mattina": (nodi, dir16_verso), "pomeriggio": (...)} oppure
-    None (netCDF4 assente, download fallito, nessun dato per oggi).
+def _scarica_adriac(data: str):
+    """Serie oraria della corrente prevista sul punto, dal run `data`.
+
+    Ritorna {"run", "t0" (UTC), "passo_min", "u", "v"} con u/v in m/s
+    (None dove il modello non ha dato), oppure None se il run non c'e'
+    o manca netCDF4.
     """
     try:
         import gzip
@@ -127,20 +146,12 @@ def corrente_adriac():
         print(f"[info] adriac saltato, libreria mancante: {e}")
         return None
 
-    oggi = datetime.now(TZ)
-    ds = None
-    for delta in (0, 1, 2):
-        data = (oggi - timedelta(days=delta)).strftime("%Y%m%d")
-        url = ADRIAC_URL.format(data=data)
-        try:
-            r = requests.get(url, timeout=300)
-            r.raise_for_status()
-            ds = netCDF4.Dataset("adriac", memory=gzip.decompress(r.content))
-            print(f"[info] adriac: uso il run {data}")
-            break
-        except Exception as e:  # noqa: BLE001
-            print(f"[info] adriac {data} non disponibile: {e}")
-    if ds is None:
+    try:
+        r = requests.get(ADRIAC_URL.format(data=data), timeout=300)
+        r.raise_for_status()
+        ds = netCDF4.Dataset("adriac", memory=gzip.decompress(r.content))
+    except Exception as e:  # noqa: BLE001
+        print(f"[info] adriac {data} non disponibile: {e}")
         return None
 
     try:
@@ -157,62 +168,232 @@ def corrente_adriac():
         v = ds.variables["vbar_northward"][:, j, i]
     except Exception as e:  # noqa: BLE001
         print(f"[errore] adriac: estrazione fallita: {e}")
-        ds.close()
         return None
+    finally:
+        ds.close()
 
+    if len(tempi) < 2:
+        return None
+    passo = max(1, round((tempi[1] - tempi[0]).total_seconds() / 60))
+
+    def _val(x):
+        return None if np.ma.is_masked(x) else round(float(x), 3)
+
+    print(f"[info] adriac: uso il run {data} ({len(tempi)} istanti, "
+          f"passo {passo} min)")
+    return {"run": data,
+            "t0": tempi[0].strftime("%Y-%m-%dT%H:%M"),
+            "passo_min": passo,
+            "u": [_val(x) for x in u],
+            "v": [_val(x) for x in v]}
+
+
+def serie_corrente(stato: dict):
+    """Serie oraria Adriac sul punto, con cache giornaliera in state.json.
+
+    Scarica solo quando serve: se in cache c'e' gia' il run piu' recente
+    pubblicato non tocca la rete, e in ogni caso ritenta al massimo una
+    volta all'ora (il run di oggi compare verso le 9:30-9:40, quindi il
+    bollettino delle 9:00 usa ancora quello di ieri: l'orizzonte di 72 ore
+    copre comunque la giornata).
+    """
+    cache = stato.get("_corrente") or {}
+    ora = datetime.now(TZ)
+    ora_tag = ora.strftime("%Y%m%d%H")
+    candidati = [(ora - timedelta(days=d)).strftime("%Y%m%d")
+                 for d in (0, 1, 2)]
+    if cache.get("run") == candidati[0]:
+        return cache
+    if cache.get("tentativo") == ora_tag:
+        return cache or None
+
+    cache = dict(cache, tentativo=ora_tag)
+    stato["_corrente"] = cache
+    for data in candidati:
+        if cache.get("run") == data:
+            return cache          # in cache c'e' gia' il run piu' recente
+        nuova = _scarica_adriac(data)
+        if nuova:
+            nuova["tentativo"] = ora_tag
+            stato["_corrente"] = nuova
+            return nuova
+    return cache if cache.get("run") else None
+
+
+def _uv_serie(serie: dict, quando: datetime):
+    """(u, v) in m/s all'istante UTC `quando`, o None se fuori serie."""
+    if not serie or not serie.get("u"):
+        return None
+    try:
+        t0 = datetime.strptime(serie["t0"], "%Y-%m-%dT%H:%M")
+    except (ValueError, KeyError):
+        return None
+    passo = serie.get("passo_min") or 60
+    k = round((quando - t0).total_seconds() / 60 / passo)
+    if not 0 <= k < len(serie["u"]):
+        return None
+    u, v = serie["u"][k], serie["v"][k]
+    return None if u is None or v is None else (u, v)
+
+
+def _nodi_gradi(u: float, v: float):
+    """Da (u est, v nord) in m/s a (nodi, gradi VERSO cui scorre)."""
+    return (math.hypot(u, v) * 1.94384,
+            math.degrees(math.atan2(u, v)) % 360)
+
+
+def corrente_ora(stato: dict, quando: datetime | None = None):
+    """Corrente prevista adesso sul punto: (nodi, gradi_verso) o None."""
+    serie = serie_corrente(stato)
+    uv = _uv_serie(serie, quando or _adesso_utc())
+    return _nodi_gradi(*uv) if uv else None
+
+
+def corrente_fasce(stato: dict):
+    """Corrente media di mattina (9-13) e pomeriggio (13-19), da Adriac.
+
+    Media vettoriale sugli istanti di oggi. Ritorna
+    {"mattina": (nodi, dir16_verso), "pomeriggio": (...)} oppure None.
+    """
+    serie = serie_corrente(stato)
+    if not serie or not serie.get("u"):
+        return None
+    oggi = datetime.now(TZ).date()
     out = {}
     for nome_fascia, (h1, h2) in (("mattina", (9, 13)),
                                   ("pomeriggio", (13, 19))):
         us, vs = [], []
-        for k, t in enumerate(tempi):
-            t_loc = t.replace(tzinfo=ZoneInfo("UTC")).astimezone(TZ)
-            if t_loc.date() != oggi.date() or not h1 <= t_loc.hour < h2:
-                continue
-            if np.ma.is_masked(u[k]) or np.ma.is_masked(v[k]):
-                continue
-            us.append(float(u[k]))
-            vs.append(float(v[k]))
+        for h in range(h1, h2):
+            t_loc = datetime.combine(oggi, dt_time(h), tzinfo=TZ)
+            uv = _uv_serie(serie, t_loc.astimezone(UTC).replace(tzinfo=None))
+            if uv:
+                us.append(uv[0])
+                vs.append(uv[1])
         if not us:
             continue
-        um, vm = sum(us) / len(us), sum(vs) / len(vs)
-        nodi = math.hypot(um, vm) * 1.94384
-        verso = _dir16(math.degrees(math.atan2(um, vm)) % 360)
-        out[nome_fascia] = (nodi, verso)
-    ds.close()
+        nodi, gradi = _nodi_gradi(sum(us) / len(us), sum(vs) / len(vs))
+        out[nome_fascia] = (nodi, _dir16(gradi))
     return out or None
+
+
+def _letture_arpae(url: str):
+    """Letture [(istante UTC, valori)] di una stazione marina Arpae.
+
+    Prende gli ultimi due giorni disponibili in ordine cronologico, cosi'
+    la finestra a cavallo della mezzanotte UTC non si spezza.
+    """
+    try:
+        r = requests.get(url, timeout=60)
+        r.raise_for_status()
+        voci = r.json().get("_items") or []
+    except Exception as e:  # noqa: BLE001
+        print(f"[errore] stazione marina Arpae non raggiungibile: {e}")
+        return []
+    if not voci:
+        return []
+    dati = (voci[0].get("dati") or {})
+    out = []
+    for giorno in sorted(dati)[-2:]:
+        for ora in sorted(dati[giorno] or {}):
+            try:
+                t = datetime.strptime(giorno + ora, "%Y%m%d%H%M")
+            except ValueError:
+                continue
+            out.append((t, dati[giorno][ora] or {}))
+    return out
 
 
 def corrente_boa():
     """Corrente superficiale misurata dalla boa Nausicaa 2 (Cesenatico).
 
-    Ritorna (nodi, dir16_verso, "HH:MM") dell'ultima lettura valida di
-    oggi, oppure None. La boa e' ~48 km a SE di Lido di Spina: e' un
+    Ritorna (nodi, gradi_verso, "HH:MM" ora italiana) dell'ultima lettura
+    valida, oppure None. La boa e' ~48 km a SE di Lido di Spina: e' un
     riscontro della corrente costiera generale, non il dato locale.
     """
-    try:
-        r = requests.get(BOA_URL, timeout=60)
-        r.raise_for_status()
-        voci = r.json().get("_items") or []
-    except Exception as e:  # noqa: BLE001
-        print(f"[errore] boa Nausicaa non raggiungibile: {e}")
-        return None
-    if not voci:
-        return None
-
-    oggi = datetime.now(TZ).strftime("%Y%m%d")
-    dati_oggi = (voci[0].get("dati") or {}).get(oggi) or {}
-    for ora in sorted(dati_oggi.keys(), reverse=True):
-        v = dati_oggi[ora]
+    for t, v in reversed(_letture_arpae(BOA_URL)):
         vel = v.get("intensita_istantanea_corrente_superficie")
         gradi = v.get("direzione_istantanea_corrente_superficie")
         if vel is None or gradi is None:
             continue
-        return (float(vel) * 1.94384, _dir16(float(gradi)),
-                f"{ora[:2]}:{ora[2:]}")
+        locale = t.replace(tzinfo=UTC).astimezone(TZ)
+        return float(vel) * 1.94384, float(gradi), f"{locale:%H:%M}"
     return None
 
 
-def blocco_corrente_pomeriggio():
+def fase_marea():
+    """Fase di marea misurata a Porto Garibaldi (~2 km dal circolo).
+
+    Regressione lineare sul livello del mare degli ultimi
+    MAREA_FINESTRA_MIN minuti disponibili (letture ogni 10 min, con una
+    latenza fino a ~40 min). Ritorna (testo, cm_orari) — es.
+    ("in salita", 7.4) — oppure None se i dati non bastano.
+    """
+    punti = [(t, float(v["livello_mare_igm_radar"]))
+             for t, v in _letture_arpae(MAREA_URL)
+             if v.get("livello_mare_igm_radar") is not None
+             and abs(float(v["livello_mare_igm_radar"])) < 5]
+    if len(punti) < 3:
+        return None
+    fine = punti[-1][0]
+    finestra = [(t, h) for t, h in punti
+                if (fine - t).total_seconds() <= MAREA_FINESTRA_MIN * 60]
+    if len(finestra) < 3:
+        return None
+
+    # Pendenza ai minimi quadrati: il livello ha un rumore di 2-3 cm da una
+    # lettura all'altra, la differenza fra due sole letture ingannerebbe.
+    xs = [(t - fine).total_seconds() / 3600 for t, _ in finestra]
+    ys = [h * 100 for _, h in finestra]
+    n = len(xs)
+    mx, my = sum(xs) / n, sum(ys) / n
+    den = sum((x - mx) ** 2 for x in xs)
+    if den == 0:
+        return None
+    cm_ora = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / den
+    if abs(cm_ora) < MAREA_STANCA_CM:
+        return "stanca", cm_ora
+    return ("in salita" if cm_ora > 0 else "in calo"), cm_ora
+
+
+def testo_corrente(nodi: float, verso: str) -> str:
+    """Corrente a parole: sotto il decimo di nodo non vale la pena darne
+    la direzione (il modello e' rumore a quelle intensita')."""
+    return ("trascurabile" if nodi < CORRENTE_MIN_KN
+            else f"~{nodi:.1f} kn verso {verso}")
+
+
+def riga_corrente(stato: dict):
+    """Riga unica su corrente e marea per la SITUAZIONE VENTO dei 15 minuti.
+
+    Pensata per essere letta al volo su telefono o smartwatch mentre si
+    naviga: intensita', freccia che punta DOVE VA la corrente, sigla della
+    direzione, fase di marea. Es.:
+        🌊 *Corrente* ~0.4 kn ↘️ SE · marea in salita
+    Il numero e' la previsione Adriac per l'ora in corso (griglia 1 km sul
+    punto); se manca si ripiega sulla misura della boa di Cesenatico, e in
+    quel caso lo si dichiara. Ritorna None se non c'e' proprio nulla.
+    """
+    marea = fase_marea()
+    coda = f" · marea {marea[0]}" if marea else ""
+
+    fonte = ""
+    valore = corrente_ora(stato)
+    if valore is None:
+        boa = corrente_boa()
+        if boa:
+            valore = (boa[0], boa[1])
+            fonte = " _(boa Cesenatico)_"
+    if valore is None:
+        return f"🌊 *Marea* {marea[0]}" if marea else None
+
+    nodi, gradi = valore
+    if nodi < CORRENTE_MIN_KN:
+        return f"🌊 *Corrente* trascurabile{fonte}{coda}"
+    return (f"🌊 *Corrente* ~{nodi:.1f} kn {freccia_verso(gradi)} "
+            f"{_dir16(gradi)}{fonte}{coda}")
+
+
+def blocco_corrente_pomeriggio(stato: dict):
     """Righe con la corrente per il pomeriggio, per la scheda delle 14:00.
 
     Chi esce al pomeriggio (spesso il vento del mattino e' debole) trova
@@ -221,16 +402,15 @@ def blocco_corrente_pomeriggio():
     Ritorna una lista di righe, oppure None se non c'e' nessun dato.
     """
     righe = []
-    adriac = corrente_adriac()
-    if adriac and "pomeriggio" in adriac:
-        nodi, verso = adriac["pomeriggio"]
-        righe.append(f"🌊 *Corrente per il pomeriggio* (previsione Arpae): "
-                     f"~{nodi:.1f} kn verso {verso}")
+    fasce = corrente_fasce(stato)
+    if fasce and "pomeriggio" in fasce:
+        righe.append("🌊 *Corrente per il pomeriggio* (previsione Arpae): "
+                     + testo_corrente(*fasce["pomeriggio"]))
     boa = corrente_boa()
     if boa:
-        nodi_b, verso_b, hhmm_b = boa
+        nodi_b, gradi_b, hhmm_b = boa
         righe.append(f"  _Misurata alle {hhmm_b} dalla boa di Cesenatico: "
-                     f"~{nodi_b:.1f} kn verso {verso_b}_")
+                     f"~{nodi_b:.1f} kn verso {_dir16(gradi_b)}_")
     return righe or None
 
 
@@ -444,6 +624,15 @@ def freccia(direzione: str) -> str:
     return _FRECCE[int((rotta + 22.5) // 45) % 8]
 
 
+def freccia_verso(gradi: float) -> str:
+    """Freccia che punta verso DOVE scorre la corrente.
+
+    A differenza del vento (indicato per provenienza), la corrente si
+    indica per destinazione: i gradi in ingresso sono gia' il "verso".
+    """
+    return _FRECCE[int((gradi + 22.5) // 45) % 8]
+
+
 _COMPASS16 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
               "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 
@@ -491,7 +680,7 @@ def fascia_migliore(ore, ws, wg, wd):
     return migliore[0][0], migliore[-1][0] + 1, media, sigla
 
 
-def bollettino_mattutino():
+def bollettino_mattutino(stato: dict):
     """Previsione vento del giorno per il circolo (Open-Meteo). None se fallisce."""
     lat, lon = CIRCOLO
     url = ("https://api.open-meteo.com/v1/forecast"
@@ -541,12 +730,12 @@ def bollettino_mattutino():
     # disponibile si ripiega sulla corrente Open-Meteo come prima.
     # Le maree restano da Open-Meteo Marine (best effort).
     mare = dati_marini()
-    adriac = corrente_adriac()
+    adriac = corrente_fasce(stato)
     boa = corrente_boa()
     if mare or adriac or boa:
         righe.append("")
     if adriac:
-        parti = [f"{fascia} ~{nodi:.1f} kn verso {verso}"
+        parti = [f"{fascia} {testo_corrente(nodi, verso)}"
                  for fascia, (nodi, verso) in adriac.items()]
         righe.append("🌊 *Corrente a Lido di Spina* (previsione Arpae): "
                      + ", ".join(parti))
@@ -558,9 +747,9 @@ def bollettino_mattutino():
             righe.append(f"🌊 *Corrente di superficie*: verso "
                          f"{_dir16(c['dir'])}{vtxt}")
     if boa:
-        nodi_b, verso_b, hhmm_b = boa
+        nodi_b, gradi_b, hhmm_b = boa
         righe.append(f"  _Misurata alle {hhmm_b} dalla boa di Cesenatico: "
-                     f"~{nodi_b:.1f} kn verso {verso_b}_")
+                     f"~{nodi_b:.1f} kn verso {_dir16(gradi_b)}_")
     if mare:
         maree = mare.get("maree") or []
         if maree:
@@ -1646,7 +1835,7 @@ def main() -> int:
     # FUTURI, quindi non duplica piu' il giorno di oggi.
     if (stato.get("_bollettino") != oggi
             and ORA_INIZIO <= adesso.hour < ORA_INIZIO + 3):
-        msg = bollettino_mattutino()
+        msg = bollettino_mattutino(stato)
         if msg:
             try:
                 invia_telegram(msg, silenzioso=True)
@@ -1834,11 +2023,16 @@ def main() -> int:
             if tnd:
                 blocco.append(tnd)
             righe.append("\n" + "\n".join(blocco))
-        # Alle 14:00 (primo slot dell'ora) si aggiunge l'aggiornamento della
-        # corrente: spesso il vento del mattino e' debole e si esce al
+        # Corrente e marea "adesso", a ogni giro: una riga sola, leggibile
+        # al volo su telefono o smartwatch mentre si naviga.
+        riga = riga_corrente(stato)
+        if riga:
+            righe.append("\n" + riga)
+        # Alle 14:00 (primo slot dell'ora) si aggiunge la MEDIA prevista per
+        # il pomeriggio: spesso il vento del mattino e' debole e si esce al
         # pomeriggio, e a quest'ora il run Adriac di oggi e' gia' pubblicato.
         if adesso.hour == 14 and slot.endswith("A"):
-            corrente = blocco_corrente_pomeriggio()
+            corrente = blocco_corrente_pomeriggio(stato)
             if corrente:
                 righe.append("\n" + "\n".join(corrente))
         if almeno_uno:

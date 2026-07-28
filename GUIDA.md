@@ -178,10 +178,33 @@ snello:
 > 📈 in aumento\
 > 🌬️ *Lido di Volano*\
 > Vento **2.7 nodi** da E ⬅️\
-> ➖ stazionario
+> ➖ stazionario\
+> 🌊 **Corrente** ~0.4 kn ↘️ SE · marea in salita
 
 Ogni scheda mostra se il vento, rispetto alla Situazione vento precedente, è
 📈 **in aumento**, ➖ **stazionario** o 📉 **in calo**.
+
+### 🌊 La riga della corrente
+
+L'ultima riga, sempre presente, è pensata per essere letta **al volo sul
+telefono o sullo smartwatch mentre si naviga**:
+
+- **~0.4 kn** — quanto tira la corrente davanti al circolo.
+- **↘️ SE** — la freccia punta **dove va** la corrente (attenzione: quella del
+  vento indica invece **da dove** arriva). Sotto **0.1 nodi** la direzione non
+  ha senso e la riga dice solo *trascurabile*.
+- **marea in salita / in calo / stanca** — misurata dal mareografo di **Porto
+  Garibaldi**, a circa 2 km dal circolo, che pubblica il livello del mare ogni
+  10 minuti. In salita la corrente tende a spingere verso **nord-ovest**, in
+  calo verso **sud-est**: è la forzante che di solito conta di più sotto costa
+  insieme al vento.
+
+Il valore in nodi viene dal modello **Adriac** di Arpae (griglia da 1 km sul
+punto davanti al circolo), che si aggiorna **una volta al giorno**: cambia di
+ora in ora perché la previsione è oraria. Se per qualche motivo non è
+disponibile, al suo posto compare la corrente **misurata** dalla boa di
+Cesenatico, dichiarata come tale — è a 48 km, quindi indica l'andamento
+generale della corrente costiera, non il dato locale.
 
 A differenza degli ALERT (che scattano solo quando le condizioni peggiorano),
 questo bollettino esce a orari regolari a prescindere, così avete il dato sempre
@@ -317,6 +340,10 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Corrente e marea in ogni Situazione vento (ogni 15 minuti)**: una riga
+  sola — intensità, freccia che punta dove va la corrente, e fase di marea
+  misurata a Porto Garibaldi — pensata per essere letta al volo sul telefono
+  o sullo smartwatch mentre si naviga.
 - **3 news di vela ogni giorno alle 10:20**: barche nuove (solo vela!),
   tecnica o regate, e il nodo del giorno con animazione — lettura da
   spiaggia in attesa del vento.
