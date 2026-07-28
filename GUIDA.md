@@ -212,10 +212,15 @@ aggiornato. Il livello raggiunto, la stima di arrivo al circolo e la raffica
 non compaiono qui: restano nella scheda dell'ALERT, per tenere questo
 bollettino leggero.
 
-La scheda delle **14:00** include in più l'**aggiornamento della corrente per
-il pomeriggio** (previsione Arpae + misura della boa): spesso al mattino il
-vento è debole e si esce dopo pranzo — a quell'ora la previsione della
-corrente è anche più fresca, perché il run del giorno del modello Adriac è
+La scheda delle **14:00** aggiunge una riga: la **corrente media prevista per
+tutto il pomeriggio** (13-19), che risponde a una domanda diversa dalla riga
+qui sopra — non «com'è adesso» ma «cosa mi aspetta se scendo in acqua ora»:
+
+> 🌊 **Corrente** ~0.5 kn ↘️ SE · marea in calo\
+> 🕐 **Nel pomeriggio**: corrente prevista ~0.5 kn verso SE
+
+Spesso al mattino il vento è debole e si esce dopo pranzo, e a quell'ora la
+previsione è anche più fresca, perché il run del giorno del modello Adriac è
 ormai pubblicato.
 
 Se in quel momento ci sono anche le **condizioni di un ALERT** (vento sopra
@@ -382,8 +387,7 @@ viene prima di tutto.
 - **Pulizia settimanale del canale**: ogni lunedì il bot cancella tutti i
   messaggi della settimana passata, così la chat resta leggera.
 - **Corrente aggiornata alle 14:00**: la Situazione vento delle 14 include la
-  corrente prevista per il pomeriggio (con la misura live della boa), per chi
-  esce dopo pranzo.
+  corrente media prevista per il pomeriggio, per chi esce dopo pranzo.
 - **Corrente locale dal modello Arpae**: nel bollettino del mattino la corrente
   davanti a Lido di Spina ora viene dal modello Adriac di Arpae (1 km, con la
   portata reale del Po), divisa in mattina e pomeriggio, con il riscontro

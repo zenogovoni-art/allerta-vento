@@ -393,25 +393,25 @@ def riga_corrente(stato: dict):
             f"{_dir16(gradi)}{fonte}{coda}")
 
 
-def blocco_corrente_pomeriggio(stato: dict):
-    """Righe con la corrente per il pomeriggio, per la scheda delle 14:00.
+def riga_corrente_pomeriggio(stato: dict):
+    """Media prevista per il pomeriggio (13-19), per la scheda delle 14:00.
 
-    Chi esce al pomeriggio (spesso il vento del mattino e' debole) trova
-    qui l'aggiornamento: previsione Adriac del run piu' recente — alle 14
-    quello di oggi e' ormai pubblicato — piu' la misura attuale della boa.
-    Ritorna una lista di righe, oppure None se non c'e' nessun dato.
+    Risponde a una domanda diversa da riga_corrente(), che dice com'e' la
+    corrente ADESSO: qui serve a decidere prima di scendere in acqua, e a
+    quell'ora il run Adriac del giorno e' ormai pubblicato. Niente riscontro
+    della boa di Cesenatico: da quando ogni messaggio porta la marea
+    misurata a 2 km dal circolo, un dato a 48 km aggiunge poco, e la boa
+    resta comunque il ripiego automatico se Adriac manca.
+    Ritorna la riga, oppure None se non c'e' la previsione.
     """
-    righe = []
     fasce = corrente_fasce(stato)
-    if fasce and "pomeriggio" in fasce:
-        righe.append("🌊 *Corrente per il pomeriggio* (previsione Arpae): "
-                     + testo_corrente(*fasce["pomeriggio"]))
-    boa = corrente_boa()
-    if boa:
-        nodi_b, gradi_b, hhmm_b = boa
-        righe.append(f"  _Misurata alle {hhmm_b} dalla boa di Cesenatico: "
-                     f"~{nodi_b:.1f} kn verso {_dir16(gradi_b)}_")
-    return righe or None
+    if not fasce or "pomeriggio" not in fasce:
+        return None
+    nodi, verso = fasce["pomeriggio"]
+    if nodi < CORRENTE_MIN_KN:
+        return "🕐 *Nel pomeriggio*: corrente trascurabile"
+    return (f"🕐 *Nel pomeriggio*: corrente prevista "
+            f"~{nodi:.1f} kn verso {verso}")
 
 
 # --- BENVENUTO SERALE -------------------------------------------------------
@@ -2032,9 +2032,11 @@ def main() -> int:
         # il pomeriggio: spesso il vento del mattino e' debole e si esce al
         # pomeriggio, e a quest'ora il run Adriac di oggi e' gia' pubblicato.
         if adesso.hour == 14 and slot.endswith("A"):
-            corrente = blocco_corrente_pomeriggio(stato)
-            if corrente:
-                righe.append("\n" + "\n".join(corrente))
+            pomeriggio = riga_corrente_pomeriggio(stato)
+            if pomeriggio:
+                # Sta attaccata alla riga della corrente, di cui e' il
+                # seguito; se quella manca, apre lei il blocco.
+                righe.append(pomeriggio if riga else "\n" + pomeriggio)
         if almeno_uno:
             try:
                 # Con notifica sonora, come gli ALERT: la situazione vento e'
