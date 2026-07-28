@@ -12,7 +12,8 @@
     -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
 :root {
-  --carta: #F4F2EC;
+  --carta: #FFFFFF;
+  --card: #F4F2EC;
   --ink: #10233B;
   --corpo: #33465B;
   --muted: #5A6B7B;
@@ -106,7 +107,7 @@ h3 .ic { width: 16px; height: 16px; }
 
 /* ---- TelegramCard ---- */
 .tg-card {
-  background: #FFFFFF;
+  background: var(--card);
   border: 1px solid rgba(16,35,59,.12);
   border-radius: 12px;
   padding: 16px 18px;
@@ -132,7 +133,7 @@ h3 .ic { width: 16px; height: 16px; }
 
 /* ---- Card elenco schede ---- */
 .scheda-tipo {
-  background: #FFFFFF;
+  background: var(--card);
   border: 1px solid rgba(16,35,59,.12);
   border-radius: 12px;
   padding: 12px 16px;
