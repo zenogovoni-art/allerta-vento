@@ -1,13 +1,13 @@
-🆕 *LE NOVITÀ DI OGGI SU INFO VENTO*
+🆕 *NOVITÀ SU INFO VENTO: LE 3 NEWS DI VELA*
 
-🔔 *Il telefono suona solo per gli ALERT* — tutte le schede informative (Situazione vento, bollettini, grafici, riepilogo della sera) ora arrivano come *messaggi silenziosi*: le trovate nel canale, ma non vi disturbano. Quando sentite la notifica di INFO VENTO, è un ALERT.
+📰 Da oggi, *ogni giorno alle 10:20*, tre notizie di vela scelte per voi — da leggere sotto l'ombrellone aspettando che entri il vento:
 
-📊 *Grafico della sera* — il riepilogo delle 19:00 ora include il *grafico dell'andamento reale del vento* della giornata alle due stazioni: vento pieno, raffica tratteggiata, soglie d'alert in evidenza.
+⛵ *Barche e progetti* — le novità dai cantieri, solo barche _a vela_
+🎓 *Tecnica & regate* — una manovra spiegata bene, una regolazione, oppure le regate del momento
+🪢 *Il nodo del giorno* — un nodo marinaro con la spiegazione e il link all'_animazione passo-passo_ per impararlo davvero
 
-🕐 *Fascia migliore per uscire* — quando la giornata lo permette, il bollettino del mattino indica la *finestra oraria con vento adatto alla deriva* (~6–16 nodi), con intensità media e direzione.
+Per ogni notizia trovate titolo, due righe per capire di cosa si tratta e il link all'articolo completo.
 
-💨 *Nota "vento irregolare"* — l'ALERT VENTO ora segnala quando le raffiche superano di molto il vento medio: il vento "a strappi" è insidioso anche quando la media non spaventa.
+🔕 Il messaggio arriva _silenzioso_, come tutti i contenuti di lettura: il telefono continua a suonare solo per gli ALERT e la Situazione vento.
 
-📈 *Tendenza sempre visibile* — ogni Situazione vento mostra se il vento è in aumento, stazionario o in calo; e gli ALERT arrivano sempre come *scheda a sé*, un minuto dopo, per risaltare meglio.
-
-⛵ E qui sotto trovate la *nuova locandina* di INFO VENTO: condividetela con chi ancora non conosce il canale!
+⛵ Buona lettura e buon vento!
