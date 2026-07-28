@@ -64,8 +64,12 @@
     898
   ],
   "_news3": {
-    "usati": [],
-    "idx_nodi": 0
+    "usati": [
+      "https://www.farevela.net/varato-il-primo-esemplare-dellice-80/",
+      "https://www.farevela.net/mondiali-juniores-nacra-17-e-49er-doppietta-iridata-per-litalia/"
+    ],
+    "idx_nodi": 1,
+    "data": "2026-07-28"
   },
   "_serie": {
     "Porto Corsini": [
