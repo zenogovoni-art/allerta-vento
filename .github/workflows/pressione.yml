@@ -1,14 +1,12 @@
 name: Allerta pressione
 
+# SOLO manuale, per provare il controllo a comando. Dal 28/07/2026 la
+# pressione viene letta dentro il giro dei 15 minuti (workflow meteo), sulle
+# stesse letture delle stazioni: era programmato ogni 20 minuti ma il cron di
+# GitHub lo faceva girare in modo irregolare, da 1 a 4 ore, e con una finestra
+# di 195 minuti la tendenza a volte non era nemmeno calcolabile.
 on:
-  schedule:
-    # Ogni 20 minuti ai minuti :09 :29 :49, SFASATO rispetto al workflow del
-    # vento (che gira a :00 :15 :30 :45): cosi' le due letture delle stazioni
-    # non si sovrappongono. Solo nella stagione velica (mesi 5-9). Gira tutto
-    # il giorno per avere gia' pronto lo storico di 3 ore alle 9 del mattino;
-    # gli avvisi pero' partono solo in fascia oraria (gestita nel codice).
-    - cron: "9,29,49 * * 5-9 *"
-  workflow_dispatch: {}     # avvio manuale dalla scheda Actions (per provare)
+  workflow_dispatch: {}
 
 permissions:
   contents: write          # serve per ri-committare state.json

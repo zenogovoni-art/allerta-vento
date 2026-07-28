@@ -1478,13 +1478,17 @@ def _eta_min(iso: str, ora: datetime) -> float:
     return (ora - datetime.fromisoformat(iso)).total_seconds() / 60.0
 
 
-def controlla_pressione(stato: dict) -> bool:
+def controlla_pressione(stato: dict, letture: dict | None = None) -> bool:
     """Legge la pressione delle stazioni, aggiorna lo storico e avvisa.
 
     Tiene in state.json una finestra di letture per stazione, calcola la caduta
     di pressione normalizzata a 3 ore e, al superamento delle soglie, invia un
     avviso Telegram (solo in fascia oraria). Ritorna True se lo stato e'
     cambiato (e va quindi salvato).
+
+    Gira dentro il giro dei 15 minuti, che legge gia' le stazioni: `letture`
+    (nome -> dati) evita di interrogarle una seconda volta. Senza `letture`
+    se le rilegge da solo, cosi' resta possibile lanciarlo a mano.
     """
     adesso = datetime.now(TZ)
     in_orario = ORA_INIZIO <= adesso.hour < ORA_FINE
@@ -1492,7 +1496,7 @@ def controlla_pressione(stato: dict) -> bool:
 
     for st in STAZIONI:
         nome = st["nome"]
-        dati = leggi_stazione(st)
+        dati = letture.get(nome) if letture is not None else leggi_stazione(st)
         if dati is None or dati.get("pressione") is None:
             print(f"[{nome}] pressione non disponibile")
             continue
@@ -2060,6 +2064,14 @@ def main() -> int:
                 invia_telegram(testo)
             except Exception as e:  # noqa: BLE001
                 print(f"[errore] invio Telegram alert fallito: {e}")
+
+    # --- Pressione: stessa cadenza dei 15 minuti, sulle letture gia' fatte.
+    # Gira anche fuori fascia oraria (senza mandare niente): la tendenza si
+    # misura su 3 ore, quindi lo storico della notte serve ad avere gia' una
+    # baseline valida alle 9:00. L'eventuale alert esce per ultimo, dopo la
+    # situazione vento e gli alert di vento e raffica. ---
+    if controlla_pressione(stato, letture):
+        cambiato = True
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:

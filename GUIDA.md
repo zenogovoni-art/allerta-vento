@@ -128,8 +128,11 @@ in fretta (calo misurato sulle ultime **3 ore**):
 | 🟡 Attenzione | **≥ 3 hPa** | probabile rinforzo di vento |
 | 🔴 Alert | **≥ 6 hPa** | peggioramento marcato, possibile groppo: prudenza |
 
-Il controllo è automatico durante la giornata, sfasato rispetto a quello del
-vento per non sovrapporsi.
+Il controllo gira **ogni 15 minuti**, insieme al rilievo del vento e sugli
+stessi dati, quindi un calo rapido si vede entro un quarto d'ora. Continua
+anche di notte, senza mandare nulla: la tendenza si misura su 3 ore, e così
+alle 9:00 del mattino il confronto è già pronto. Se scatta insieme ad altri
+messaggi, l'alert pressione esce per ultimo.
 
 ## 💨 ALERT BORA — le sentinelle a nord-est
 
