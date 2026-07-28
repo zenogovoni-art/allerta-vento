@@ -184,6 +184,9 @@ body {
 <symbol id="i-tornado" viewBox="0 0 24 24"><path d="M21 4H3" /> <path d="M18 8H6" /> <path d="M19 12H9" /> <path d="M16 16h-6" /> <path d="M11 20H9" /></symbol>
 <symbol id="i-waves" viewBox="0 0 24 24"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /> <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" /></symbol>
 <symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /> <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /> <path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol>
+<symbol id="i-chart-column-big" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <rect x="15" y="5" width="4" height="12" rx="1" /> <rect x="7" y="8" width="4" height="9" rx="1" /></symbol>
+<symbol id="i-newspaper" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /> <path d="M18 14h-8" /> <path d="M15 18h-5" /> <path d="M10 6h8v4h-8V6Z" /></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2" /> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></symbol>
 </svg>
 
 <div class="foglio">
@@ -298,6 +301,34 @@ body {
 
   <div class="spazio"></div>
 
+  <!-- Grafico della sera + 3 news -->
+  <div class="griglia">
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart-column-big"/></svg>
+        Il grafico della sera
+      </div>
+      <div class="corpo-txt">
+        Alle <b>19:00</b> il riepilogo della giornata con il <b>grafico del
+        vento reale</b> ora per ora: intensità, raffiche e frecce di
+        direzione delle due stazioni.
+      </div>
+    </div>
+    <div class="cella">
+      <div class="sezione">
+        <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-newspaper"/></svg>
+        3 news di vela alle 10:20
+      </div>
+      <div class="corpo-txt">
+        Ogni giorno tre notizie da spiaggia: <b>nuove barche a vela</b>,
+        <b>tecnica &amp; regate</b> e il <b>nodo del giorno</b> con
+        animazione passo-passo.
+      </div>
+    </div>
+  </div>
+
+  <div class="spazio"></div>
+
   <!-- Barra stazioni -->
   <div class="stazioni">
     <div class="voce">
@@ -317,6 +348,8 @@ body {
     L'avviso parte solo quando il vento <b>sale di livello</b>: niente messaggi
     ripetuti se le condizioni restano stabili.
     <b>Suonano solo ALERT e Situazione vento</b>: il resto arriva silenzioso.
+    E la cronologia si pulisce da sola: nel canale trovate solo <b>oggi e
+    ieri</b>, più i riepiloghi serali con i grafici.
   </div>
 
   <div class="spazio"></div>
@@ -332,6 +365,11 @@ body {
         <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-send"/></svg>
         t.me/INFOVENTO
       </a>
+      <p style="margin-top:8px; font-size:12.5px;">
+        <svg class="icona" style="width:13px;height:13px;vertical-align:-2px;" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-mail"/></svg>
+        Suggerimenti, migliorie o richieste? Scrivimi:
+        <b>zenogovoni@annunziata.it</b>
+      </p>
     </div>
   </div>
 
