@@ -167,10 +167,12 @@
   "_news3": {
     "usati": [
       "https://www.farevela.net/varato-il-primo-esemplare-dellice-80/",
-      "https://www.farevela.net/mondiali-juniores-nacra-17-e-49er-doppietta-iridata-per-litalia/"
+      "https://www.farevela.net/mondiali-juniores-nacra-17-e-49er-doppietta-iridata-per-litalia/",
+      "https://www.giornaledellavela.com/2026/07/28/hypersail-ferrari-2/",
+      "https://www.giornaledellavela.com/2026/07/29/trofeo-abc-classifica-finale/"
     ],
-    "idx_nodi": 1,
-    "data": "2026-07-28"
+    "idx_nodi": 2,
+    "data": "2026-07-29"
   },
   "_corrente": {
     "run": "20260728",
