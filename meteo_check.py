@@ -1180,22 +1180,28 @@ def id_corrente_canale() -> int:
     return sonda
 
 
-def pulizia_canale(da_id: int, a_id: int, salva=()) -> None:
+def pulizia_canale(da_id: int, a_id: int, salva=()) -> list:
     """Cancella i messaggi del canale con id da (da_id+1) fino ad a_id compreso.
+
+    Ritorna la lista degli id che Telegram ha RIFIUTATO di cancellare.
 
     Gli id in `salva` non vengono MAI cancellati: e' l'eccezione per i
     riepiloghi serali, che restano nel canale come archivio storico (utili
     per statistiche future grazie ai grafici che contengono).
 
-    Cancella all'indietro a blocchi da 100 con deleteMessages, che ignora gli
-    id gia' inesistenti. E' RESILIENTE: se un blocco fallisce (es. contiene solo
-    messaggi non cancellabili) lo salta e prosegue, senza interrompere tutta la
-    pulizia. Il bot deve avere il permesso admin "Elimina messaggi" sul canale.
+    LIMITE TELEGRAM (verificato sul campo il 30/07/2026): un bot NON puo'
+    cancellare messaggi piu' vecchi di 48 ORE, nemmeno con il permesso admin
+    "Elimina messaggi". In piu' deleteMessages e' ATOMICO: se anche UN SOLO id
+    del blocco e' oltre le 48 ore, l'intera chiamata torna 400 e non cancella
+    NIENTE. Per questo un blocco rifiutato viene ritentato spezzandolo a meta',
+    fino al singolo messaggio: cosi' si perdono solo i messaggi davvero fuori
+    tempo massimo, non tutto il blocco. (Gli id gia' inesistenti vengono
+    ignorati da Telegram senza errore.)
     """
     da_id = max(da_id, 0)
     if a_id <= da_id:
         print("[ok] pulizia canale: niente da cancellare")
-        return
+        return []
     token = os.environ["TELEGRAM_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
     base = f"https://api.telegram.org/bot{token}"
@@ -1203,10 +1209,16 @@ def pulizia_canale(da_id: int, a_id: int, salva=()) -> None:
     ids = [i for i in range(a_id, da_id, -1) if i not in da_salvare]
     if not ids:
         print("[ok] pulizia canale: niente da cancellare")
-        return
-    falliti = 0
-    for i in range(0, len(ids), 100):
-        blocco = ids[i:i + 100]
+        return []
+
+    motivi = {}  # id non cancellato -> motivo detto da Telegram
+
+    def cancella(blocco: list) -> list:
+        """Un blocco: se Telegram lo rifiuta lo spezza a meta' e ritenta.
+
+        Ritorna gli id rimasti non cancellati.
+        """
+        motivo = ""
         try:
             r = requests.post(
                 f"{base}/deleteMessages",
@@ -1221,13 +1233,35 @@ def pulizia_canale(da_id: int, a_id: int, salva=()) -> None:
                     json={"chat_id": chat_id, "message_ids": blocco},
                     timeout=30,
                 )
-            r.raise_for_status()
+            if r.ok:
+                return []
+            try:  # il motivo vero sta nel corpo, non nello status
+                motivo = r.json().get("description", r.text[:200])
+            except Exception:  # noqa: BLE001
+                motivo = r.text[:200]
         except Exception as e:  # noqa: BLE001 - un blocco storto non ferma il resto
-            falliti += 1
-            print(f"[avviso] blocco {blocco[-1]}..{blocco[0]} non cancellato: {e}")
+            motivo = str(e)
+        if len(blocco) == 1:
+            motivi[blocco[0]] = motivo
+            return blocco
+        meta = len(blocco) // 2
+        time.sleep(0.2)
+        return cancella(blocco[:meta]) + cancella(blocco[meta:])
+
+    rimasti = []
+    for i in range(0, len(ids), 100):
+        rimasti += cancella(ids[i:i + 100])
         time.sleep(0.2)
     print(f"[ok] pulizia canale: passati i messaggi {da_id + 1}..{a_id} "
-          f"({falliti} blocchi saltati)")
+          f"({len(rimasti)} non cancellabili)")
+    if rimasti:  # un motivo per ciascuno, ma raggruppati: il log resta corto
+        per_motivo = {}
+        for i in sorted(rimasti):
+            per_motivo.setdefault(motivi.get(i, "?"), []).append(i)
+        for motivo, elenco in per_motivo.items():
+            print(f"[avviso] {len(elenco)} messaggi non cancellati "
+                  f"(id {elenco[0]}-{elenco[-1]}): {motivo}")
+    return rimasti
 
 
 # --------------------------------------------------------------------------
@@ -1812,22 +1846,42 @@ def main() -> int:
         stato["_id_fine_ieri"] = stato.get("_ultimo_id", 0)
         cambiato = True
 
-    # --- Pulizia giornaliera: alle 9:00, al primo run della fascia attiva
-    # (insieme al bollettino del mattino: prima si pulisce, poi si pubblica),
-    # cancella i messaggi dal PENULTIMO giorno all'indietro: restano nel
-    # canale oggi e ieri (confine _id_fine_altroieri, fotografato a
-    # mezzanotte), cosi' gli iscritti non si ritrovano la chat intasata.
-    # ECCEZIONE: i riepiloghi serali (_riepilogo_ids) non si cancellano MAI —
-    # restano come archivio storico con i loro grafici. Imposto il flag
-    # _pulizia in OGNI caso (anche se qualcosa va storto) cosi' NON si
-    # ripete durante la giornata.
-    if in_orario and stato.get("_pulizia") != oggi:
+    # --- Pulizia giornaliera: al PRIMO RUN DOPO MEZZANOTTE (subito dopo il
+    # rollover qui sopra), cancella i messaggi dal PENULTIMO giorno
+    # all'indietro: restano nel canale oggi e ieri (confine
+    # _id_fine_altroieri), cosi' gli iscritti non si ritrovano la chat
+    # intasata. ECCEZIONE: i riepiloghi serali (_riepilogo_ids) non si
+    # cancellano MAI — restano come archivio storico con i loro grafici.
+    # Imposto il flag _pulizia in OGNI caso (anche se qualcosa va storto)
+    # cosi' NON si ripete durante la giornata.
+    #
+    # PERCHE' A MEZZANOTTE E NON ALLE 9 (bug del 30/07/2026): Telegram non
+    # lascia cancellare a un bot i messaggi oltre le 48 ORE. Alle 9:00 il
+    # primo messaggio dell'altroieri (il bollettino delle 9:00) ne ha
+    # esattamente 48 e finiva oltre il limite per pochi secondi: la chiamata
+    # e' atomica, quindi bastava quel messaggio a far rifiutare l'intero
+    # blocco e nel canale non si cancellava piu' niente. A mezzanotte i
+    # messaggi da cancellare hanno fra le 27 e le 39 ore: 9 ore di margine.
+    if stato.get("_pulizia") != oggi:
         ceiling = stato.get("_id_fine_altroieri", 0)
         try:
-            pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling,
-                           salva=stato.get("_riepilogo_ids", []))
+            rimasti = pulizia_canale(stato.get("_pulito_fino_a", 0), ceiling,
+                                     salva=stato.get("_riepilogo_ids", []))
             stato["_pulito_fino_a"] = max(stato.get("_pulito_fino_a", 0),
                                           ceiling)
+            if rimasti:
+                # Oltre le 48 ore non si recuperano piu': lo dico all'admin,
+                # che puo' toglierli a mano dall'app.
+                stato["_non_cancellati"] = sorted(
+                    set(stato.get("_non_cancellati", [])) | set(rimasti))[-500:]
+                try:
+                    invia_telegram_admin(
+                        f"🧹 Pulizia canale: {len(rimasti)} messaggi NON "
+                        f"cancellabili (id {min(rimasti)}-{max(rimasti)}). "
+                        f"Telegram non lascia cancellare a un bot i messaggi "
+                        f"oltre le 48 ore: vanno tolti a mano dall'app.")
+                except Exception as e:  # noqa: BLE001
+                    print(f"[errore] avviso admin pulizia fallito: {e}")
         except Exception as e:  # noqa: BLE001
             print(f"[errore] pulizia canale fallita: {e}")
         stato["_pulizia"] = oggi

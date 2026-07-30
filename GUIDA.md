@@ -328,11 +328,11 @@ L'avviso parte **solo quando il vento sale di fascia**:
 
 ## 🧹 Pulizia giornaliera del canale
 
-Ogni mattina **alle 9:00**, appena prima del Bollettino di oggi, il bot
-**cancella i messaggi dal penultimo giorno all'indietro**: nel canale restano
-sempre e solo i messaggi **di ieri e di oggi**, così gli iscritti non si
-ritrovano centinaia di vecchi messaggi da scorrere. Non serve fare nulla: la
-cronologia sparisce da sola anche dal telefono degli iscritti.
+Ogni notte, **appena passata la mezzanotte**, il bot **cancella i messaggi dal
+penultimo giorno all'indietro**: nel canale restano sempre e solo i messaggi
+**di ieri e di oggi**, così gli iscritti non si ritrovano centinaia di vecchi
+messaggi da scorrere. Non serve fare nulla: la cronologia sparisce da sola
+anche dal telefono degli iscritti.
 
 **Unica eccezione: i Riepiloghi della sera non vengono mai cancellati.**
 Restano nel canale come archivio storico della stagione — con i loro grafici
