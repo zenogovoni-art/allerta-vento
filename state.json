@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-01T08:15:52.002764+02:00",
-        1012.6
-      ],
-      [
         "2026-08-01T08:31:06.699877+02:00",
         1012.6
       ],
@@ -64,20 +60,20 @@
       [
         "2026-08-01T11:18:22.215462+02:00",
         1012.5
+      ],
+      [
+        "2026-08-01T11:31:09.958402+02:00",
+        1012.5
       ]
     ],
-    "vento_prec": 4.3
+    "vento_prec": 3.5
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 3.1,
-    "raffica_max": 4.7,
+    "vento_max": 3.9,
+    "raffica_max": 6.4,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-01T08:15:52.002764+02:00",
-        1019.1
-      ],
       [
         "2026-08-01T08:31:06.699877+02:00",
         1019.1
@@ -133,16 +129,20 @@
       [
         "2026-08-01T11:18:22.215462+02:00",
         1012.3
+      ],
+      [
+        "2026-08-01T11:31:09.958402+02:00",
+        1012.2
       ]
     ],
-    "vento_prec": 3.1,
+    "vento_prec": 3.9,
     "livello_pressione": 2
   },
   "_data": "2026-08-01",
   "_riepilogo": "2026-07-31",
   "_bollettino": "2026-08-01",
   "_grafico": "2026-08-01",
-  "_stazioni_slot": "2026-08-01 11B",
+  "_stazioni_slot": "2026-08-01 11C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -152,13 +152,18 @@
     }
   },
   "_benvenuti": {
-    "offset": 961277674,
-    "in_attesa": [],
+    "offset": 961277675,
+    "in_attesa": [
+      {
+        "id": 8328800588,
+        "nome": "Lorenzo Cavallari"
+      }
+    ],
     "data_invio": "2026-07-28"
   },
   "_pulito_fino_a": 1041,
   "_pulizia": "2026-08-01",
-  "_ultimo_id": 1099,
+  "_ultimo_id": 1100,
   "_id_fine_ieri": 1085,
   "_id_fine_altroieri": 1041,
   "_riepilogo_ids": [
@@ -415,6 +420,12 @@
         4.3,
         4.3,
         "E"
+      ],
+      [
+        "11:31",
+        3.5,
+        5.2,
+        "E"
       ]
     ],
     "Lido di Volano": [
@@ -487,6 +498,12 @@
       [
         "11:18",
         3.1,
+        null,
+        "S"
+      ],
+      [
+        "11:31",
+        3.9,
         null,
         "S"
       ]
