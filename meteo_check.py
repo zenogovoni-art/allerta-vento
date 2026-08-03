@@ -2142,6 +2142,8 @@ def main() -> int:
             righe.append(f"🌬️ *{st['nome']}*: vento max *{vmax:.1f} nodi*, "
                          f"raffica max *{rtxt}*")
         if almeno_uno:
+            righe.append("💡 Suggerimenti o errori da segnalare? "
+                         "Scrivi a zenogovoni@annunziata.it")
             righe.append("⛵ Buona serata!")
             # Il riepilogo viaggia come didascalia del grafico della giornata:
             # un solo messaggio con numeri e andamento. Se il grafico non si

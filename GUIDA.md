@@ -310,6 +310,9 @@ direzione di provenienza** del vento: la freccia "vola col vento", come nelle
 app meteo (vento da N = freccia che punta in basso). È il complemento "a
 consuntivo" del grafico delle previsioni weekend.
 
+In coda al riepilogo trovi anche il **contatto per i feedback**: suggerimenti
+da implementare o errori da segnalare si scrivono a **zenogovoni@annunziata.it**.
+
 ## 📈 Tendenza e direzione
 
 Sia nella **Situazione vento** sia negli **ALERT VENTO** trovi sempre se il
