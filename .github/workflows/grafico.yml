@@ -45,7 +45,8 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add state.json
             git commit -m "Aggiorna data invio grafico [skip ci]"
-            git pull --rebase --autostash
+            # Su conflitto vince il nostro commit ("theirs" nel rebase).
+            git pull --rebase --autostash -X theirs
             git push
           else
             echo "Nessun cambiamento di stato."

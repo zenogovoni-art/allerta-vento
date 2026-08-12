@@ -64,6 +64,13 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add $paths
             git commit -m "Aggiorna stato allerta vento [skip ci]"
+            # Il checkout fotografa lo SHA al momento del trigger, non la
+            # punta di main: se un altro run ha pushato nel frattempo il push
+            # verrebbe respinto. Riallineiamo prima con un rebase; in caso di
+            # conflitto su state.json vince la nostra versione (la lettura
+            # piu' recente): durante un rebase "theirs" indica il commit
+            # locale che viene riapplicato.
+            git pull --rebase --autostash -X theirs
             git push
           else
             echo "Nessun cambiamento di stato."
