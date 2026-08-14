@@ -68,10 +68,14 @@
       [
         "2026-08-14T13:01:08.046754+02:00",
         1018.7
+      ],
+      [
+        "2026-08-14T13:15:48.690117+02:00",
+        1018.6
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 6.1
+    "vento_prec": 5.2
   },
   "Lido di Volano": {
     "livello": 0,
@@ -142,16 +146,20 @@
       [
         "2026-08-14T13:01:08.046754+02:00",
         1018.0
+      ],
+      [
+        "2026-08-14T13:15:48.690117+02:00",
+        1017.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 4.3
+    "vento_prec": 6.6
   },
   "_data": "2026-08-14",
   "_riepilogo": "2026-08-13",
   "_bollettino": "2026-08-14",
   "_grafico": "2026-08-14",
-  "_stazioni_slot": "2026-08-14 13A",
+  "_stazioni_slot": "2026-08-14 13B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -167,7 +175,7 @@
   },
   "_pulito_fino_a": 1615,
   "_pulizia": "2026-08-14",
-  "_ultimo_id": 1682,
+  "_ultimo_id": 1683,
   "_id_fine_ieri": 1660,
   "_id_fine_altroieri": 1615,
   "_riepilogo_ids": [
@@ -507,6 +515,12 @@
         6.1,
         7.0,
         "E"
+      ],
+      [
+        "13:15",
+        5.2,
+        5.2,
+        "ESE"
       ]
     ],
     "Lido di Volano": [
@@ -627,6 +641,12 @@
       [
         "13:01",
         4.3,
+        null,
+        "S"
+      ],
+      [
+        "13:15",
+        6.6,
         null,
         "S"
       ]
