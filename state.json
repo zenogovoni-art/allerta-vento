@@ -1,18 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "vento_max": 0.9,
+    "raffica_max": 13.9,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-16T05:30:59.442283+02:00",
-        1013.5
-      ],
-      [
-        "2026-08-16T05:45:44.881818+02:00",
-        1013.5
-      ],
       [
         "2026-08-16T05:56:06.915398+02:00",
         1013.3
@@ -84,24 +76,21 @@
       [
         "2026-08-16T08:45:42.473490+02:00",
         1013.4
+      ],
+      [
+        "2026-08-16T09:01:09.661472+02:00",
+        1013.5
       ]
     ],
-    "livello_pressione": 0
+    "livello_pressione": 0,
+    "vento_prec": 0.9
   },
   "Lido di Volano": {
     "livello": 0,
     "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "raffica_max": 2.7,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-16T05:30:59.442283+02:00",
-        1013.0
-      ],
-      [
-        "2026-08-16T05:45:44.881818+02:00",
-        1013.0
-      ],
       [
         "2026-08-16T05:56:06.915398+02:00",
         1013.1
@@ -173,15 +162,20 @@
       [
         "2026-08-16T08:45:42.473490+02:00",
         1013.4
+      ],
+      [
+        "2026-08-16T09:01:09.661472+02:00",
+        1013.3
       ]
     ],
-    "livello_pressione": 0
+    "livello_pressione": 0,
+    "vento_prec": 0.0
   },
   "_data": "2026-08-16",
   "_riepilogo": "2026-08-15",
-  "_bollettino": "2026-08-15",
+  "_bollettino": "2026-08-16",
   "_grafico": "2026-08-15",
-  "_stazioni_slot": "2026-08-15 18D",
+  "_stazioni_slot": "2026-08-16 09A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -197,7 +191,7 @@
   },
   "_pulito_fino_a": 1706,
   "_pulizia": "2026-08-16",
-  "_ultimo_id": 1750,
+  "_ultimo_id": 1752,
   "_id_fine_ieri": 1750,
   "_id_fine_altroieri": 1706,
   "_riepilogo_ids": [
@@ -414,9 +408,27 @@
       0.1,
       0.075
     ],
-    "tentativo": "2026081510"
+    "tentativo": "2026081609"
   },
   "_non_cancellati": [
     1483
-  ]
+  ],
+  "_serie": {
+    "Porto Corsini": [
+      [
+        "09:01",
+        0.9,
+        5.2,
+        "WNW"
+      ]
+    ],
+    "Lido di Volano": [
+      [
+        "09:01",
+        0.0,
+        null,
+        "NE"
+      ]
+    ]
+  }
 }
