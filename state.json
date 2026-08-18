@@ -2,13 +2,9 @@
   "Porto Corsini": {
     "livello": 0,
     "vento_max": 13.0,
-    "raffica_max": 13.9,
+    "raffica_max": 14.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-18T15:15:51.308310+02:00",
-        1011.3
-      ],
       [
         "2026-08-18T15:26:56.585680+02:00",
         1011.3
@@ -80,10 +76,14 @@
       [
         "2026-08-18T18:16:24.248371+02:00",
         1010.0
+      ],
+      [
+        "2026-08-18T18:31:00.995511+02:00",
+        1009.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 13.0
+    "vento_prec": 8.7
   },
   "Lido di Volano": {
     "livello": 0,
@@ -91,10 +91,6 @@
     "raffica_max": 12.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-18T15:15:51.308310+02:00",
-        1010.6
-      ],
       [
         "2026-08-18T15:26:56.585680+02:00",
         1010.5
@@ -166,16 +162,20 @@
       [
         "2026-08-18T18:16:24.248371+02:00",
         1009.3
+      ],
+      [
+        "2026-08-18T18:31:00.995511+02:00",
+        1009.2
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 8.9
+    "vento_prec": 8.7
   },
   "_data": "2026-08-18",
   "_riepilogo": "2026-08-17",
   "_bollettino": "2026-08-18",
   "_grafico": "2026-08-15",
-  "_stazioni_slot": "2026-08-18 18B",
+  "_stazioni_slot": "2026-08-18 18C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -191,7 +191,7 @@
   },
   "_pulito_fino_a": 1794,
   "_pulizia": "2026-08-18",
-  "_ultimo_id": 1885,
+  "_ultimo_id": 1886,
   "_id_fine_ieri": 1839,
   "_id_fine_altroieri": 1794,
   "_riepilogo_ids": [
@@ -744,6 +744,12 @@
         13.0,
         12.2,
         "SSE"
+      ],
+      [
+        "18:30",
+        8.7,
+        11.3,
+        "S"
       ]
     ],
     "Lido di Volano": [
@@ -1070,6 +1076,12 @@
         8.9,
         null,
         "SE"
+      ],
+      [
+        "18:30",
+        8.7,
+        null,
+        "SE"
       ]
     ],
     "Baia di Maui": [
@@ -1120,11 +1132,17 @@
         8.7,
         null,
         "SE"
+      ],
+      [
+        "18:30",
+        7.8,
+        null,
+        "SE"
       ]
     ]
   },
   "Baia di Maui": {
-    "vento_prec": 8.7,
+    "vento_prec": 7.8,
     "vento_max": 10.4,
     "raffica_max": 11.3
   }
