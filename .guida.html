@@ -97,6 +97,9 @@ h3 .ic { width: 16px; height: 16px; }
 }
 .pallino.p12 { width: 12px; height: 12px; }
 .p-giallo  { background: var(--giallo); }
+.p-blu     { background: #075985; }   /* colore stazioni nel grafico serale */
+.p-verde   { background: #15803d; }
+.p-aranst  { background: #d3500a; }
 .p-arancio { background: var(--arancio); }
 .p-rosso   { background: var(--rosso); }
 .alert-riga .n {
@@ -493,26 +496,23 @@ snello:</p>
     <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
     SITUAZIONE VENTO — 11:15
   </div>
-  <div class="tg-sub">
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
-    Porto Corsini
-  </div>
-  <div>Vento <b class="valori">20.5 nodi</b> da SSW
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg></div>
-  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento</div>
-  <div class="tg-sub">
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
-    Lido di Volano
-  </div>
-  <div>Vento <b class="valori">2.7 nodi</b> da E
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-left"/></svg></div>
-  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg> stazionario</div>
-  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
+  <div class="riga"><span class="pallino p12 p-blu"></span>
+    <div><b>Porto Corsini</b> — <b class="valori">20.5 kn</b> SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg> <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg></div></div>
+  <div class="riga"><span class="pallino p12 p-verde"></span>
+    <div><b>Baia di Maui</b> — <b class="valori">14.2 kn</b> SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg> <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg></div></div>
+  <div class="riga"><span class="pallino p12 p-aranst"></span>
+    <div><b>Lido di Volano</b> — <b class="valori">2.7 kn</b> E
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-left"/></svg> <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg></div></div>
+  <div style="margin-top:8px"><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
     <b>Corrente</b> <b class="valori">~0.4 kn</b>
     <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-down-right"/></svg> SE · marea in salita</div>
 </div>
 
-<p>Ogni scheda mostra se il vento, rispetto alla Situazione vento precedente, è
+<p>Una riga per stazione: il pallino ha lo stesso colore della curva di quella
+stazione nel grafico serale, e l'ultima icona dice se il vento, rispetto alla
+Situazione vento precedente, è
 <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> <b>in aumento</b>,
 <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-minus"/></svg> <b>stazionario</b> o
 <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-down"/></svg> <b>in calo</b>.</p>

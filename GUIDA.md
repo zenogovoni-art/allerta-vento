@@ -181,16 +181,17 @@ quadro in tempo reale utile prima di decidere se uscire, tenuto volutamente
 snello:
 
 > 🌬️ *SITUAZIONE VENTO — 11:15*\
-> 🌬️ *Porto Corsini*\
-> Vento **20.5 nodi** da SSW ↗️\
-> 📈 in aumento\
-> 🌬️ *Lido di Volano*\
-> Vento **2.7 nodi** da E ⬅️\
-> ➖ stazionario\
+> \
+> 🔵 **Porto Corsini** — **20.5 kn** SSW ↗️ 📈\
+> 🟢 **Baia di Maui** — **14.2 kn** SSW ↗️ 📈\
+> 🟠 **Lido di Volano** — **2.7 kn** E ⬅️ ➖\
+> \
 > 🌊 **Corrente** ~0.4 kn ↘️ SE · marea in salita
 
-Ogni scheda mostra se il vento, rispetto alla Situazione vento precedente, è
-📈 **in aumento**, ➖ **stazionario** o 📉 **in calo**.
+Una riga per stazione: il pallino ha lo stesso colore della curva di quella
+stazione nel grafico serale, e l'ultima emoji dice se il vento, rispetto alla
+Situazione vento precedente, è 📈 **in aumento**, ➖ **stazionario** o
+📉 **in calo**.
 
 ### 🌊 La riga della corrente
 

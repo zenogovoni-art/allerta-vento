@@ -502,6 +502,9 @@ STAZIONI = [
         "nome": "Porto Corsini",
         "url": "http://www.meteosystem.com/wlip/awc/",
         "tipo": "meteosystem",
+        # Pallino della SITUAZIONE VENTO: stesso colore della curva di
+        # questa stazione nel grafico serale (vale per tutte le stazioni).
+        "pallino": "🔵",
         "coord": (44.493, 12.279),    # a sud del circolo (~20 km)
         # Semicerchio sud: venti da E, SE, S, SW, O (e settori intermedi).
         "direzioni": ["E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W"],
@@ -517,6 +520,7 @@ STAZIONI = [
         "nome": "Baia di Maui",
         "url": "https://www.baiadimaui.eu/StazioneMeteo2018/dati.php",
         "tipo": "meteosystem8",
+        "pallino": "🟢",
         # Osservatorio di Lido di Spina (Davis Vantage Pro 2): sta a ~2 km
         # dal circolo, quindi misura il vento DEL posto. Niente filtro di
         # direzione (qualsiasi vento locale interessa) e niente stima di
@@ -528,6 +532,7 @@ STAZIONI = [
         "nome": "Lido di Volano",
         "url": "http://dkwa.it/meteo/",
         "tipo": "saratoga",
+        "pallino": "🟠",
         "coord": (44.797, 12.268),    # a nord del circolo (~15 km)
         # Semicerchio nord: venti da O, NW, N, NE, E (e settori intermedi).
         "direzioni": ["W", "WNW", "NW", "NNW", "N", "NNE", "NE", "ENE", "E"],
@@ -2125,22 +2130,26 @@ def main() -> int:
     # cosi' restano ben visibili. ---
     bollettino_inviato = False
     if bollettino_dovuto:
-        righe = [f"🌬️ *SITUAZIONE VENTO — {adesso:%H:%M}*"]
+        # Una riga compatta per stazione: pallino del colore che la stazione
+        # ha nel grafico serale, vento in grassetto, direzione e tendenza
+        # (solo l'emoji: 📈/➖/📉). Tutto il quadro sta in tre righe, comodo
+        # da leggere al volo anche su smartwatch.
+        righe = [f"🌬️ *SITUAZIONE VENTO — {adesso:%H:%M}*", ""]
         almeno_uno = False
         for st in STAZIONI:
             nome = st["nome"]
             dati = letture.get(nome)
+            pallino = st.get("pallino", "⚪")
             if dati is None:
-                righe.append(f"\n*{nome}*: dati non disponibili")
+                righe.append(f"{pallino} *{nome}* — dati non disponibili")
                 continue
             almeno_uno = True
             dir_txt = f"{dati['direzione']} {freccia(dati['direzione'])}".strip()
-            blocco = [f"🌬️ *{nome}*",
-                      f"Vento *{dati['vento']:.1f} nodi* da {dir_txt}"]
+            riga_st = f"{pallino} *{nome}* — *{dati['vento']:.1f} kn* {dir_txt}"
             tnd = tendenze.get(nome)
             if tnd:
-                blocco.append(tnd)
-            righe.append("\n" + "\n".join(blocco))
+                riga_st += f" {tnd.split()[0]}"
+            righe.append(riga_st)
         # Corrente e marea "adesso", a ogni giro: una riga sola, leggibile
         # al volo su telefono o smartwatch mentre si naviga.
         riga = riga_corrente(stato)
