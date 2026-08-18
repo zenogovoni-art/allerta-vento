@@ -726,11 +726,11 @@ def bollettino_mattutino(stato: dict):
                 vmax, ora_vmax = ws[i], ora
             gmax = max(gmax, wg[i])
         if ora in (9, 12, 15, 18):
-            righe.append(f"• {t[11:16]} — {ws[i]:.0f} nodi {_dir16(wd[i])}, "
-                         f"raffiche {wg[i]:.0f}")
+            righe.append(f"• *{t[11:16]}* — *{ws[i]:.0f} kn* {_dir16(wd[i])}"
+                         f" · raffiche {wg[i]:.0f}")
     righe.append("")
     if ora_vmax is not None:
-        righe.append(f"Max previsto: ~{vmax:.0f} nodi (raffiche fino a "
+        righe.append(f"Max previsto *~{vmax:.0f} kn* (raffiche fino a "
                      f"{gmax:.0f}) verso le {ora_vmax}:00.")
 
     # Fascia consigliata per la deriva: solo quando esiste davvero una
@@ -740,7 +740,7 @@ def bollettino_mattutino(stato: dict):
     if fascia:
         f_da, f_a, f_media, f_dir = fascia
         righe.append(f"🕐 *Fascia migliore per uscire: {f_da}–{f_a}* — "
-                     f"~{f_media:.0f} nodi da {f_dir}.")
+                     f"~{f_media:.0f} kn da {f_dir}.")
 
     # Corrente: previsione locale Arpae Adriac (punto davanti al circolo),
     # con il riscontro misurato dalla boa Nausicaa 2. Se Adriac non e'
@@ -1458,10 +1458,10 @@ def controlla_bora(stato: dict, in_orario: bool) -> bool:
                 continue
             liv = BORA_LIVELLI[ora_liv - 1]
             dir_txt = f"{sigla} {freccia(sigla)}".strip()
-            corpo = (f"💨 *ALERT BORA — {sent['nome']}*\n"
-                     f"{liv['tag']}\n\n"
-                     f"Vento *{dati['vento']:.1f} nodi* da {dir_txt} — "
-                     f"raffica *{dati['raffica']:.1f} nodi*")
+            corpo = (f"{liv['tag'].split()[0]} *ALERT BORA — {sent['nome']}*\n\n"
+                     f"💨 *{dati['vento']:.1f} kn* da {dir_txt} · "
+                     f"raffica *{dati['raffica']:.1f} kn*\n"
+                     f"{liv['tag']}")
             eta = stima_arrivo_min(sent.get("coord"), sigla, dati["vento"])
             if eta is not None:
                 corpo += (f"\n⏱️ Possibile arrivo a Lido di Spina tra "
@@ -1634,19 +1634,19 @@ def controlla_pressione(stato: dict, letture: dict | None = None) -> bool:
             if not in_orario:
                 print(f"[info] caduta pressione ma fuori orario ({nome})")
                 continue
+            pallino = st.get("pallino", "⚪")
             if liv_ora >= 2:
-                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n"
-                         f"🔴 *Calo marcato*\n\n"
-                         f"Pressione *{p:.1f} hPa*, in calo di "
-                         f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
-                         f"_Possibile peggioramento o groppo in arrivo, "
-                         f"prudenza in acqua._")
+                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n\n"
+                         f"{pallino} *{p:.1f} hPa* · giù di ~*{caduta:.1f} "
+                         f"hPa* in 3 ore\n"
+                         f"🔴 *Calo marcato* — _possibile peggioramento o "
+                         f"groppo in arrivo, prudenza in acqua._")
             else:
-                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n"
-                         f"🟡 *Calo moderato*\n\n"
-                         f"Pressione *{p:.1f} hPa*, scesa di "
-                         f"~*{caduta:.1f} hPa* nelle ultime 3 ore.\n"
-                         f"_Probabile rinforzo di vento in arrivo._")
+                testo = (f"📉 *ALERT VARIAZIONE PRESSIONE — {nome}*\n\n"
+                         f"{pallino} *{p:.1f} hPa* · giù di ~*{caduta:.1f} "
+                         f"hPa* in 3 ore\n"
+                         f"🟡 *Calo moderato* — _probabile rinforzo di "
+                         f"vento in arrivo._")
             try:
                 invia_telegram(testo)
             except Exception as e:  # noqa: BLE001
@@ -1848,32 +1848,30 @@ def main() -> int:
     # Modalita' test: legge i dati attuali di tutte le stazioni e li invia
     # (anche sotto soglia), poi termina. Utile per verificare che funzioni.
     if os.environ.get("TEST_TELEGRAM", "").lower() in ("1", "true", "yes"):
-        righe = ["🧪 *Test allerta vento — dati attuali*"]
+        righe = ["🧪 *Test allerta vento — dati attuali*", ""]
         for st in STAZIONI:
             dati = leggi_stazione(st)
+            pallino = st.get("pallino", "⚪")
             if dati is None:
-                righe.append(f"\n*{st['nome']}*: dati non disponibili")
+                righe.append(f"{pallino} *{st['nome']}* — dati non disponibili")
                 continue
             raffica = dati["raffica"]
-            raffica_txt = (f" — raffica {raffica:.1f} nodi"
+            raffica_txt = (f" · raffica *{raffica:.1f} kn*"
                            if raffica is not None else "")
-            righe.append(
-                f"\n🌬️ *{st['nome']}*\n"
-                f"Vento {dati['vento']:.1f} nodi da {dati['direzione']}"
-                f"{raffica_txt}"
-            )
+            righe.append(f"{pallino} *{st['nome']}* — "
+                         f"*{dati['vento']:.1f} kn* {dati['direzione']}"
+                         f"{raffica_txt}")
         bora = leggi_bora()
+        righe.append("")
         for sent in BORA_SENTINELLE:
             dati = bora.get(sent["id"])
             if dati is None:
-                righe.append(f"\n*{sent['nome']}* (sentinella bora): "
+                righe.append(f"💨 *{sent['nome']}* (sentinella bora) — "
                              "dati non disponibili")
                 continue
-            righe.append(
-                f"\n💨 *{sent['nome']}* (sentinella bora)\n"
-                f"Vento {dati['vento']:.1f} nodi da {_dir16(dati['gradi'])}"
-                f" — raffica {dati['raffica']:.1f} nodi"
-            )
+            righe.append(f"💨 *{sent['nome']}* (sentinella bora) — "
+                         f"*{dati['vento']:.1f} kn* {_dir16(dati['gradi'])}"
+                         f" · raffica *{dati['raffica']:.1f} kn*")
         try:
             invia_telegram("\n".join(righe))
         except Exception as e:  # noqa: BLE001
@@ -2068,13 +2066,17 @@ def main() -> int:
             if in_orario and direzioni_ok:
                 liv = LIVELLI[livello_ora - 1]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
-                raffica_txt = (f" — raffica *{raffica:.1f} nodi*"
-                               if raffica is not None else "")
-                corpo = (f"🌬️ *ALERT VENTO — {nome}*\n"
-                         f"{liv['tag']} — {liv['descrizione']}\n\n"
-                         f"Vento *{vento:.1f} nodi* da {dir_txt}{raffica_txt}")
+                # Il titolo apre con l'emoji di gravita' del livello (⚠️/🟠/🛑)
+                # cosi' l'anteprima della notifica dice subito quanto e' serio.
+                # Sotto, la stessa riga compatta della SITUAZIONE VENTO.
+                riga_v = f"{st.get('pallino', '⚪')} *{vento:.1f} kn* da {dir_txt}"
                 if tendenza:
-                    corpo += f"\n{tendenza}"
+                    riga_v += f" {tendenza.split()[0]}"
+                if raffica is not None:
+                    riga_v += f" · raffica *{raffica:.1f} kn*"
+                corpo = (f"{liv['tag'].split()[0]} *ALERT VENTO — {nome}*\n\n"
+                         f"{riga_v}\n"
+                         f"{liv['tag']} — {liv['descrizione']}")
                 # Vento a strappi: se la raffica degli ultimi 10 minuti
                 # supera di molto la media (rapporto >= RAFFICOSO_FATTORE),
                 # il vento e' irregolare — condizione insidiosa in deriva
@@ -2100,9 +2102,10 @@ def main() -> int:
             if in_orario and direzioni_ok:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
-                testo = (f"🌀 *ALERT RAFFICA — {nome}*\n"
-                         f"La raffica ha raggiunto *{raffica_alert:.1f} nodi* "
-                         f"(soglia {soglia:.0f}) da {dir_txt}.")
+                testo = (f"🌀 *ALERT RAFFICA — {nome}*\n\n"
+                         f"{st.get('pallino', '⚪')} Raffica "
+                         f"*{raffica_alert:.1f} kn* da {dir_txt} · "
+                         f"soglia {soglia:.0f} kn")
                 messaggi_alert.append(testo)
             else:
                 motivo = "fuori orario" if not in_orario else "direzione esclusa"
@@ -2198,7 +2201,7 @@ def main() -> int:
 
     # --- Riepilogo giornaliero: una volta sola, a fine fascia oraria ---
     if adesso.hour >= ORA_FINE and stato.get("_riepilogo") != oggi:
-        righe = ["📊 *Riepilogo di oggi*", f"_{data_estesa(adesso)}_"]
+        righe = ["📊 *Riepilogo di oggi*", f"_{data_estesa(adesso)}_", ""]
         almeno_uno = False
         for st in STAZIONI:
             s = stato.get(st["nome"], {})
@@ -2207,9 +2210,9 @@ def main() -> int:
             if vmax <= 0 and rmax <= 0:
                 continue
             almeno_uno = True
-            rtxt = f"{rmax:.1f} nodi" if rmax > 0 else "n.d."
-            righe.append(f"🌬️ *{st['nome']}*: vento max *{vmax:.1f} nodi*, "
-                         f"raffica max *{rtxt}*")
+            rtxt = f"*{rmax:.1f} kn*" if rmax > 0 else "n.d."
+            righe.append(f"{st.get('pallino', '⚪')} *{st['nome']}* — "
+                         f"max *{vmax:.1f} kn* · raffica {rtxt}")
         if almeno_uno:
             righe.append("💡 Suggerimenti o errori da segnalare? "
                          "Scrivi a zenogovoni@annunziata.it")

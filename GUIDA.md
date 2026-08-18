@@ -52,10 +52,10 @@ In cima a ogni messaggio Telegram mostra il nome del canale **«INFO VENTO»**: 
 | Scheda | Titolo (prima riga) | Quando arriva |
 |--------|---------------------|---------------|
 | Situazione vento | 🌬️ **SITUAZIONE VENTO — HH:MM** | ogni 15 minuti (9–19), sempre |
-| Alert vento | 🌬️ **ALERT VENTO — Stazione** | il vento medio supera una soglia |
+| Alert vento | ⚠️/🟠/🛑 **ALERT VENTO — Stazione** | il vento medio supera una soglia |
 | Alert raffica | 🌀 **ALERT RAFFICA — Stazione** | la raffica del giorno supera una soglia |
 | Alert pressione | 📉 **ALERT VARIAZIONE PRESSIONE — Stazione** | la pressione cala in fretta |
-| Alert bora | 💨 **ALERT BORA — Sentinella** | vento forte da NE sulle sentinelle a nord |
+| Alert bora | ⚠️/🔴/🛑 **ALERT BORA — Sentinella** | vento forte da NE sulle sentinelle a nord |
 
 Ogni ALERT arriva sempre come scheda a sé, con un box tutto suo per farlo
 risaltare: se scatta nello stesso momento della *Situazione vento*, viene
@@ -68,8 +68,8 @@ silenziosi**: le trovi nel canale, ma non ti disturbano.
 
 ## 🌬️ I livelli dell'ALERT VENTO
 
-Quando il vento medio supera una soglia arriva un **ALERT VENTO**, sempre con lo
-stesso titolo **🌬️ ALERT VENTO — Stazione** e un'etichetta che ne dice la forza:
+Quando il vento medio supera una soglia arriva un **ALERT VENTO**, con
+un'etichetta che ne dice la forza:
 
 | Soglia | Etichetta | Cosa dice |
 |--------|-----------|-----------|
@@ -79,12 +79,15 @@ stesso titolo **🌬️ ALERT VENTO — Stazione** e un'etichetta che ne dice la
 
 Esempio di scheda:
 
-> 🌬️ *ALERT VENTO — Porto Corsini*\
-> ⚠️ *20+ nodi* — *Vento sostenuto: solo per chi ha esperienza, valutate bene.*
->
-> Vento **21.5 nodi** da SSW ↗️ — raffica **26.0 nodi**\
-> 📈 in aumento\
+> ⚠️ *ALERT VENTO — Porto Corsini*\
+> \
+> 🔵 **21.5 kn** da SSW ↗️ 📈 · raffica **26.0 kn**\
+> ⚠️ *20+ nodi* — *Vento sostenuto: solo per chi ha esperienza, valutate bene.*\
 > ⏱️ Possibile arrivo al circolo tra ~50–70 min
+
+Il titolo apre con l'emoji di gravità del livello (⚠️ / 🟠 / 🛑), così la
+notifica dice subito quanto è serio; la riga dei valori è la stessa della
+Situazione vento, pallino colorato compreso.
 
 Quando le raffiche superano di molto il vento medio (di oltre il 60%),
 l'ALERT aggiunge una riga di attenzione in più — il vento "a strappi" è
@@ -97,8 +100,9 @@ insidioso in deriva anche quando la media non spaventa:
 Oltre al vento, il bot avvisa quando la **raffica** della giornata raggiunge
 **20, 25 o 30 nodi** (un avviso per soglia, una volta al giorno):
 
-> 🌀 *ALERT RAFFICA — Porto Corsini*
-> Oggi la raffica ha raggiunto **22.0 nodi** (soglia 20).
+> 🌀 *ALERT RAFFICA — Porto Corsini*\
+> \
+> 🔵 Raffica **22.0 kn** da SSW ↗️ · soglia 20 kn
 
 ⚠️ Le stazioni forniscono la raffica **massima della giornata**, non quella
 dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,

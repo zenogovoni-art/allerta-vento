@@ -319,8 +319,8 @@ mattino, grafici, riepilogo della sera, benvenuti) arrivano invece come
   <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
   I livelli dell'ALERT VENTO
 </div>
-<p>Quando il vento medio supera una soglia arriva un <b>ALERT VENTO</b>, sempre con lo
-stesso titolo <b>ALERT VENTO — Stazione</b> e un'etichetta che ne dice la forza:</p>
+<p>Quando il vento medio supera una soglia arriva un <b>ALERT VENTO</b>, con
+un'etichetta che ne dice la forza:</p>
 
 <div class="alert-righe">
   <div class="alert-riga">
@@ -343,17 +343,19 @@ stesso titolo <b>ALERT VENTO — Stazione</b> e un'etichetta che ne dice la forz
 <p>Esempio di scheda:</p>
 <div class="tg-card">
   <div class="tg-title">
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
+    <span class="pallino p12 p-giallo"></span>
     ALERT VENTO — Porto Corsini
   </div>
+  <div class="riga"><span class="pallino p12 p-blu"></span>
+    <div><b class="valori">21.5 kn</b> da SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg> <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg>
+    · raffica <b class="valori">26.0 kn</b></div></div>
   <div class="riga"><span class="pallino p12 p-giallo"></span>
     <span><i><b>20+ nodi</b> — Vento sostenuto: solo per chi ha esperienza, valutate bene.</i></span></div>
-  <div style="margin-top:6px;">Vento <b class="valori">21.5 nodi</b> da SSW
-    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg>
-    — raffica <b class="valori">26.0 nodi</b></div>
-  <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento</div>
   <div><svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-timer"/></svg> Possibile arrivo al circolo tra ~50–70 min</div>
 </div>
+<p>Il titolo apre con il "bollino" di gravità del livello, la riga dei valori
+è la stessa della Situazione vento — pallino colorato della stazione compreso.</p>
 
 <p>Quando le raffiche superano di molto il vento medio (di oltre il 60%),
 l'ALERT aggiunge una riga di attenzione in più — il vento "a strappi" è
@@ -376,7 +378,9 @@ insidioso in deriva anche quando la media non spaventa:</p>
     <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
     ALERT RAFFICA — Porto Corsini
   </div>
-  <div>Oggi la raffica ha raggiunto <b class="valori">22.0 nodi</b> (soglia 20).</div>
+  <div class="riga"><span class="pallino p12 p-blu"></span>
+    <div>Raffica <b class="valori">22.0 kn</b> da SSW
+    <svg class="ic" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-up-right"/></svg> · soglia 20 kn</div></div>
 </div>
 <p><b>Attenzione:</b> le stazioni forniscono la raffica <b>massima della giornata</b>, non quella
 dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,

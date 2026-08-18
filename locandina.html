@@ -94,6 +94,11 @@ body {
 .p-giallo  { background: var(--giallo); }
 .p-arancio { background: var(--arancio); }
 .p-rosso   { background: var(--rosso); }
+/* Colori delle stazioni (gli stessi delle curve nel grafico serale) */
+.p-blu     { background: #075985; }
+.p-verde   { background: #15803d; }
+.p-aranst  { background: #d3500a; }
+.tg-card .pallino { display: inline-block; transform: translateY(1px); }
 .alert-riga .n {
   font-weight: 800; font-size: 20px; color: var(--ink);
   width: 88px; flex: none; line-height: 1.15;
@@ -257,14 +262,23 @@ body {
         Situazione in tempo reale
       </div>
       <div class="corpo-txt">
-        <b>Situazione vento ogni 15 minuti</b> (9–19) da <b>entrambe le
+        <b>Situazione vento ogni 15 minuti</b> (9–19) dalle <b>tre
         stazioni</b>, sempre — con <b>corrente e marea</b>:
       </div>
       <div class="tg-card">
         <div>
-          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wind"/></svg>
-          <b>Porto Corsini</b> — <span class="valori">20.5 nodi</span> da SSW
-          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg> in aumento
+          <span class="pallino p12 p-blu"></span>
+          <b>Porto Corsini</b> — <span class="valori">20.5 kn</span> SSW
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg>
+        </div>
+        <div>
+          <span class="pallino p12 p-verde"></span>
+          <b>Baia di Maui</b> — <span class="valori">14.2 kn</span> SSW
+          <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-trending-up"/></svg>
+        </div>
+        <div>
+          <span class="pallino p12 p-aranst"></span>
+          <b>Lido di Volano</b> — <span class="valori">2.7 kn</span> E
         </div>
         <div>
           <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg>
@@ -344,7 +358,7 @@ body {
       <div class="corpo-txt">
         Alle <b>19:00</b> il riepilogo della giornata con il <b>grafico del
         vento reale</b> ora per ora: intensità, raffiche e frecce di
-        direzione delle due stazioni.
+        direzione delle tre stazioni.
       </div>
     </div>
     <div class="cella">
@@ -366,7 +380,7 @@ body {
   <div class="stazioni">
     <div class="voce">
       <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-map-pin"/></svg>
-      <span><b>Porto Corsini</b> (sud) · <b>Lido di Volano</b> (nord)</span>
+      <span><b>Porto Corsini</b> · <b>Baia di Maui</b> · <b>Lido di Volano</b></span>
     </div>
     <div class="voce">
       <svg class="icona" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-clock"/></svg>
