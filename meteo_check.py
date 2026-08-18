@@ -1692,10 +1692,10 @@ def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
         venti = [p[1] for p in punti]
         colore = colori.get(nome)
         ax.plot(ore, venti, label=nome, color=colore, linewidth=2.2)
-        raffiche = [p[2] if p[2] is not None else float("nan") for p in punti]
-        if any(p[2] is not None for p in punti):
-            ax.plot(ore, raffiche, label=f"{nome} — raffica", color=colore,
-                    linewidth=1.3, linestyle="--", alpha=0.65)
+        # La raffica 10' (terzo campo della serie, oggi solo Porto Corsini
+        # via riserva GCA) NON si disegna: la tratteggiata affollava il
+        # grafico. Il dato resta in serie/CSV e la raffica massima resta
+        # nel testo del riepilogo.
         # Una freccia di direzione per ogni ora: il primo punto di ogni ora
         # (i run non cadono mai esattamente allo scoccare).
         ora_fatta = set()

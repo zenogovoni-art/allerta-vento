@@ -313,8 +313,8 @@ ombrellone, non un alert.
 Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
 registrati nella giornata, accompagnato dal **grafico dell'andamento reale del
 vento**: le letture raccolte ogni 15 minuti dalle stazioni diventano una
-curva che mostra com'è andata davvero la giornata (vento pieno, raffica
-tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). Per
+curva che mostra com'è andata davvero la giornata (una curva per stazione,
+con le soglie d'alert segnate quando il vento ci si è avvicinato). Per
 ogni ora, sopra la curva di ciascuna stazione, una **freccia mostra la
 direzione di provenienza** del vento: la freccia "vola col vento", come nelle
 app meteo (vento da N = freccia che punta in basso). È il complemento "a
