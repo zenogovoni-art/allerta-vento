@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-18T14:45:44.461886+02:00",
-        1011.7
-      ],
-      [
         "2026-08-18T15:01:16.753893+02:00",
         1011.5
       ],
@@ -76,10 +72,14 @@
       [
         "2026-08-18T17:53:18.421957+02:00",
         1010.3
+      ],
+      [
+        "2026-08-18T18:01:10.908316+02:00",
+        1010.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 11.3
+    "vento_prec": 10.4
   },
   "Lido di Volano": {
     "livello": 0,
@@ -87,10 +87,6 @@
     "raffica_max": 12.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-18T14:45:44.461886+02:00",
-        1010.9
-      ],
       [
         "2026-08-18T15:01:16.753893+02:00",
         1010.8
@@ -158,16 +154,20 @@
       [
         "2026-08-18T17:53:18.421957+02:00",
         1009.4
+      ],
+      [
+        "2026-08-18T18:01:10.908316+02:00",
+        1009.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 9.7
+    "vento_prec": 8.9
   },
   "_data": "2026-08-18",
   "_riepilogo": "2026-08-17",
   "_bollettino": "2026-08-18",
   "_grafico": "2026-08-15",
-  "_stazioni_slot": "2026-08-18 17D",
+  "_stazioni_slot": "2026-08-18 18A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -183,7 +183,7 @@
   },
   "_pulito_fino_a": 1794,
   "_pulizia": "2026-08-18",
-  "_ultimo_id": 1878,
+  "_ultimo_id": 1884,
   "_id_fine_ieri": 1839,
   "_id_fine_altroieri": 1794,
   "_riepilogo_ids": [
@@ -718,6 +718,12 @@
         11.3,
         10.4,
         "SSE"
+      ],
+      [
+        "18:01",
+        10.4,
+        11.3,
+        "SSE"
       ]
     ],
     "Lido di Volano": [
@@ -1026,6 +1032,12 @@
         9.7,
         null,
         "SE"
+      ],
+      [
+        "18:01",
+        8.9,
+        null,
+        "SSE"
       ]
     ],
     "Baia di Maui": [
@@ -1058,11 +1070,17 @@
         10.4,
         null,
         "ESE"
+      ],
+      [
+        "18:01",
+        8.7,
+        null,
+        "ESE"
       ]
     ]
   },
   "Baia di Maui": {
-    "vento_prec": 10.4,
+    "vento_prec": 8.7,
     "vento_max": 10.4,
     "raffica_max": 11.3
   }
