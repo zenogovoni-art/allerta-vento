@@ -489,9 +489,10 @@ PUNTO_MARE = (44.665, 12.35)  # (lat, lon) ~9 km al largo del circolo
 #                 oppure lista di settori (es. ["S", "SSW", "SW"]) per
 #                 avvisare solo quando il vento arriva da quelle direzioni.
 # Campo "tipo": indica quale lettore usare per quella pagina
-#   "meteosystem" -> pagine Meteosystem/WeatherLink (es. Porto Corsini)
-#   "saratoga"    -> template Saratoga/Meteobridge (es. Lido di Volano)
-#   "gca"         -> Guardia Costiera Ausiliaria Ravenna (Marina di Ravenna)
+#   "meteosystem"  -> pagine Meteosystem/WeatherLink (es. Porto Corsini)
+#   "meteosystem8" -> template "Meteo System v8" (es. Baia di Maui)
+#   "saratoga"     -> template Saratoga/Meteobridge (es. Lido di Volano)
+#   "gca"          -> Guardia Costiera Ausiliaria Ravenna (Marina di Ravenna)
 # Campo opzionale "riserva": {url, tipo} di una stazione di scorta nello
 # stesso punto. Se la principale non risponde si usano i suoi dati; se la
 # principale funziona, dalla riserva si prende comunque la raffica degli
@@ -511,6 +512,17 @@ STAZIONI = [
                     "datimeteocompatti.php"),
             "tipo": "gca",
         },
+    },
+    {
+        "nome": "Baia di Maui",
+        "url": "https://www.baiadimaui.eu/StazioneMeteo2018/dati.php",
+        "tipo": "meteosystem8",
+        # Osservatorio di Lido di Spina (Davis Vantage Pro 2): sta a ~2 km
+        # dal circolo, quindi misura il vento DEL posto. Niente filtro di
+        # direzione (qualsiasi vento locale interessa) e niente stima di
+        # arrivo (coord=None: il rinforzo e' gia' qui).
+        "coord": None,
+        "direzioni": None,
     },
     {
         "nome": "Lido di Volano",
@@ -940,6 +952,52 @@ def _parse_meteosystem(html: str) -> dict | None:
     }
 
 
+# Minuti di anzianita' oltre i quali la pagina Meteo System v8 si considera
+# ferma (console spenta o upload interrotto) e i dati vengono scartati.
+DATI_FRESCHI_MIN = 45
+
+
+def _parse_meteosystem8(html: str) -> dict | None:
+    """Template "Meteo System v8", es. Baia di Maui (Lido di Spina).
+
+    Riga del vento: 'Velocita 8.7 kts 7.8 kts - 11.3 kts 15.28'
+    (istantaneo, media 10 minuti, raffica massima giornaliera con l'ora).
+    La pagina dichiara data e ora dell'ultimo aggiornamento: se sono piu'
+    vecchie di DATI_FRESCHI_MIN i dati vengono scartati, cosi' una console
+    ferma risulta al watchdog come stazione illeggibile invece di ripetere
+    per ore l'ultima lettura buona.
+    Il barometro di questa stazione e' fuori taratura (~1073 hPa contro i
+    ~1011 reali, con estremi assurdi tipo 564 hPa): la pressione NON si legge.
+    """
+    testo = _solo_testo(html)
+    m_agg = re.search(r"aggiornati il\s*(\d{2})/(\d{2})/(\d{2})"
+                      r"\s*alle ore\s*(\d{1,2})\.(\d{2})", testo, re.IGNORECASE)
+    if m_agg:
+        g, mese, anno, hh, mi = (int(x) for x in m_agg.groups())
+        agg = datetime(2000 + anno, mese, g, hh, mi, tzinfo=TZ)
+        if (datetime.now(TZ) - agg) > timedelta(minutes=DATI_FRESCHI_MIN):
+            print(f"[errore] pagina ferma al {agg:%d/%m %H:%M}, dati scartati")
+            return None
+    # Riga del vento fino a "Direzione": il primo numero in kts e' il vento
+    # istantaneo, l'ULTIMO e' la raffica massima giornaliera (in mezzo c'e'
+    # la media 10 min, che puo' mancare: '-').
+    m_riga = re.search(r"Velocita\b(.{0,80}?)Direzione",
+                       testo, re.IGNORECASE | re.DOTALL)
+    if not m_riga:
+        return None
+    numeri = re.findall(r"([\d.,]+)\s*kts", m_riga.group(1), re.IGNORECASE)
+    if not numeri:
+        return None
+    m_dir = re.search(r"Direzione\s+da\s+([NSEW]{1,3})\b", testo,
+                      re.IGNORECASE)
+    return {
+        "vento": _num(numeri[0]),
+        "direzione": m_dir.group(1).upper() if m_dir else "?",
+        "raffica": _num(numeri[-1]) if len(numeri) > 1 else None,
+        "pressione": None,
+    }
+
+
 def _parse_saratoga(html: str) -> dict | None:
     """Template Saratoga/Meteobridge, es. testo 'S 4.7 Raffica: 5.4 kts'."""
     testo = _solo_testo(html)
@@ -989,6 +1047,7 @@ def _parse_gca(html: str) -> dict | None:
 
 PARSER = {
     "meteosystem": _parse_meteosystem,
+    "meteosystem8": _parse_meteosystem8,
     "saratoga": _parse_saratoga,
     "gca": _parse_gca,
 }
@@ -1616,7 +1675,8 @@ def grafico_giornata(serie: dict, adesso: datetime) -> bytes | None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    colori = {"Porto Corsini": "#075985", "Lido di Volano": "#d3500a"}
+    colori = {"Porto Corsini": "#075985", "Baia di Maui": "#15803d",
+              "Lido di Volano": "#d3500a"}
     fig, ax = plt.subplots(figsize=(9, 4.8), dpi=150)
     disegnato = False
     frecce = []  # (x, y, u, v, colore): una per ora per stazione

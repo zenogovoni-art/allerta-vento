@@ -4,7 +4,7 @@ Avvisi automatici sul vento per i soci, direttamente su Telegram.
 
 ## Cos'è
 
-Un servizio **gratuito e automatico** che controlla due stazioni meteo della
+Un servizio **gratuito e automatico** che controlla tre stazioni meteo della
 nostra zona e pubblica avvisi sul canale Telegram **«INFO VENTO»**: quando il
 vento si alza, quando la pressione cala in fretta, più previsioni e riepiloghi.
 Nessun PC acceso, nessuna app da installare: basta iscriversi al canale.
@@ -18,10 +18,13 @@ Apri il link, premi **Iscriviti / Join** e riceverai gli avvisi sul telefono.
 ## Le stazioni controllate
 
 - **Porto Corsini** (a sud) — Adriatico Wind Club
+- **Baia di Maui** (Lido di Spina) — Osservatorio meteorologico di Lido di
+  Spina, a due passi dal circolo: misura il vento *del posto*
 - **Lido di Volano** (a nord)
 
 Avere una stazione a sud e una a nord aiuta ad anticipare l'arrivo del vento a
-seconda della direzione.
+seconda della direzione; quella di Lido di Spina dice cosa sta succedendo
+proprio dove si esce in barca.
 
 A Porto Corsini c'è anche una **stazione di riserva**: quella della **Guardia
 Costiera Ausiliaria di Ravenna** (Marina di Ravenna, dall'altra parte del
@@ -114,7 +117,8 @@ alla velocità del vento misurato, quello basso tiene conto che i fronti si
 muovono spesso più veloci del vento al suolo — prudenza: può arrivare prima.
 Compare solo quando il vento sta effettivamente puntando verso il circolo
 (es. da sud per Porto Corsini, da nord per Lido di Volano). È un valore
-**indicativo**, utile come anticipo.
+**indicativo**, utile come anticipo. Per la stazione della Baia di Maui la
+stima non compare: il vento misurato lì è già quello del circolo.
 
 ## 📉 ALERT VARIAZIONE PRESSIONE
 
@@ -170,8 +174,9 @@ per quello ci sono gli alert delle stazioni locali.
 ## 🌬️ Situazione vento ogni 15 minuti
 
 Dalle **9:00 alle 19:00**, ogni **15 minuti**, il canale pubblica **sempre** la
-situazione di **Porto Corsini** e **Lido di Volano** — intensità del vento,
-direzione e tendenza — **anche quando le condizioni non cambiano**. È un
+situazione di **Porto Corsini**, **Baia di Maui** e **Lido di Volano** —
+intensità del vento, direzione e tendenza — **anche quando le condizioni non
+cambiano**. È un
 quadro in tempo reale utile prima di decidere se uscire, tenuto volutamente
 snello:
 
@@ -302,7 +307,7 @@ ombrellone, non un alert.
 
 Ogni sera verso le **19:00** un riepilogo con **vento massimo e raffica massima**
 registrati nella giornata, accompagnato dal **grafico dell'andamento reale del
-vento**: le letture raccolte ogni 15 minuti dalle due stazioni diventano una
+vento**: le letture raccolte ogni 15 minuti dalle stazioni diventano una
 curva che mostra com'è andata davvero la giornata (vento pieno, raffica
 tratteggiata, soglie d'alert segnate quando il vento ci si è avvicinato). Per
 ogni ora, sopra la curva di ciascuna stazione, una **freccia mostra la
@@ -370,7 +375,7 @@ viene prima di tutto.
   Situazione vento; le schede di contorno (bollettini, grafici, riepilogo,
   benvenuti) ora arrivano come messaggi silenziosi.
 - **Grafico serale del vento**: il riepilogo delle 19:00 include il grafico
-  dell'andamento reale del vento della giornata alle due stazioni, con una
+  dell'andamento reale del vento della giornata alle stazioni, con una
   freccia per ogni ora che mostra la direzione di provenienza.
 - **Fascia migliore per uscire**: il bollettino del mattino indica la
   finestra oraria con vento previsto adatto alla deriva (~6–16 nodi).
