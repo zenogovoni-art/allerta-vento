@@ -1,14 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 2.6,
+    "vento_max": 3.5,
     "raffica_max": 11.3,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-19T06:20:08.978482+02:00",
-        1010.5
-      ],
       [
         "2026-08-19T06:31:01.394331+02:00",
         1010.6
@@ -80,21 +76,21 @@
       [
         "2026-08-19T09:31:00.825724+02:00",
         1011.5
+      ],
+      [
+        "2026-08-19T09:45:57.572547+02:00",
+        1011.6
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 0.9
+    "vento_prec": 3.5
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 9.9,
+    "vento_max": 11.1,
     "raffica_max": 13.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-19T06:20:08.978482+02:00",
-        1010.2
-      ],
       [
         "2026-08-19T06:31:01.394331+02:00",
         1010.2
@@ -166,16 +162,20 @@
       [
         "2026-08-19T09:31:00.825724+02:00",
         1011.2
+      ],
+      [
+        "2026-08-19T09:45:57.572547+02:00",
+        1011.1
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 9.3
+    "vento_prec": 11.1
   },
   "_data": "2026-08-19",
   "_riepilogo": "2026-08-18",
   "_bollettino": "2026-08-19",
   "_grafico": "2026-08-15",
-  "_stazioni_slot": "2026-08-19 09C",
+  "_stazioni_slot": "2026-08-19 09D",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -191,7 +191,7 @@
   },
   "_pulito_fino_a": 1839,
   "_pulizia": "2026-08-19",
-  "_ultimo_id": 1897,
+  "_ultimo_id": 1898,
   "_id_fine_ieri": 1888,
   "_id_fine_altroieri": 1839,
   "_riepilogo_ids": [
@@ -450,6 +450,12 @@
         0.9,
         null,
         "NNW"
+      ],
+      [
+        "09:45",
+        3.5,
+        3.5,
+        "WNW"
       ]
     ],
     "Baia di Maui": [
@@ -476,6 +482,12 @@
         2.6,
         null,
         "E"
+      ],
+      [
+        "09:45",
+        2.6,
+        null,
+        "ESE"
       ]
     ],
     "Lido di Volano": [
@@ -502,6 +514,12 @@
         9.3,
         null,
         "E"
+      ],
+      [
+        "09:45",
+        11.1,
+        null,
+        "ESE"
       ]
     ]
   }
