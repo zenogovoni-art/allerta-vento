@@ -2,7 +2,7 @@
   "Porto Corsini": {
     "livello": 0,
     "vento_max": 19.1,
-    "raffica_max": 24.4,
+    "raffica_max": 25.2,
     "livello_raffica": 0,
     "pressioni": [
       [
@@ -68,6 +68,10 @@
       [
         "2026-08-20T18:01:18.132012+02:00",
         1009.9
+      ],
+      [
+        "2026-08-20T18:15:47.428282+02:00",
+        1009.7
       ]
     ],
     "livello_pressione": 0,
@@ -77,7 +81,7 @@
     "livello": 0,
     "vento_max": 18.9,
     "raffica_max": 23.1,
-    "livello_raffica": 1,
+    "livello_raffica": 0,
     "pressioni": [
       [
         "2026-08-20T15:01:13.876161+02:00",
@@ -142,16 +146,20 @@
       [
         "2026-08-20T18:01:18.132012+02:00",
         1009.2
+      ],
+      [
+        "2026-08-20T18:15:47.428282+02:00",
+        1009.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 15.4
+    "vento_prec": 15.0
   },
   "_data": "2026-08-20",
   "_riepilogo": "2026-08-19",
   "_bollettino": "2026-08-20",
   "_grafico": "2026-08-20",
-  "_stazioni_slot": "2026-08-20 18A",
+  "_stazioni_slot": "2026-08-20 18B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -172,7 +180,7 @@
   },
   "_pulito_fino_a": 1888,
   "_pulizia": "2026-08-20",
-  "_ultimo_id": 1983,
+  "_ultimo_id": 1984,
   "_id_fine_ieri": 1939,
   "_id_fine_altroieri": 1888,
   "_riepilogo_ids": [
@@ -407,7 +415,7 @@
   "Baia di Maui": {
     "vento_max": 19.1,
     "raffica_max": 19.1,
-    "vento_prec": 19.1
+    "vento_prec": 12.1
   },
   "_serie": {
     "Porto Corsini": [
@@ -703,6 +711,12 @@
         "18:01",
         19.1,
         17.4,
+        "SSE"
+      ],
+      [
+        "18:15",
+        19.1,
+        18.2,
         "SSE"
       ]
     ],
@@ -1000,6 +1014,12 @@
         19.1,
         null,
         "ESE"
+      ],
+      [
+        "18:15",
+        12.1,
+        null,
+        "ESE"
       ]
     ],
     "Lido di Volano": [
@@ -1294,6 +1314,12 @@
       [
         "18:01",
         15.4,
+        null,
+        "ESE"
+      ],
+      [
+        "18:15",
+        15.0,
         null,
         "ESE"
       ]
