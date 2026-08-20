@@ -2,17 +2,9 @@
   "Porto Corsini": {
     "livello": 0,
     "vento_max": 16.5,
-    "raffica_max": 18.3,
+    "raffica_max": 19.1,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-20T12:01:17.816731+02:00",
-        1012.1
-      ],
-      [
-        "2026-08-20T12:15:47.919711+02:00",
-        1012.2
-      ],
       [
         "2026-08-20T12:16:56.296916+02:00",
         1012.2
@@ -80,25 +72,21 @@
       [
         "2026-08-20T15:15:54.898865+02:00",
         1011.5
+      ],
+      [
+        "2026-08-20T15:31:00.351565+02:00",
+        1011.1
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 13.9
+    "vento_prec": 16.5
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 12.2,
-    "raffica_max": 13.8,
+    "vento_max": 13.2,
+    "raffica_max": 15.7,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-20T12:01:17.816731+02:00",
-        1011.8
-      ],
-      [
-        "2026-08-20T12:15:47.919711+02:00",
-        1011.5
-      ],
       [
         "2026-08-20T12:16:56.296916+02:00",
         1011.5
@@ -166,16 +154,20 @@
       [
         "2026-08-20T15:15:54.898865+02:00",
         1010.5
+      ],
+      [
+        "2026-08-20T15:31:00.351565+02:00",
+        1010.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 11.5
+    "vento_prec": 13.2
   },
   "_data": "2026-08-20",
   "_riepilogo": "2026-08-19",
   "_bollettino": "2026-08-20",
   "_grafico": "2026-08-20",
-  "_stazioni_slot": "2026-08-20 15B",
+  "_stazioni_slot": "2026-08-20 15C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -191,7 +183,7 @@
   },
   "_pulito_fino_a": 1888,
   "_pulizia": "2026-08-20",
-  "_ultimo_id": 1969,
+  "_ultimo_id": 1970,
   "_id_fine_ieri": 1939,
   "_id_fine_altroieri": 1888,
   "_riepilogo_ids": [
@@ -424,9 +416,9 @@
     1483
   ],
   "Baia di Maui": {
-    "vento_max": 12.1,
+    "vento_max": 13.9,
     "raffica_max": 15.7,
-    "vento_prec": 7.0
+    "vento_prec": 13.9
   },
   "_serie": {
     "Porto Corsini": [
@@ -644,6 +636,12 @@
         "15:15",
         13.9,
         13.9,
+        "SE"
+      ],
+      [
+        "15:30",
+        16.5,
+        13.0,
         "SE"
       ]
     ],
@@ -863,6 +861,12 @@
         7.0,
         null,
         "SE"
+      ],
+      [
+        "15:30",
+        13.9,
+        null,
+        "ESE"
       ]
     ],
     "Lido di Volano": [
@@ -1079,6 +1083,12 @@
       [
         "15:15",
         11.5,
+        null,
+        "ESE"
+      ],
+      [
+        "15:30",
+        13.2,
         null,
         "ESE"
       ]
