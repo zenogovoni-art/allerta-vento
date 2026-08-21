@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-21T12:17:05.592380+02:00",
-        1009.3
-      ],
-      [
         "2026-08-21T12:31:01.242223+02:00",
         1009.3
       ],
@@ -84,10 +80,14 @@
       [
         "2026-08-21T15:31:45.496065+02:00",
         1009.1
+      ],
+      [
+        "2026-08-21T15:45:44.391834+02:00",
+        1009.1
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 3.5
+    "vento_prec": 5.2
   },
   "Lido di Volano": {
     "livello": 0,
@@ -95,10 +95,6 @@
     "raffica_max": 29.5,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-21T12:17:05.592380+02:00",
-        1009.4
-      ],
       [
         "2026-08-21T12:31:01.242223+02:00",
         1009.3
@@ -174,16 +170,20 @@
       [
         "2026-08-21T15:31:45.496065+02:00",
         1008.4
+      ],
+      [
+        "2026-08-21T15:45:44.391834+02:00",
+        1008.2
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 2.3
+    "vento_prec": 2.5
   },
   "_data": "2026-08-21",
   "_riepilogo": "2026-08-20",
   "_bollettino": "2026-08-21",
   "_grafico": "2026-08-21",
-  "_stazioni_slot": "2026-08-21 15C",
+  "_stazioni_slot": "2026-08-21 15D",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -199,7 +199,7 @@
   },
   "_pulito_fino_a": 1939,
   "_pulizia": "2026-08-21",
-  "_ultimo_id": 2022,
+  "_ultimo_id": 2023,
   "_id_fine_ieri": 1988,
   "_id_fine_altroieri": 1939,
   "_riepilogo_ids": [
@@ -443,7 +443,7 @@
     "raffica_max": 26.1,
     "livello": 0,
     "livello_raffica": 2,
-    "vento_prec": 0.0
+    "vento_prec": 2.6
   },
   "_serie": {
     "Porto Corsini": [
@@ -680,6 +680,12 @@
         3.5,
         12.2,
         "S"
+      ],
+      [
+        "15:45",
+        5.2,
+        12.2,
+        "SSE"
       ]
     ],
     "Baia di Maui": [
@@ -914,6 +920,12 @@
       [
         "15:31",
         0.0,
+        null,
+        "SSE"
+      ],
+      [
+        "15:45",
+        2.6,
         null,
         "SSE"
       ]
@@ -1152,6 +1164,12 @@
         2.3,
         null,
         "N"
+      ],
+      [
+        "15:45",
+        2.5,
+        null,
+        "NNE"
       ]
     ]
   }
