@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-21T10:25:21.826414+02:00",
-        1011.0
-      ],
-      [
         "2026-08-21T10:31:04.734745+02:00",
         1011.0
       ],
@@ -80,21 +76,21 @@
       [
         "2026-08-21T13:31:01.354379+02:00",
         1008.0
+      ],
+      [
+        "2026-08-21T13:41:59.804602+02:00",
+        1007.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 9.6
+    "vento_prec": 8.7
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 10.3,
-    "raffica_max": 12.1,
+    "vento_max": 11.7,
+    "raffica_max": 13.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-21T10:25:21.826414+02:00",
-        1011.5
-      ],
       [
         "2026-08-21T10:31:04.734745+02:00",
         1011.5
@@ -166,10 +162,14 @@
       [
         "2026-08-21T13:31:01.354379+02:00",
         1008.7
+      ],
+      [
+        "2026-08-21T13:41:59.804602+02:00",
+        1007.3
       ]
     ],
-    "livello_pressione": 0,
-    "vento_prec": 8.2
+    "livello_pressione": 1,
+    "vento_prec": 11.7
   },
   "_data": "2026-08-21",
   "_riepilogo": "2026-08-20",
@@ -191,7 +191,7 @@
   },
   "_pulito_fino_a": 1939,
   "_pulizia": "2026-08-21",
-  "_ultimo_id": 2010,
+  "_ultimo_id": 2011,
   "_id_fine_ieri": 1988,
   "_id_fine_altroieri": 1939,
   "_riepilogo_ids": [
@@ -432,10 +432,10 @@
   ],
   "Baia di Maui": {
     "vento_max": 9.6,
-    "raffica_max": 13.0,
+    "raffica_max": 13.9,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 7.0
+    "vento_prec": 8.7
   },
   "_serie": {
     "Porto Corsini": [
@@ -600,6 +600,12 @@
         9.6,
         12.2,
         "SE"
+      ],
+      [
+        "13:41",
+        8.7,
+        12.2,
+        "ESE"
       ]
     ],
     "Baia di Maui": [
@@ -764,6 +770,12 @@
         7.0,
         null,
         "NE"
+      ],
+      [
+        "13:41",
+        8.7,
+        null,
+        "NE"
       ]
     ],
     "Lido di Volano": [
@@ -926,6 +938,12 @@
       [
         "13:30",
         8.2,
+        null,
+        "ENE"
+      ],
+      [
+        "13:41",
+        11.7,
         null,
         "ENE"
       ]
