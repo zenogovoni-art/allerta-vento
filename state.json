@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-21T07:53:39.143401+02:00",
-        1010.6
-      ],
-      [
         "2026-08-21T08:01:05.319316+02:00",
         1009.9
       ],
@@ -80,21 +76,21 @@
       [
         "2026-08-21T11:04:31.482201+02:00",
         1010.8
+      ],
+      [
+        "2026-08-21T11:15:52.714558+02:00",
+        1010.7
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 1.7
+    "vento_prec": 0.0
   },
   "Lido di Volano": {
     "livello": 0,
     "vento_max": 3.9,
-    "raffica_max": 7.4,
+    "raffica_max": 8.4,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-21T07:53:39.143401+02:00",
-        1009.8
-      ],
       [
         "2026-08-21T08:01:05.319316+02:00",
         1009.9
@@ -166,16 +162,20 @@
       [
         "2026-08-21T11:04:31.482201+02:00",
         1010.8
+      ],
+      [
+        "2026-08-21T11:15:52.714558+02:00",
+        1010.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 2.3
+    "vento_prec": 3.1
   },
   "_data": "2026-08-21",
   "_riepilogo": "2026-08-20",
   "_bollettino": "2026-08-21",
   "_grafico": "2026-08-21",
-  "_stazioni_slot": "2026-08-21 11A",
+  "_stazioni_slot": "2026-08-21 11B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -191,7 +191,7 @@
   },
   "_pulito_fino_a": 1939,
   "_pulizia": "2026-08-21",
-  "_ultimo_id": 2000,
+  "_ultimo_id": 2001,
   "_id_fine_ieri": 1988,
   "_id_fine_altroieri": 1939,
   "_riepilogo_ids": [
@@ -435,7 +435,7 @@
     "raffica_max": 12.1,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 6.1
+    "vento_prec": 1.7
   },
   "_serie": {
     "Porto Corsini": [
@@ -514,6 +514,12 @@
       [
         "11:04",
         1.7,
+        12.2,
+        "NNE"
+      ],
+      [
+        "11:15",
+        0.0,
         12.2,
         "NNE"
       ]
@@ -596,6 +602,12 @@
         6.1,
         null,
         "NNE"
+      ],
+      [
+        "11:15",
+        1.7,
+        null,
+        "W"
       ]
     ],
     "Lido di Volano": [
@@ -676,6 +688,12 @@
         2.3,
         null,
         "NNW"
+      ],
+      [
+        "11:15",
+        3.1,
+        null,
+        "N"
       ]
     ]
   }
