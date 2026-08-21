@@ -2,13 +2,9 @@
   "Porto Corsini": {
     "livello": 0,
     "vento_max": 12.1,
-    "raffica_max": 14.8,
+    "raffica_max": 18.3,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-21T10:31:04.734745+02:00",
-        1011.0
-      ],
       [
         "2026-08-21T10:45:46.033985+02:00",
         1011.3
@@ -84,10 +80,14 @@
       [
         "2026-08-21T13:46:00.669732+02:00",
         1007.8
+      ],
+      [
+        "2026-08-21T13:59:52.812554+02:00",
+        1008.0
       ]
     ],
-    "livello_pressione": 0,
-    "vento_prec": 12.1
+    "livello_pressione": 1,
+    "vento_prec": 2.6
   },
   "Lido di Volano": {
     "livello": 0,
@@ -95,10 +95,6 @@
     "raffica_max": 13.8,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-21T10:31:04.734745+02:00",
-        1011.5
-      ],
       [
         "2026-08-21T10:45:46.033985+02:00",
         1010.9
@@ -174,10 +170,14 @@
       [
         "2026-08-21T13:46:00.669732+02:00",
         1007.3
+      ],
+      [
+        "2026-08-21T13:59:52.812554+02:00",
+        1008.2
       ]
     ],
     "livello_pressione": 1,
-    "vento_prec": 11.7
+    "vento_prec": 8.6
   },
   "_data": "2026-08-21",
   "_riepilogo": "2026-08-20",
@@ -199,7 +199,7 @@
   },
   "_pulito_fino_a": 1939,
   "_pulizia": "2026-08-21",
-  "_ultimo_id": 2012,
+  "_ultimo_id": 2013,
   "_id_fine_ieri": 1988,
   "_id_fine_altroieri": 1939,
   "_riepilogo_ids": [
@@ -443,7 +443,7 @@
     "raffica_max": 15.7,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 6.1
+    "vento_prec": 7.8
   },
   "_serie": {
     "Porto Corsini": [
@@ -618,6 +618,12 @@
       [
         "13:45",
         12.1,
+        12.2,
+        "SE"
+      ],
+      [
+        "13:59",
+        2.6,
         12.2,
         "SE"
       ]
@@ -796,6 +802,12 @@
         6.1,
         null,
         "ENE"
+      ],
+      [
+        "13:59",
+        7.8,
+        null,
+        "ENE"
       ]
     ],
     "Lido di Volano": [
@@ -970,6 +982,12 @@
       [
         "13:45",
         11.7,
+        null,
+        "ENE"
+      ],
+      [
+        "13:59",
+        8.6,
         null,
         "ENE"
       ]
