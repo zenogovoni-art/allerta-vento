@@ -76,6 +76,10 @@
       [
         "2026-08-23T07:06:07.365208+02:00",
         1017.2
+      ],
+      [
+        "2026-08-23T07:15:45.893913+02:00",
+        1017.2
       ]
     ],
     "livello_pressione": 0
@@ -157,6 +161,10 @@
       [
         "2026-08-23T07:06:07.365208+02:00",
         1016.9
+      ],
+      [
+        "2026-08-23T07:15:45.893913+02:00",
+        1016.9
       ]
     ],
     "livello_pressione": 0
@@ -168,7 +176,7 @@
   "_stazioni_slot": "2026-08-22 18D",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
-      "livello": 1
+      "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
       "livello": 1
