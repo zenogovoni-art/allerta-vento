@@ -1,18 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "vento_max": 7.0,
+    "raffica_max": 13.0,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-23T05:31:01.962609+02:00",
-        1016.5
-      ],
-      [
-        "2026-08-23T05:45:44.060287+02:00",
-        1016.6
-      ],
       [
         "2026-08-23T05:58:51.252754+02:00",
         1016.8
@@ -84,9 +76,14 @@
       [
         "2026-08-23T08:45:42.903630+02:00",
         1017.6
+      ],
+      [
+        "2026-08-23T09:01:10.546957+02:00",
+        1017.6
       ]
     ],
-    "livello_pressione": 0
+    "livello_pressione": 0,
+    "vento_prec": 7.0
   },
   "Lido di Volano": {
     "livello": 0,
@@ -94,14 +91,6 @@
     "raffica_max": 0.0,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-23T05:31:01.962609+02:00",
-        1016.2
-      ],
-      [
-        "2026-08-23T05:45:44.060287+02:00",
-        1016.4
-      ],
       [
         "2026-08-23T05:58:51.252754+02:00",
         1016.5
@@ -173,21 +162,26 @@
       [
         "2026-08-23T08:45:42.903630+02:00",
         1017.4
+      ],
+      [
+        "2026-08-23T09:01:10.546957+02:00",
+        1017.4
       ]
     ],
-    "livello_pressione": 0
+    "livello_pressione": 0,
+    "vento_prec": 0.0
   },
   "_data": "2026-08-23",
   "_riepilogo": "2026-08-22",
-  "_bollettino": "2026-08-22",
+  "_bollettino": "2026-08-23",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-22 18D",
+  "_stazioni_slot": "2026-08-23 09A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 1
+      "livello": 0
     }
   },
   "_benvenuti": {
@@ -197,7 +191,7 @@
   },
   "_pulito_fino_a": 2037,
   "_pulizia": "2026-08-23",
-  "_ultimo_id": 2083,
+  "_ultimo_id": 2085,
   "_id_fine_ieri": 2083,
   "_id_fine_altroieri": 2037,
   "_riepilogo_ids": [
@@ -430,7 +424,7 @@
       -0.071,
       -0.063
     ],
-    "tentativo": "2026082210"
+    "tentativo": "2026082309"
   },
   "_non_cancellati": [
     1483,
@@ -442,8 +436,35 @@
   ],
   "Baia di Maui": {
     "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "raffica_max": 18.3,
     "livello": 0,
-    "livello_raffica": 0
+    "livello_raffica": 0,
+    "vento_prec": 0.0
+  },
+  "_serie": {
+    "Porto Corsini": [
+      [
+        "09:01",
+        7.0,
+        7.8,
+        "W"
+      ]
+    ],
+    "Baia di Maui": [
+      [
+        "09:01",
+        0.0,
+        null,
+        "S"
+      ]
+    ],
+    "Lido di Volano": [
+      [
+        "09:01",
+        0.0,
+        null,
+        "?"
+      ]
+    ]
   }
 }
