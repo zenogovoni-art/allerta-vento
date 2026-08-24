@@ -1,7 +1,7 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 4.3,
+    "vento_max": 7.8,
     "raffica_max": 8.7,
     "livello_raffica": 0,
     "pressioni": [
@@ -72,15 +72,19 @@
       [
         "2026-08-24T09:01:15.815019+02:00",
         1017.9
+      ],
+      [
+        "2026-08-24T09:15:44.120788+02:00",
+        1017.4
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 4.3
+    "vento_prec": 7.8
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 0.2,
-    "raffica_max": 0.0,
+    "vento_max": 0.8,
+    "raffica_max": 4.7,
     "livello_raffica": 0,
     "pressioni": [
       [
@@ -150,16 +154,20 @@
       [
         "2026-08-24T09:01:15.815019+02:00",
         1017.2
+      ],
+      [
+        "2026-08-24T09:15:44.120788+02:00",
+        1017.1
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 0.2
+    "vento_prec": 0.8
   },
   "_data": "2026-08-24",
   "_riepilogo": "2026-08-23",
   "_bollettino": "2026-08-24",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-24 09A",
+  "_stazioni_slot": "2026-08-24 09B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -175,7 +183,7 @@
   },
   "_pulito_fino_a": 2083,
   "_pulizia": "2026-08-24",
-  "_ultimo_id": 2130,
+  "_ultimo_id": 2131,
   "_id_fine_ieri": 2128,
   "_id_fine_altroieri": 2083,
   "_riepilogo_ids": [
@@ -426,13 +434,19 @@
     "raffica_max": 7.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 3.5
+    "vento_prec": 0.0
   },
   "_serie": {
     "Porto Corsini": [
       [
         "09:01",
         4.3,
+        9.6,
+        "WNW"
+      ],
+      [
+        "09:15",
+        7.8,
         9.6,
         "WNW"
       ]
@@ -443,6 +457,12 @@
         3.5,
         null,
         "WSW"
+      ],
+      [
+        "09:15",
+        0.0,
+        null,
+        "WNW"
       ]
     ],
     "Lido di Volano": [
@@ -451,6 +471,12 @@
         0.2,
         null,
         "NW"
+      ],
+      [
+        "09:15",
+        0.8,
+        null,
+        "NNW"
       ]
     ]
   }
