@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-24T14:31:04.979418+02:00",
-        1017.3
-      ],
-      [
         "2026-08-24T14:46:12.291437+02:00",
         1017.4
       ],
@@ -72,10 +68,14 @@
       [
         "2026-08-24T17:45:46.582922+02:00",
         1016.1
+      ],
+      [
+        "2026-08-24T17:52:03.967126+02:00",
+        1016.0
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 8.7
+    "vento_prec": 9.6
   },
   "Lido di Volano": {
     "livello": 0,
@@ -433,7 +433,7 @@
     "raffica_max": 8.7,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 4.3
+    "vento_prec": 7.0
   },
   "_serie": {
     "Porto Corsini": [
@@ -712,6 +712,12 @@
         8.7,
         8.7,
         "ESE"
+      ],
+      [
+        "17:51",
+        9.6,
+        7.8,
+        "ESE"
       ]
     ],
     "Baia di Maui": [
@@ -984,6 +990,12 @@
         4.3,
         null,
         "NE"
+      ],
+      [
+        "17:51",
+        7.0,
+        null,
+        "ENE"
       ]
     ],
     "Lido di Volano": [
