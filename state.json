@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-25T15:24:42.021226+02:00",
-        1010.8
-      ],
-      [
         "2026-08-25T15:31:08.745247+02:00",
         1010.7
       ],
@@ -76,6 +72,10 @@
       [
         "2026-08-25T18:31:06.505373+02:00",
         1011.6
+      ],
+      [
+        "2026-08-25T18:45:54.485301+02:00",
+        1011.7
       ]
     ],
     "livello_pressione": 0,
@@ -87,10 +87,6 @@
     "raffica_max": 20.2,
     "livello_raffica": 1,
     "pressioni": [
-      [
-        "2026-08-25T15:24:42.021226+02:00",
-        1009.8
-      ],
       [
         "2026-08-25T15:31:08.745247+02:00",
         1009.9
@@ -158,17 +154,21 @@
       [
         "2026-08-25T18:31:06.505373+02:00",
         1010.9
+      ],
+      [
+        "2026-08-25T18:45:54.485301+02:00",
+        1010.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 9.1,
+    "vento_prec": 8.4,
     "raffica_alertata": 20.2
   },
   "_data": "2026-08-25",
   "_riepilogo": "2026-08-24",
   "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-25 18C",
+  "_stazioni_slot": "2026-08-25 18D",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -184,7 +184,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2219,
+  "_ultimo_id": 2220,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -438,7 +438,7 @@
     "raffica_max": 14.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 2.6
+    "vento_prec": 7.8
   },
   "_serie": {
     "Porto Corsini": [
@@ -765,6 +765,12 @@
         3.5,
         7.0,
         "ESE"
+      ],
+      [
+        "18:45",
+        3.5,
+        3.5,
+        "E"
       ]
     ],
     "Baia di Maui": [
@@ -1091,6 +1097,12 @@
         2.6,
         null,
         "NW"
+      ],
+      [
+        "18:45",
+        7.8,
+        null,
+        "NNE"
       ]
     ],
     "Lido di Volano": [
@@ -1361,6 +1373,12 @@
       [
         "18:30",
         9.1,
+        null,
+        "NE"
+      ],
+      [
+        "18:45",
+        8.4,
         null,
         "NE"
       ]
