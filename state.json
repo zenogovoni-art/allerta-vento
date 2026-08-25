@@ -1,14 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 7.0,
+    "vento_max": 7.8,
     "raffica_max": 21.7,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-25T10:15:47.215678+02:00",
-        1009.8
-      ],
       [
         "2026-08-25T10:26:34.917519+02:00",
         1010.1
@@ -80,10 +76,14 @@
       [
         "2026-08-25T13:17:37.394492+02:00",
         1011.2
+      ],
+      [
+        "2026-08-25T13:31:01.392527+02:00",
+        1011.2
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 7.0
+    "vento_prec": 7.8
   },
   "Lido di Volano": {
     "livello": 0,
@@ -158,17 +158,21 @@
       [
         "2026-08-25T13:17:37.394492+02:00",
         1010.3
+      ],
+      [
+        "2026-08-25T13:31:01.392527+02:00",
+        1010.2
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 8.4,
+    "vento_prec": 7.4,
     "raffica_alertata": 20.2
   },
   "_data": "2026-08-25",
   "_riepilogo": "2026-08-24",
   "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-25 13B",
+  "_stazioni_slot": "2026-08-25 13C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -184,7 +188,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2198,
+  "_ultimo_id": 2199,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -438,7 +442,7 @@
     "raffica_max": 14.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 2.6
+    "vento_prec": 3.5
   },
   "_serie": {
     "Porto Corsini": [
@@ -597,6 +601,12 @@
         7.0,
         7.0,
         "ESE"
+      ],
+      [
+        "13:30",
+        7.8,
+        7.8,
+        "SE"
       ]
     ],
     "Baia di Maui": [
@@ -755,6 +765,12 @@
         2.6,
         null,
         "SSE"
+      ],
+      [
+        "13:30",
+        3.5,
+        null,
+        "SSE"
       ]
     ],
     "Lido di Volano": [
@@ -857,6 +873,12 @@
       [
         "13:17",
         8.4,
+        null,
+        "SSE"
+      ],
+      [
+        "13:30",
+        7.4,
         null,
         "SSE"
       ]
