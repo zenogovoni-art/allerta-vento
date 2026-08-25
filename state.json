@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-25T09:45:44.643639+02:00",
-        1010.1
-      ],
-      [
         "2026-08-25T09:55:01.206860+02:00",
         1010.0
       ],
@@ -80,10 +76,14 @@
       [
         "2026-08-25T12:56:27.299523+02:00",
         1011.0
+      ],
+      [
+        "2026-08-25T13:01:19.152083+02:00",
+        1011.1
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 6.1
+    "vento_prec": 3.5
   },
   "Lido di Volano": {
     "livello": 0,
@@ -146,17 +146,21 @@
       [
         "2026-08-25T12:56:27.299523+02:00",
         1010.3
+      ],
+      [
+        "2026-08-25T13:01:19.152083+02:00",
+        1010.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 6.4,
+    "vento_prec": 8.4,
     "raffica_alertata": 20.2
   },
   "_data": "2026-08-25",
   "_riepilogo": "2026-08-24",
   "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-25 12D",
+  "_stazioni_slot": "2026-08-25 13A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -172,7 +176,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2196,
+  "_ultimo_id": 2197,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -426,7 +430,7 @@
     "raffica_max": 14.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 4.3
+    "vento_prec": 3.5
   },
   "_serie": {
     "Porto Corsini": [
@@ -567,6 +571,12 @@
         6.1,
         7.0,
         "E"
+      ],
+      [
+        "13:01",
+        3.5,
+        5.2,
+        "ESE"
       ]
     ],
     "Baia di Maui": [
@@ -707,6 +717,12 @@
         4.3,
         null,
         "WSW"
+      ],
+      [
+        "13:01",
+        3.5,
+        null,
+        "S"
       ]
     ],
     "Lido di Volano": [
@@ -791,6 +807,12 @@
       [
         "12:56",
         6.4,
+        null,
+        "ESE"
+      ],
+      [
+        "13:01",
+        8.4,
         null,
         "ESE"
       ]
