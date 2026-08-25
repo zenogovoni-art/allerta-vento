@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-08-25T13:50:07.004206+02:00",
-        1011.2
-      ],
-      [
         "2026-08-25T14:01:22.362971+02:00",
         1011.1
       ],
@@ -76,10 +72,14 @@
       [
         "2026-08-25T17:01:15.984725+02:00",
         1011.3
+      ],
+      [
+        "2026-08-25T17:15:57.141416+02:00",
+        1011.4
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 5.2
+    "vento_prec": 4.3
   },
   "Lido di Volano": {
     "livello": 0,
@@ -87,10 +87,6 @@
     "raffica_max": 20.2,
     "livello_raffica": 1,
     "pressioni": [
-      [
-        "2026-08-25T13:50:07.004206+02:00",
-        1010.5
-      ],
       [
         "2026-08-25T14:01:22.362971+02:00",
         1010.4
@@ -158,6 +154,10 @@
       [
         "2026-08-25T17:01:15.984725+02:00",
         1010.4
+      ],
+      [
+        "2026-08-25T17:15:57.141416+02:00",
+        1010.4
       ]
     ],
     "livello_pressione": 0,
@@ -168,7 +168,7 @@
   "_riepilogo": "2026-08-24",
   "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-25 17A",
+  "_stazioni_slot": "2026-08-25 17B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -184,7 +184,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2213,
+  "_ultimo_id": 2214,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -438,7 +438,7 @@
     "raffica_max": 14.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 4.3
+    "vento_prec": 3.5
   },
   "_serie": {
     "Porto Corsini": [
@@ -717,6 +717,12 @@
         5.2,
         7.0,
         "E"
+      ],
+      [
+        "17:15",
+        4.3,
+        4.3,
+        "ENE"
       ]
     ],
     "Baia di Maui": [
@@ -995,6 +1001,12 @@
         4.3,
         null,
         "ESE"
+      ],
+      [
+        "17:15",
+        3.5,
+        null,
+        "SE"
       ]
     ],
     "Lido di Volano": [
@@ -1216,6 +1228,12 @@
       ],
       [
         "17:01",
+        5.4,
+        null,
+        "ESE"
+      ],
+      [
+        "17:15",
         5.4,
         null,
         "ESE"
