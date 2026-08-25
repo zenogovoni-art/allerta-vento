@@ -108,6 +108,12 @@ Oltre al vento, il bot avvisa quando la **raffica** della giornata raggiunge
 dell'istante: l'avviso indica che oggi le raffiche hanno toccato quel valore,
 non necessariamente che stia raffica ora.
 
+Due filtri evitano falsi allarmi: un **picco toccato fuori dalla fascia
+9:00–19:00** (per esempio un groppo notturno) non fa scattare l'alert — quando
+la fascia riapre è già storia vecchia — e **lo stesso picco non viene mai
+segnalato due volte**, anche se la stazione di riserva va e viene. Lo stesso
+criterio vale per l'ALERT BORA: conta solo una lettura della fascia attiva.
+
 ## ⏳ Stima di arrivo al circolo
 
 Negli **avvisi di vento** (non nelle raffiche) trovi una riga come:

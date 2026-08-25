@@ -530,8 +530,10 @@ STAZIONI = [
     },
     {
         "nome": "Lido di Volano",
-        "url": "http://dkwa.it/meteo/",
-        "tipo": "saratoga",
+        # Dal 24/08/2026 il sito ha cambiato template (Meteobridge, dati via
+        # JavaScript): si legge il JSON delle gauges, non piu' la pagina.
+        "url": "http://dkwa.it/meteo/MBrealtimegauges.txt",
+        "tipo": "meteobridge",
         "pallino": "🟠",
         "coord": (44.797, 12.268),    # a nord del circolo (~15 km)
         # Semicerchio nord: venti da O, NW, N, NE, E (e settori intermedi).
@@ -947,12 +949,17 @@ def _parse_meteosystem(html: str) -> dict | None:
                           testo, re.IGNORECASE)
     # "Pressione: 1016.9 hPa"
     m_press = re.search(r"Pressione[:\s]*([\d.,]+)\s*hPa", testo, re.IGNORECASE)
+    # "Ora Raffica: 03.01" -> a che ora e' stato toccato il picco odierno
+    m_ora_raf = re.search(r"Ora Raffica[:\s]*(\d{1,2})[.:](\d{2})",
+                          testo, re.IGNORECASE)
     if not m_vento:
         return None
     return {
         "vento": _num(m_vento.group(1)),
         "direzione": m_vento.group(2).upper(),
         "raffica": _num(m_raffica.group(1)) if m_raffica else None,
+        "raffica_ora": (f"{int(m_ora_raf.group(1)):02d}:{m_ora_raf.group(2)}"
+                        if m_ora_raf else None),
         "pressione": _num(m_press.group(1)) if m_press else None,
     }
 
@@ -995,10 +1002,15 @@ def _parse_meteosystem8(html: str) -> dict | None:
         return None
     m_dir = re.search(r"Direzione\s+da\s+([NSEW]{1,3})\b", testo,
                       re.IGNORECASE)
+    # L'ora del picco chiude la riga: "... 11.3 kts 15.28" (manca se calma).
+    m_ora_raf = re.search(r"kts\s*(\d{1,2})\.(\d{2})\s*$",
+                          m_riga.group(1).strip(), re.IGNORECASE)
     return {
         "vento": _num(numeri[0]),
         "direzione": m_dir.group(1).upper() if m_dir else "?",
         "raffica": _num(numeri[-1]) if len(numeri) > 1 else None,
+        "raffica_ora": (f"{int(m_ora_raf.group(1)):02d}:{m_ora_raf.group(2)}"
+                        if m_ora_raf else None),
         "pressione": None,
     }
 
@@ -1021,6 +1033,60 @@ def _parse_saratoga(html: str) -> dict | None:
         "direzione": m_dir.group(1).upper() if m_dir else "?",
         "raffica": _num(m_raffica.group(1)) if m_raffica else None,
         "pressione": _num(m_press.group(1)) if m_press else None,
+    }
+
+
+def _parse_meteobridge(html: str) -> dict | None:
+    """JSON delle gauges Meteobridge, es. Lido di Volano (MBrealtimegauges).
+
+    Dal 24/08/2026 dkwa.it/meteo usa un template che carica i valori via
+    JavaScript: la pagina HTML e' vuota e i dati vivono nel JSON delle
+    gauges. Campi usati: wlatest (vento attuale), wgustTM (raffica massima
+    giornaliera), TwgustTM (l'ora del picco), bearing (gradi di
+    provenienza), press/pressunit. Il campo date (HH:MM:SS locale) fa da
+    controllo di freschezza, come per la Baia di Maui.
+    """
+    try:
+        d = json.loads(html)
+    except ValueError:
+        return None
+    unita = str(d.get("windunit", "kts")).strip().lower()
+    fattore = {"kts": 1.0, "kt": 1.0, "m/s": 1.94384,
+               "km/h": 0.539957, "mph": 0.868976}.get(unita)
+    if fattore is None:
+        print(f"[errore] unita' vento sconosciuta dalle gauges: {unita}")
+        return None
+    m_ora = re.match(r"(\d{1,2}):(\d{2})", str(d.get("date", "")))
+    if m_ora:
+        adesso = datetime.now(TZ)
+        agg = adesso.replace(hour=int(m_ora.group(1)),
+                             minute=int(m_ora.group(2)),
+                             second=0, microsecond=0)
+        eta_min = (adesso - agg).total_seconds() / 60
+        if eta_min < -60:          # orario oltre mezzanotte: era ieri
+            eta_min += 24 * 60
+        if eta_min > DATI_FRESCHI_MIN:
+            print(f"[errore] gauges ferme alle {d.get('date')}, dati scartati")
+            return None
+    try:
+        vento = float(d["wlatest"]) * fattore
+        raffica = float(d["wgustTM"]) * fattore
+        gradi = float(d["bearing"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    m_raf_ora = re.match(r"\d{1,2}:\d{2}", str(d.get("TwgustTM") or ""))
+    pressione = None
+    if str(d.get("pressunit", "")).strip().lower() == "hpa":
+        try:
+            pressione = float(d["press"])
+        except (KeyError, TypeError, ValueError):
+            pressione = None
+    return {
+        "vento": vento,
+        "direzione": _dir16(gradi),
+        "raffica": raffica,
+        "raffica_ora": m_raf_ora.group(0) if m_raf_ora else None,
+        "pressione": pressione,
     }
 
 
@@ -1054,6 +1120,7 @@ PARSER = {
     "meteosystem": _parse_meteosystem,
     "meteosystem8": _parse_meteosystem8,
     "saratoga": _parse_saratoga,
+    "meteobridge": _parse_meteobridge,
     "gca": _parse_gca,
 }
 
@@ -1455,6 +1522,14 @@ def controlla_bora(stato: dict, in_orario: bool) -> bool:
             if not in_orario:
                 print(f"[info] bora oltre soglia ma fuori orario "
                       f"({sent['nome']})")
+                continue
+            # La lettura che fa scattare il livello deve essere della
+            # fascia 9-19: ai bordi della fascia una lettura piu' vecchia
+            # (fino a BORA_MAX_ETA_MIN) potrebbe raccontare la notte.
+            ora_lettura = dati["quando"].astimezone(TZ)
+            if not (ORA_INIZIO <= ora_lettura.hour < ORA_FINE):
+                print(f"[info] bora su lettura fuori fascia "
+                      f"({ora_lettura:%H:%M}, {sent['nome']})")
                 continue
             liv = BORA_LIVELLI[ora_liv - 1]
             dir_txt = f"{sigla} {freccia(sigla)}".strip()
@@ -1900,6 +1975,7 @@ def main() -> int:
             s["vento_max"] = 0.0
             s["raffica_max"] = 0.0
             s.pop("vento_prec", None)
+            s.pop("raffica_alertata", None)
         stato.pop("_serie", None)  # serie del grafico serale: riparte da zero
         # Fotografo i confini per la pulizia giornaliera: "fine di ieri"
         # scala a "fine dell'altroieri", e l'ultimo id inviato finora diventa
@@ -1999,6 +2075,7 @@ def main() -> int:
         # quindi il livello si riarma quando il vento cala e puo' riscattare
         # nella stessa giornata. La massima giornaliera resta il ripiego.
         raffica_alert = dati.get("raffica_10min")
+        raffica_da_max = raffica_alert is None  # ripiego sul picco odierno
         if raffica_alert is None:
             raffica_alert = raffica
         raf_prima = s.get("livello_raffica", 0)
@@ -2099,7 +2176,21 @@ def main() -> int:
         # Come l'avviso vento, scatta solo se la direzione attuale punta verso
         # il circolo (semicerchio sud/nord della stazione).
         if raf_ora > raf_prima:
-            if in_orario and direzioni_ok:
+            # Quando si ripiega sul picco di giornata (raffica 10' assente):
+            #  1) un valore gia' segnalato non deve riscattare solo perche'
+            #     la riserva GCA va e viene (il livello, riarmato dalla
+            #     raffica 10' bassa, rimbalzerebbe 0->1 a ogni assenza);
+            #  2) un picco toccato fuori dalla fascia 9-19 (es. groppo
+            #     notturno) non e' un'allerta: alle 9 e' storia vecchia.
+            picco_vecchio = False
+            if raffica_da_max:
+                if raffica_alert <= s.get("raffica_alertata", 0.0):
+                    picco_vecchio = True
+                ora_picco = dati.get("raffica_ora")
+                if ora_picco and not (ORA_INIZIO <= int(ora_picco[:2])
+                                      < ORA_FINE):
+                    picco_vecchio = True
+            if in_orario and direzioni_ok and not picco_vecchio:
                 soglia = RAFFICA_LIVELLI[raf_ora - 1]["soglia"]
                 dir_txt = f"{direzione} {freccia(direzione)}".strip()
                 testo = (f"🌀 *ALERT RAFFICA — {nome}*\n\n"
@@ -2107,8 +2198,19 @@ def main() -> int:
                          f"*{raffica_alert:.1f} kn* da {dir_txt} · "
                          f"soglia {soglia:.0f} kn")
                 messaggi_alert.append(testo)
+                s["raffica_alertata"] = max(s.get("raffica_alertata", 0.0),
+                                            raffica_alert)
             else:
-                motivo = "fuori orario" if not in_orario else "direzione esclusa"
+                if picco_vecchio:
+                    motivo = "picco gia' segnalato o fuori fascia 9-19"
+                    # Va comunque archiviato, o al prossimo giro senza
+                    # riserva GCA ci riproverebbe identico.
+                    s["raffica_alertata"] = max(s.get("raffica_alertata",
+                                                      0.0), raffica_alert)
+                elif not in_orario:
+                    motivo = "fuori orario"
+                else:
+                    motivo = "direzione esclusa"
                 print(f"[info] soglia raffica superata ma avviso non inviato "
                       f"({motivo})")
 
