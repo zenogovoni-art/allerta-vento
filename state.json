@@ -1,18 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 0.0,
-    "raffica_max": 0.0,
-    "livello_raffica": 1,
+    "vento_max": 1.7,
+    "raffica_max": 21.7,
+    "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-08-25T05:31:02.270945+02:00",
-        1010.7
-      ],
-      [
-        "2026-08-25T05:45:47.358563+02:00",
-        1010.7
-      ],
       [
         "2026-08-25T05:56:15.352680+02:00",
         1010.4
@@ -80,9 +72,14 @@
       [
         "2026-08-25T08:45:50.887540+02:00",
         1010.3
+      ],
+      [
+        "2026-08-25T09:01:13.664895+02:00",
+        1010.2
       ]
     ],
-    "livello_pressione": 0
+    "livello_pressione": 0,
+    "vento_prec": 1.7
   },
   "Lido di Volano": {
     "livello": 0,
@@ -169,15 +166,15 @@
   },
   "_data": "2026-08-25",
   "_riepilogo": "2026-08-24",
-  "_bollettino": "2026-08-24",
+  "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-24 18D",
+  "_stazioni_slot": "2026-08-25 09A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 1
+      "livello": 2
     }
   },
   "_benvenuti": {
@@ -187,7 +184,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2174,
+  "_ultimo_id": 2177,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -425,7 +422,7 @@
       -0.13,
       -0.124
     ],
-    "tentativo": "2026082410"
+    "tentativo": "2026082509"
   },
   "_non_cancellati": [
     1483,
@@ -436,9 +433,28 @@
     1893
   ],
   "Baia di Maui": {
-    "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "vento_max": 1.7,
+    "raffica_max": 14.8,
     "livello": 0,
-    "livello_raffica": 0
+    "livello_raffica": 0,
+    "vento_prec": 1.7
+  },
+  "_serie": {
+    "Porto Corsini": [
+      [
+        "09:01",
+        1.7,
+        4.3,
+        "SE"
+      ]
+    ],
+    "Baia di Maui": [
+      [
+        "09:01",
+        1.7,
+        null,
+        "SSE"
+      ]
+    ]
   }
 }
