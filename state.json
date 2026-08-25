@@ -1,7 +1,7 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 7.8,
+    "vento_max": 8.7,
     "raffica_max": 21.7,
     "livello_raffica": 0,
     "pressioni": [
@@ -80,10 +80,14 @@
       [
         "2026-08-25T14:01:22.362971+02:00",
         1011.1
+      ],
+      [
+        "2026-08-25T14:15:46.393325+02:00",
+        1011.2
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 7.0
+    "vento_prec": 8.7
   },
   "Lido di Volano": {
     "livello": 0,
@@ -166,17 +170,21 @@
       [
         "2026-08-25T14:01:22.362971+02:00",
         1010.4
+      ],
+      [
+        "2026-08-25T14:15:46.393325+02:00",
+        1010.3
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 9.1,
+    "vento_prec": 7.4,
     "raffica_alertata": 20.2
   },
   "_data": "2026-08-25",
   "_riepilogo": "2026-08-24",
   "_bollettino": "2026-08-25",
   "_grafico": "2026-08-22",
-  "_stazioni_slot": "2026-08-25 14A",
+  "_stazioni_slot": "2026-08-25 14B",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -192,7 +200,7 @@
   },
   "_pulito_fino_a": 2128,
   "_pulizia": "2026-08-25",
-  "_ultimo_id": 2201,
+  "_ultimo_id": 2202,
   "_id_fine_ieri": 2174,
   "_id_fine_altroieri": 2128,
   "_riepilogo_ids": [
@@ -442,11 +450,11 @@
     1893
   ],
   "Baia di Maui": {
-    "vento_max": 6.1,
+    "vento_max": 7.8,
     "raffica_max": 14.8,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 4.3
+    "vento_prec": 7.8
   },
   "_serie": {
     "Porto Corsini": [
@@ -627,6 +635,12 @@
       [
         "14:01",
         7.0,
+        8.7,
+        "SE"
+      ],
+      [
+        "14:15",
+        8.7,
         8.7,
         "SE"
       ]
@@ -811,6 +825,12 @@
         4.3,
         null,
         "E"
+      ],
+      [
+        "14:15",
+        7.8,
+        null,
+        "ESE"
       ]
     ],
     "Lido di Volano": [
@@ -939,6 +959,12 @@
         9.1,
         null,
         "SE"
+      ],
+      [
+        "14:15",
+        7.4,
+        null,
+        "SSE"
       ]
     ]
   }
