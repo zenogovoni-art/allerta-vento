@@ -4217,3 +4217,94 @@ data,ora,stazione,vento_nodi,raffica10_nodi,direzione
 2026-08-30,11:30,Lido di Volano,4.7,,E
 2026-08-30,11:45,Lido di Volano,4.7,,E
 2026-08-30,12:01,Lido di Volano,4.7,,E
+2026-08-31,09:01,Porto Corsini,7.0,7.8,WNW
+2026-08-31,09:15,Porto Corsini,5.2,9.6,W
+2026-08-31,09:30,Porto Corsini,8.7,8.7,NW
+2026-08-31,09:45,Porto Corsini,8.7,9.6,NW
+2026-08-31,09:46,Porto Corsini,6.1,9.6,WNW
+2026-08-31,10:01,Porto Corsini,2.6,10.4,NW
+2026-08-31,10:15,Porto Corsini,1.7,7.0,NNW
+2026-08-31,10:30,Porto Corsini,1.7,7.0,N
+2026-08-31,10:45,Porto Corsini,1.7,6.1,WNW
+2026-08-31,11:01,Porto Corsini,0.9,4.3,WNW
+2026-08-31,11:15,Porto Corsini,0.9,5.2,WSW
+2026-08-31,11:30,Porto Corsini,4.3,3.5,NW
+2026-08-31,11:45,Porto Corsini,6.1,5.2,E
+2026-08-31,12:01,Porto Corsini,6.1,5.2,ENE
+2026-08-31,12:15,Porto Corsini,6.1,6.1,E
+2026-08-31,12:31,Porto Corsini,7.0,7.0,E
+2026-08-31,12:45,Porto Corsini,6.1,7.8,ENE
+2026-08-31,13:01,Porto Corsini,7.8,7.8,E
+2026-08-31,13:15,Porto Corsini,7.8,7.8,E
+2026-08-31,13:30,Porto Corsini,7.0,8.7,E
+2026-08-31,13:45,Porto Corsini,8.7,8.7,E
+2026-08-31,14:01,Porto Corsini,7.8,9.6,E
+2026-08-31,14:15,Porto Corsini,8.7,8.7,ESE
+2026-08-31,14:30,Porto Corsini,9.6,8.7,ESE
+2026-08-31,14:45,Porto Corsini,9.6,9.6,ESE
+2026-08-31,15:01,Porto Corsini,9.6,9.6,ESE
+2026-08-31,15:15,Porto Corsini,9.6,9.6,ESE
+2026-08-31,15:30,Porto Corsini,10.4,9.6,ESE
+2026-08-31,15:45,Porto Corsini,10.4,10.4,ESE
+2026-08-31,16:01,Porto Corsini,10.4,11.3,ESE
+2026-08-31,16:15,Porto Corsini,9.6,10.4,SE
+2026-08-31,16:30,Porto Corsini,8.7,10.4,ESE
+2026-08-31,16:45,Porto Corsini,8.7,11.3,ESE
+2026-08-31,17:01,Porto Corsini,10.4,9.6,SE
+2026-08-31,17:15,Porto Corsini,10.4,8.7,SE
+2026-08-31,17:31,Porto Corsini,10.4,10.4,SE
+2026-08-31,17:34,Porto Corsini,12.1,9.6,SSE
+2026-08-31,17:45,Porto Corsini,7.8,9.6,SE
+2026-08-31,18:01,Porto Corsini,9.6,12.2,SE
+2026-08-31,18:15,Porto Corsini,7.8,13.0,SSE
+2026-08-31,18:30,Porto Corsini,7.0,12.2,SSE
+2026-08-31,18:45,Porto Corsini,6.1,11.3,S
+2026-08-31,09:01,Baia di Maui,4.3,,SW
+2026-08-31,09:15,Baia di Maui,3.5,,WSW
+2026-08-31,09:30,Baia di Maui,4.3,,WSW
+2026-08-31,09:45,Baia di Maui,3.5,,SW
+2026-08-31,09:46,Baia di Maui,3.5,,SW
+2026-08-31,10:01,Baia di Maui,3.5,,WSW
+2026-08-31,10:15,Baia di Maui,3.5,,WSW
+2026-08-31,10:30,Baia di Maui,2.6,,SSW
+2026-08-31,10:45,Baia di Maui,2.6,,WNW
+2026-08-31,11:01,Baia di Maui,2.6,,SSW
+2026-08-31,11:15,Baia di Maui,1.7,,S
+2026-08-31,11:30,Baia di Maui,4.3,,SW
+2026-08-31,11:45,Baia di Maui,2.6,,S
+2026-08-31,12:01,Baia di Maui,1.7,,SSW
+2026-08-31,12:15,Baia di Maui,0.9,,SSE
+2026-08-31,12:31,Baia di Maui,2.6,,S
+2026-08-31,12:45,Baia di Maui,6.1,,E
+2026-08-31,13:01,Baia di Maui,8.7,,ENE
+2026-08-31,13:15,Baia di Maui,5.2,,E
+2026-08-31,13:30,Baia di Maui,6.1,,E
+2026-08-31,13:45,Baia di Maui,6.1,,E
+2026-08-31,14:01,Baia di Maui,6.1,,E
+2026-08-31,14:15,Baia di Maui,6.1,,E
+2026-08-31,14:30,Baia di Maui,6.1,,E
+2026-08-31,14:45,Baia di Maui,7.0,,E
+2026-08-31,15:01,Baia di Maui,5.2,,E
+2026-08-31,15:15,Baia di Maui,6.1,,E
+2026-08-31,15:30,Baia di Maui,6.1,,E
+2026-08-31,15:45,Baia di Maui,8.7,,ESE
+2026-08-31,16:01,Baia di Maui,7.0,,ESE
+2026-08-31,16:15,Baia di Maui,7.8,,ESE
+2026-08-31,16:30,Baia di Maui,7.0,,E
+2026-08-31,16:45,Baia di Maui,9.6,,ESE
+2026-08-31,17:01,Baia di Maui,7.0,,E
+2026-08-31,17:15,Baia di Maui,6.1,,E
+2026-08-31,17:31,Baia di Maui,8.7,,ESE
+2026-08-31,17:34,Baia di Maui,7.0,,E
+2026-08-31,17:45,Baia di Maui,8.7,,ESE
+2026-08-31,18:01,Baia di Maui,7.8,,SE
+2026-08-31,18:15,Baia di Maui,6.1,,ESE
+2026-08-31,18:30,Baia di Maui,8.7,,SE
+2026-08-31,18:45,Baia di Maui,8.7,,SE
+2026-08-31,10:30,Lido di Volano,4.7,,E
+2026-08-31,10:45,Lido di Volano,4.7,,E
+2026-08-31,11:01,Lido di Volano,4.7,,E
+2026-08-31,11:15,Lido di Volano,4.7,,E
+2026-08-31,11:30,Lido di Volano,4.7,,E
+2026-08-31,11:45,Lido di Volano,4.7,,E
+2026-08-31,12:01,Lido di Volano,4.7,,E
