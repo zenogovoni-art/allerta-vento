@@ -60,6 +60,10 @@
       [
         "2026-09-01T05:01:14.121017+02:00",
         1015.5
+      ],
+      [
+        "2026-09-01T05:15:42.812463+02:00",
+        1015.3
       ]
     ],
     "livello_pressione": 0
@@ -113,7 +117,7 @@
       "livello": 0
     },
     "Piattaforma CNR (largo di Venezia)": {
-      "livello": 1
+      "livello": 0
     }
   },
   "_benvenuti": {
