@@ -2,17 +2,9 @@
   "Porto Corsini": {
     "livello": 0,
     "vento_max": 7.8,
-    "raffica_max": 9.6,
+    "raffica_max": 10.4,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-09-01T08:01:13.429532+02:00",
-        1016.6
-      ],
-      [
-        "2026-09-01T08:15:52.400916+02:00",
-        1016.6
-      ],
       [
         "2026-09-01T08:30:58.490401+02:00",
         1016.7
@@ -60,10 +52,14 @@
       [
         "2026-09-01T11:15:57.786486+02:00",
         1017.6
+      ],
+      [
+        "2026-09-01T11:31:04.993023+02:00",
+        1017.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 7.8
+    "vento_prec": 6.1
   },
   "Lido di Volano": {
     "livello": 0,
@@ -86,6 +82,10 @@
       [
         "2026-09-01T11:15:57.786486+02:00",
         1017.1
+      ],
+      [
+        "2026-09-01T11:31:04.993023+02:00",
+        1017.1
       ]
     ],
     "livello_pressione": 0,
@@ -95,7 +95,7 @@
   "_riepilogo": "2026-08-31",
   "_bollettino": "2026-09-01",
   "_grafico": "2026-08-29",
-  "_stazioni_slot": "2026-09-01 11B",
+  "_stazioni_slot": "2026-09-01 11C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -111,7 +111,7 @@
   },
   "_pulito_fino_a": 2437,
   "_pulizia": "2026-09-01",
-  "_ultimo_id": 2492,
+  "_ultimo_id": 2493,
   "_id_fine_ieri": 2480,
   "_id_fine_altroieri": 2437,
   "_riepilogo_ids": [
@@ -381,7 +381,7 @@
     "raffica_max": 15.7,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 4.3
+    "vento_prec": 5.2
   },
   "_serie": {
     "Porto Corsini": [
@@ -444,6 +444,12 @@
         7.8,
         7.0,
         "E"
+      ],
+      [
+        "11:30",
+        6.1,
+        8.7,
+        "ESE"
       ]
     ],
     "Baia di Maui": [
@@ -506,6 +512,12 @@
         4.3,
         null,
         "E"
+      ],
+      [
+        "11:30",
+        5.2,
+        null,
+        "E"
       ]
     ],
     "Lido di Volano": [
@@ -529,6 +541,12 @@
       ],
       [
         "11:15",
+        4.7,
+        null,
+        "E"
+      ],
+      [
+        "11:30",
         4.7,
         null,
         "E"
