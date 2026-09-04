@@ -4648,3 +4648,86 @@ data,ora,stazione,vento_nodi,raffica10_nodi,direzione
 2026-09-03,17:45,Lido di Volano,7.4,,ESE
 2026-09-03,18:01,Lido di Volano,6.4,,ESE
 2026-09-03,18:15,Lido di Volano,7.4,,ESE
+2026-09-04,09:01,Porto Corsini,1.7,3.5,SW
+2026-09-04,09:15,Porto Corsini,2.6,,W
+2026-09-04,09:30,Porto Corsini,0.9,3.5,WSW
+2026-09-04,09:45,Porto Corsini,1.7,2.6,W
+2026-09-04,10:01,Porto Corsini,2.6,2.6,SW
+2026-09-04,10:15,Porto Corsini,1.7,,W
+2026-09-04,10:30,Porto Corsini,3.5,2.6,SE
+2026-09-04,10:45,Porto Corsini,3.5,6.1,SE
+2026-09-04,11:01,Porto Corsini,4.3,6.1,SE
+2026-09-04,11:15,Porto Corsini,6.1,7.0,SE
+2026-09-04,11:30,Porto Corsini,4.3,7.0,SE
+2026-09-04,11:45,Porto Corsini,6.1,7.0,SE
+2026-09-04,12:01,Porto Corsini,7.0,7.8,SE
+2026-09-04,12:16,Porto Corsini,7.0,7.8,SE
+2026-09-04,12:30,Porto Corsini,8.7,8.7,SE
+2026-09-04,12:45,Porto Corsini,9.6,9.6,SE
+2026-09-04,13:01,Porto Corsini,8.7,10.4,SE
+2026-09-04,13:12,Porto Corsini,9.6,9.6,SE
+2026-09-04,13:15,Porto Corsini,9.6,9.6,SE
+2026-09-04,13:30,Porto Corsini,8.7,9.6,SE
+2026-09-04,13:45,Porto Corsini,11.3,8.7,SE
+2026-09-04,14:01,Porto Corsini,9.6,9.6,SE
+2026-09-04,14:15,Porto Corsini,10.4,8.7,SE
+2026-09-04,14:30,Porto Corsini,8.7,9.6,SE
+2026-09-04,14:45,Porto Corsini,10.4,9.6,ESE
+2026-09-04,15:01,Porto Corsini,10.4,10.4,ESE
+2026-09-04,15:15,Porto Corsini,11.3,10.4,ESE
+2026-09-04,15:31,Porto Corsini,9.6,10.4,ESE
+2026-09-04,15:45,Porto Corsini,10.4,10.4,SE
+2026-09-04,16:01,Porto Corsini,9.6,9.6,ESE
+2026-09-04,16:15,Porto Corsini,11.3,10.4,SE
+2026-09-04,16:30,Porto Corsini,12.1,11.3,ESE
+2026-09-04,16:45,Porto Corsini,13.0,10.4,SE
+2026-09-04,16:56,Porto Corsini,10.4,11.3,SE
+2026-09-04,17:01,Porto Corsini,12.1,10.4,SE
+2026-09-04,17:15,Porto Corsini,12.1,10.4,SE
+2026-09-04,17:30,Porto Corsini,11.3,11.3,SE
+2026-09-04,17:45,Porto Corsini,12.1,11.3,SE
+2026-09-04,18:01,Porto Corsini,12.1,11.3,SE
+2026-09-04,18:16,Porto Corsini,12.1,11.3,SE
+2026-09-04,18:30,Porto Corsini,10.4,10.4,SE
+2026-09-04,18:45,Porto Corsini,12.1,9.6,SE
+2026-09-04,09:01,Baia di Maui,0.0,,S
+2026-09-04,09:15,Baia di Maui,0.0,,S
+2026-09-04,09:30,Baia di Maui,0.0,,S
+2026-09-04,10:01,Baia di Maui,0.0,,S
+2026-09-04,10:15,Baia di Maui,0.0,,SSW
+2026-09-04,10:30,Baia di Maui,0.0,,S
+2026-09-04,10:45,Baia di Maui,0.0,,E
+2026-09-04,11:01,Baia di Maui,4.3,,ENE
+2026-09-04,11:15,Baia di Maui,2.6,,E
+2026-09-04,11:30,Baia di Maui,4.3,,E
+2026-09-04,11:45,Baia di Maui,5.2,,E
+2026-09-04,12:01,Baia di Maui,5.2,,ENE
+2026-09-04,12:16,Baia di Maui,5.2,,E
+2026-09-04,12:30,Baia di Maui,7.0,,SE
+2026-09-04,12:45,Baia di Maui,6.1,,E
+2026-09-04,13:01,Baia di Maui,7.8,,ESE
+2026-09-04,13:12,Baia di Maui,6.1,,ESE
+2026-09-04,13:15,Baia di Maui,5.2,,E
+2026-09-04,13:30,Baia di Maui,5.2,,ESE
+2026-09-04,13:45,Baia di Maui,3.5,,ESE
+2026-09-04,14:01,Baia di Maui,6.1,,ESE
+2026-09-04,14:15,Baia di Maui,9.6,,ESE
+2026-09-04,14:30,Baia di Maui,6.1,,E
+2026-09-04,14:45,Baia di Maui,6.1,,E
+2026-09-04,15:01,Baia di Maui,7.0,,ESE
+2026-09-04,15:15,Baia di Maui,6.1,,E
+2026-09-04,15:31,Baia di Maui,8.7,,E
+2026-09-04,15:45,Baia di Maui,7.8,,E
+2026-09-04,16:01,Baia di Maui,7.8,,E
+2026-09-04,16:15,Baia di Maui,8.7,,ESE
+2026-09-04,16:30,Baia di Maui,9.6,,ESE
+2026-09-04,16:45,Baia di Maui,7.8,,E
+2026-09-04,16:56,Baia di Maui,8.7,,ESE
+2026-09-04,17:01,Baia di Maui,9.6,,E
+2026-09-04,17:15,Baia di Maui,7.8,,SE
+2026-09-04,17:30,Baia di Maui,9.6,,E
+2026-09-04,17:45,Baia di Maui,7.8,,ESE
+2026-09-04,18:01,Baia di Maui,11.3,,ESE
+2026-09-04,18:16,Baia di Maui,11.3,,ESE
+2026-09-04,18:30,Baia di Maui,8.7,,ESE
+2026-09-04,18:45,Baia di Maui,4.3,,SE
