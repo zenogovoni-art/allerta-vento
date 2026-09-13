@@ -6,10 +6,6 @@
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-09-13T10:31:05.383144+02:00",
-        1023.3
-      ],
-      [
         "2026-09-13T11:45:52.392340+02:00",
         1022.9
       ],
@@ -44,10 +40,14 @@
       [
         "2026-09-13T13:45:47.740358+02:00",
         1022.8
+      ],
+      [
+        "2026-09-13T14:01:16.872068+02:00",
+        1022.9
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 5.2
+    "vento_prec": 6.1
   },
   "Lido di Volano": {
     "livello": 0,
@@ -81,7 +81,7 @@
   "_riepilogo": "2026-09-12",
   "_bollettino": "2026-09-13",
   "_grafico": "2026-09-12",
-  "_stazioni_slot": "2026-09-13 13D",
+  "_stazioni_slot": "2026-09-13 14A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -97,7 +97,7 @@
   },
   "_pulito_fino_a": 2964,
   "_pulizia": "2026-09-13",
-  "_ultimo_id": 3027,
+  "_ultimo_id": 3028,
   "_id_fine_ieri": 3009,
   "_id_fine_altroieri": 2964,
   "_riepilogo_ids": [
@@ -399,7 +399,7 @@
     "raffica_max": 8.7,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 6.1
+    "vento_prec": 4.3
   },
   "_serie": {
     "Porto Corsini": [
@@ -504,6 +504,12 @@
         5.2,
         7.8,
         "ENE"
+      ],
+      [
+        "14:01",
+        6.1,
+        6.1,
+        "E"
       ]
     ],
     "Baia di Maui": [
@@ -606,6 +612,12 @@
       [
         "13:45",
         6.1,
+        null,
+        "NE"
+      ],
+      [
+        "14:01",
+        4.3,
         null,
         "NE"
       ]
