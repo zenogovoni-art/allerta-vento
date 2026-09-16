@@ -1,22 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 6.1,
-    "raffica_max": 7.8,
+    "vento_max": 7.0,
+    "raffica_max": 8.7,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-09-16T08:31:01.072526+02:00",
-        1016.3
-      ],
-      [
-        "2026-09-16T08:43:18.423088+02:00",
-        1016.3
-      ],
-      [
-        "2026-09-16T08:45:46.281043+02:00",
-        1016.3
-      ],
       [
         "2026-09-16T09:01:20.284950+02:00",
         1016.3
@@ -64,10 +52,14 @@
       [
         "2026-09-16T11:45:48.718917+02:00",
         1016.3
+      ],
+      [
+        "2026-09-16T12:01:15.335303+02:00",
+        1016.4
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 6.1
+    "vento_prec": 7.0
   },
   "Lido di Volano": {
     "livello": 0,
@@ -98,6 +90,10 @@
       [
         "2026-09-16T11:45:48.718917+02:00",
         1009.1
+      ],
+      [
+        "2026-09-16T12:01:15.335303+02:00",
+        1009.1
       ]
     ],
     "livello_pressione": 0,
@@ -107,7 +103,7 @@
   "_riepilogo": "2026-09-15",
   "_bollettino": "2026-09-16",
   "_grafico": "2026-09-12",
-  "_stazioni_slot": "2026-09-16 11D",
+  "_stazioni_slot": "2026-09-16 12A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -123,7 +119,7 @@
   },
   "_pulito_fino_a": 3091,
   "_pulizia": "2026-09-16",
-  "_ultimo_id": 3148,
+  "_ultimo_id": 3149,
   "_id_fine_ieri": 3134,
   "_id_fine_altroieri": 3091,
   "_riepilogo_ids": [
@@ -433,7 +429,7 @@
     "raffica_max": 5.2,
     "livello": 0,
     "livello_raffica": 0,
-    "vento_prec": 3.5
+    "vento_prec": 2.6
   },
   "_serie": {
     "Porto Corsini": [
@@ -507,6 +503,12 @@
         "11:45",
         6.1,
         6.1,
+        "ESE"
+      ],
+      [
+        "12:01",
+        7.0,
+        7.0,
         "ESE"
       ]
     ],
@@ -582,6 +584,12 @@
         3.5,
         null,
         "ENE"
+      ],
+      [
+        "12:01",
+        2.6,
+        null,
+        "E"
       ]
     ],
     "Lido di Volano": [
@@ -617,6 +625,12 @@
       ],
       [
         "11:45",
+        1.0,
+        null,
+        "NNW"
+      ],
+      [
+        "12:01",
         1.0,
         null,
         "NNW"
