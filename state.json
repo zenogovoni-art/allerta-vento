@@ -1,14 +1,10 @@
 {
   "Porto Corsini": {
     "livello": 0,
-    "vento_max": 11.3,
-    "raffica_max": 13.0,
+    "vento_max": 13.9,
+    "raffica_max": 17.4,
     "livello_raffica": 0,
     "pressioni": [
-      [
-        "2026-09-17T07:15:48.561282+02:00",
-        1011.8
-      ],
       [
         "2026-09-17T07:22:57.892243+02:00",
         1011.8
@@ -60,55 +56,34 @@
       [
         "2026-09-17T10:16:55.705133+02:00",
         1013.0
+      ],
+      [
+        "2026-09-17T10:31:06.073874+02:00",
+        1013.4
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 11.3
+    "vento_prec": 13.9
   },
   "Lido di Volano": {
     "livello": 0,
-    "vento_max": 0.0,
-    "raffica_max": 0.0,
+    "vento_max": 1.0,
+    "raffica_max": 5.4,
     "livello_raffica": 0,
     "pressioni": [
       [
-        "2026-09-16T10:31:07.575890+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T10:45:48.672039+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T11:01:20.383750+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T11:15:48.173132+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T11:31:02.089256+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T11:45:48.718917+02:00",
-        1009.1
-      ],
-      [
-        "2026-09-16T12:01:15.335303+02:00",
+        "2026-09-17T10:31:06.073874+02:00",
         1009.1
       ]
     ],
     "livello_pressione": 0,
-    "guasto_da": "2026-09-16T12:15:43.755400+02:00",
-    "guasto_avvisato": true
+    "vento_prec": 1.0
   },
   "_data": "2026-09-17",
   "_riepilogo": "2026-09-16",
   "_bollettino": "2026-09-17",
   "_grafico": "2026-09-17",
-  "_stazioni_slot": "2026-09-17 10B",
+  "_stazioni_slot": "2026-09-17 10C",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -124,7 +99,7 @@
   },
   "_pulito_fino_a": 3134,
   "_pulizia": "2026-09-17",
-  "_ultimo_id": 3186,
+  "_ultimo_id": 3188,
   "_id_fine_ieri": 3177,
   "_id_fine_altroieri": 3134,
   "_riepilogo_ids": [
@@ -436,7 +411,7 @@
     "raffica_max": 26.9,
     "livello": 0,
     "livello_raffica": 2,
-    "vento_prec": 15.7,
+    "vento_prec": 13.0,
     "raffica_alertata": 26.9
   },
   "_serie": {
@@ -476,6 +451,12 @@
         11.3,
         10.4,
         "NE"
+      ],
+      [
+        "10:30",
+        13.9,
+        13.9,
+        "N"
       ]
     ],
     "Baia di Maui": [
@@ -514,6 +495,20 @@
         15.7,
         null,
         "NW"
+      ],
+      [
+        "10:30",
+        13.0,
+        null,
+        "N"
+      ]
+    ],
+    "Lido di Volano": [
+      [
+        "10:30",
+        1.0,
+        null,
+        "NNW"
       ]
     ]
   }
