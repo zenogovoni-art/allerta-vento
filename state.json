@@ -6,14 +6,6 @@
     "livello_raffica": 1,
     "pressioni": [
       [
-        "2026-09-17T08:31:04.348642+02:00",
-        1012.3
-      ],
-      [
-        "2026-09-17T08:45:52.974452+02:00",
-        1012.5
-      ],
-      [
         "2026-09-17T09:01:18.373945+02:00",
         1012.5
       ],
@@ -60,10 +52,14 @@
       [
         "2026-09-17T11:45:52.668177+02:00",
         1014.2
+      ],
+      [
+        "2026-09-17T12:01:21.258095+02:00",
+        1014.0
       ]
     ],
     "livello_pressione": 0,
-    "vento_prec": 17.4
+    "vento_prec": 19.1
   },
   "Lido di Volano": {
     "livello": 0,
@@ -94,6 +90,10 @@
       [
         "2026-09-17T11:45:52.668177+02:00",
         1009.1
+      ],
+      [
+        "2026-09-17T12:01:21.258095+02:00",
+        1009.1
       ]
     ],
     "livello_pressione": 0,
@@ -103,7 +103,7 @@
   "_riepilogo": "2026-09-16",
   "_bollettino": "2026-09-17",
   "_grafico": "2026-09-17",
-  "_stazioni_slot": "2026-09-17 11D",
+  "_stazioni_slot": "2026-09-17 12A",
   "_bora": {
     "Sottomarina (Diga Sud Chioggia)": {
       "livello": 0
@@ -119,7 +119,7 @@
   },
   "_pulito_fino_a": 3134,
   "_pulizia": "2026-09-17",
-  "_ultimo_id": 3194,
+  "_ultimo_id": 3195,
   "_id_fine_ieri": 3177,
   "_id_fine_altroieri": 3134,
   "_riepilogo_ids": [
@@ -431,7 +431,7 @@
     "raffica_max": 27.8,
     "livello": 0,
     "livello_raffica": 2,
-    "vento_prec": 11.3,
+    "vento_prec": 7.8,
     "raffica_alertata": 26.9
   },
   "_serie": {
@@ -507,6 +507,12 @@
         17.4,
         21.7,
         "NE"
+      ],
+      [
+        "12:01",
+        19.1,
+        19.1,
+        "NE"
       ]
     ],
     "Baia di Maui": [
@@ -581,6 +587,12 @@
         11.3,
         null,
         "NNE"
+      ],
+      [
+        "12:01",
+        7.8,
+        null,
+        "NNE"
       ]
     ],
     "Lido di Volano": [
@@ -616,6 +628,12 @@
       ],
       [
         "11:45",
+        1.0,
+        null,
+        "NNW"
+      ],
+      [
+        "12:01",
         1.0,
         null,
         "NNW"
