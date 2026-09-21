@@ -2,9 +2,12 @@ name: 3 news di vela
 
 # NIENTE cron di GitHub: come per il grafico weekend, l'orario preciso
 # (10:20 italiane) e' garantito da uno SCHEDULER ESTERNO (cron-job.org)
-# che chiama la workflow_dispatch API tutti i giorni nei mesi 5-9.
-# Lo script ha comunque le sue guardie: fuori stagione non pubblica e
-# non invia mai due volte nello stesso giorno.
+# che chiama la workflow_dispatch API tutti i giorni nei mesi 5-9 + dal
+# 12 aprile (vedi _fuori_stagione() in news_vela.py, coerente col cron di
+# meteo.yml). Lo script ha comunque le sue guardie: fuori stagione non
+# pubblica e non invia mai due volte nello stesso giorno.
+# ATTENZIONE: questo campo "on" non basta da solo — lo scheduler va
+# configurato anche sul sito cron-job.org (fuori da questo repo).
 on:
   workflow_dispatch:
     inputs:

@@ -4,9 +4,12 @@ on:
   # NIENTE cron schedule: il cron di GitHub Actions e' inaffidabile (throttling,
   # run ritardati di ore o saltati). Il grafico viene avviato da uno SCHEDULER
   # ESTERNO (cron-job.org) che chiama workflow_dispatch via API alle 09:05 ora
-  # italiana di GIO/VEN/SAB nei mesi 5-9 (stagione velica) — stessa soluzione
-  # usata per il workflow meteo. Ogni giorno il grafico mostra solo i giorni
-  # FUTURI del weekend: gio -> ven/sab/dom, ven -> sab/dom, sab -> dom.
+  # italiana di GIO/VEN/SAB nei mesi 5-9 + dal 12 aprile (stagione velica,
+  # come il cron di meteo.yml) — stessa soluzione usata per il workflow
+  # meteo. Ogni giorno il grafico mostra solo i giorni FUTURI del weekend:
+  # gio -> ven/sab/dom, ven -> sab/dom, sab -> dom.
+  # ATTENZIONE: questo campo "on" non basta da solo — lo scheduler va
+  # configurato anche sul sito cron-job.org (fuori da questo repo).
   workflow_dispatch: {}     # avvio via cron-job.org e manuale dalla scheda Actions
 
 permissions:
