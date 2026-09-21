@@ -27,7 +27,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from email.utils import parsedate_to_datetime
 from html import unescape
 from pathlib import Path
@@ -40,6 +40,12 @@ STATO_FILE = Path(__file__).with_name("state.json")
 DATI_DIR = Path(__file__).with_name("dati")
 
 MESE_INIZIO, MESE_FINE = 5, 9  # stagione velica, come il resto del canale
+
+# --- PAUSA STAGIONALE (circolo velico chiuso) -------------------------------
+# Vedi meteo_check.py per il dettaglio: il circolo ha chiuso il 20/9/2026,
+# si riprende dal 12 aprile 2027.
+PAUSA_DAL = date(2026, 9, 21)
+PAUSA_AL = date(2027, 4, 11)  # ultimo giorno di pausa (incluso)
 
 # I siti delle testate rifiutano i client "da bot": serve uno User-Agent
 # da browser (verificato: con questo rispondono 200).
@@ -207,6 +213,11 @@ def main() -> int:
 
     if not forza and not (MESE_INIZIO <= adesso.month <= MESE_FINE):
         print("[info] fuori stagione (mag-set): niente news")
+        return 0
+
+    if not forza and PAUSA_DAL <= adesso.date() <= PAUSA_AL:
+        print(f"[info] pausa stagionale (circolo chiuso) fino al "
+              f"{PAUSA_AL.isoformat()}: niente news")
         return 0
 
     stato = json.loads(STATO_FILE.read_text(encoding="utf-8"))

@@ -20,7 +20,7 @@ import os
 import re
 import sys
 import time
-from datetime import datetime, time as dt_time, timedelta
+from datetime import date, datetime, time as dt_time, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -465,6 +465,19 @@ ORA_FINE = 19
 
 # Fuso orario per il calcolo della fascia oraria.
 TZ = ZoneInfo("Europe/Rome")
+
+# --- PAUSA STAGIONALE (circolo velico chiuso) -------------------------------
+# Il circolo ha chiuso il 20/9/2026: sospendiamo la lettura delle stazioni,
+# la pressione (stessi dati di stazione) e i bollettini fino alla riapertura.
+# Si riprende automaticamente dal 12 aprile 2027, senza bisogno di toccare il
+# codice (il cron di meteo.yml e' stato allargato a quella data per farlo
+# ripartire da solo).
+PAUSA_DAL = date(2026, 9, 21)
+PAUSA_AL = date(2027, 4, 11)  # ultimo giorno di pausa (incluso)
+
+
+def in_pausa_stagionale(adesso: datetime) -> bool:
+    return PAUSA_DAL <= adesso.date() <= PAUSA_AL
 
 # Posizione del circolo (Lido di Spina, Comacchio), riferimento per stimare
 # tra quanto il rinforzo di vento puo' raggiungere il circolo.
@@ -1869,6 +1882,10 @@ def main() -> int:
     # Modalita' pressione: gira sul workflow dedicato (sfasato dal vento) e
     # controlla solo la tendenza barometrica, poi termina.
     if os.environ.get("MODO_PRESSIONE", "").lower() in ("1", "true", "yes"):
+        if in_pausa_stagionale(datetime.now(TZ)):
+            print(f"[info] pausa stagionale (circolo chiuso) fino al "
+                  f"{PAUSA_AL.isoformat()}: pressione sospesa.")
+            return 0
         stato = carica_stato()
         if controlla_pressione(stato):
             salva_stato(stato)
@@ -1955,6 +1972,14 @@ def main() -> int:
         return 0
 
     adesso = datetime.now(TZ)
+
+    # Pausa stagionale (circolo chiuso): nessuna lettura di stazioni ne'
+    # bollettino finche' non si rientra nella stagione.
+    if in_pausa_stagionale(adesso):
+        print(f"[info] pausa stagionale (circolo chiuso) fino al "
+              f"{PAUSA_AL.isoformat()}: nessuna lettura stazioni.")
+        return 0
+
     oggi = adesso.strftime("%Y-%m-%d")
     in_orario = ORA_INIZIO <= adesso.hour < ORA_FINE
 

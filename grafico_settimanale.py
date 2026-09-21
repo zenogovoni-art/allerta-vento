@@ -22,7 +22,7 @@ import math
 import os
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -36,6 +36,12 @@ import requests
 # --------------------------------------------------------------------------
 
 TZ = ZoneInfo("Europe/Rome")
+
+# --- PAUSA STAGIONALE (circolo velico chiuso) -------------------------------
+# Vedi meteo_check.py per il dettaglio: il circolo ha chiuso il 20/9/2026,
+# si riprende dal 12 aprile 2027.
+PAUSA_DAL = date(2026, 9, 21)
+PAUSA_AL = date(2027, 4, 11)  # ultimo giorno di pausa (incluso)
 
 # Stato condiviso col workflow meteo: qui ci salviamo solo la data dell'ultimo
 # invio del grafico (flag "_grafico") per non ripubblicarlo piu' volte lo
@@ -237,6 +243,12 @@ def salva_stato(stato: dict) -> None:
 
 def main() -> int:
     oggi = datetime.now(TZ)
+
+    if PAUSA_DAL <= oggi.date() <= PAUSA_AL:
+        print(f"[info] pausa stagionale (circolo chiuso) fino al "
+              f"{PAUSA_AL.isoformat()}: grafico sospeso.")
+        return 0
+
     n = giorni_da_mostrare(oggi)
     if n == 0:
         print("[info] e' domenica: nessun giorno futuro del weekend, esco.")

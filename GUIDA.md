@@ -9,6 +9,11 @@ nostra zona e pubblica avvisi sul canale Telegram **«INFO VENTO»**: quando il
 vento si alza, quando la pressione cala in fretta, più previsioni e riepiloghi.
 Nessun PC acceso, nessuna app da installare: basta iscriversi al canale.
 
+> ⏸️ **Servizio in pausa**: il circolo velico ha chiuso il 20/9/2026, quindi
+> dal 21/9/2026 il servizio è sospeso — niente letture delle stazioni,
+> bollettini, grafico weekend né news di vela. Riparte automaticamente il
+> **12 aprile 2027**, con la riapertura del circolo.
+
 ## Come iscriversi
 
 👉 **t.me/INFOVENTO**
@@ -367,6 +372,9 @@ viene prima di tutto.
 
 ## 🆕 Ultimi aggiornamenti
 
+- **Servizio in pausa dal 21/9/2026 al 12/4/2027**: il circolo velico ha
+  chiuso, quindi bollettini, grafico weekend e news di vela sono sospesi
+  fino alla riapertura del 12 aprile 2027, quando riparte tutto da solo.
 - **Corrente e marea in ogni Situazione vento (ogni 15 minuti)**: una riga
   sola — intensità, freccia che punta dove va la corrente, e fase di marea
   misurata a Porto Garibaldi — pensata per essere letta al volo sul telefono

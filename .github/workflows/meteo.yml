@@ -2,12 +2,17 @@ name: Allerta vento
 
 on:
   schedule:
-    # Ogni 15 minuti, ma SOLO da maggio a settembre (campo mese = 5-9): e' la
-    # stagione velica. Da ottobre ad aprile il workflow non parte proprio,
-    # cosi' si evitano esecuzioni inutili quando le stazioni meteo d'inverno
-    # spesso non funzionano bene.
+    # Ogni 15 minuti, ma SOLO da meta' aprile a settembre: e' la stagione
+    # velica. Nel resto dell'anno il workflow non parte proprio, cosi' si
+    # evitano esecuzioni inutili quando le stazioni meteo d'inverno spesso
+    # non funzionano bene. Due righe perche' il campo giorno-del-mese non
+    # puo' essere combinato con "da meta' aprile": dal 12/4/2027 riparte da
+    # sola la pubblicazione (fermata il 21/9/2026 per la chiusura del
+    # circolo velico, vedi PAUSA_DAL/PAUSA_AL in meteo_check.py); dal 2028 in
+    # poi la stagione partira' quindi dal 12 aprile invece che dal 1 maggio.
     # Attenzione: l'orario del cron e' in UTC e GitHub puo' ritardare
     # l'esecuzione di qualche minuto nei momenti di carico.
+    - cron: "*/15 * 12-30 4 *"
     - cron: "*/15 * * 5-9 *"
   workflow_dispatch:      # permette l'avvio manuale dalla scheda Actions
     inputs:

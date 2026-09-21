@@ -74,6 +74,16 @@ Tutto in cima a [`meteo_check.py`](meteo_check.py):
 
 ## Note / limiti
 
+- **Pausa stagionale (circolo chiuso)**: dal 21/9/2026 all'11/4/2027 il
+  servizio è sospeso (`PAUSA_DAL`/`PAUSA_AL` in cima a `meteo_check.py`,
+  `grafico_settimanale.py` e `news_vela.py`) — niente letture di stazioni,
+  bollettini, grafico weekend o news di vela. Riparte da solo il 12/4/2027;
+  per questo il cron di [`meteo.yml`](.github/workflows/meteo.yml) è stato
+  allargato anche al 12-30 aprile (oltre a maggio-settembre), quindi dal
+  2028 in poi la stagione partirà dal 12 aprile invece che dal 1° maggio,
+  salvo modifiche. Grafico weekend e news vela sono innescati da uno
+  scheduler esterno (cron-job.org) limitato a maggio-settembre: per farli
+  ripartire davvero il 12/4/2027 va aggiornato anche quel programma esterno.
 - Il cron di GitHub **non è preciso**: può ritardare di qualche minuto.
 - I workflow schedulati vengono **disattivati dopo 60 giorni** di inattività
   del repo: questo workflow committa `state.json` quando il vento cambia
