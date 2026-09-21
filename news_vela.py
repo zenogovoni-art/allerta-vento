@@ -47,6 +47,16 @@ MESE_INIZIO, MESE_FINE = 5, 9  # stagione velica, come il resto del canale
 PAUSA_DAL = date(2026, 9, 21)
 PAUSA_AL = date(2027, 4, 11)  # ultimo giorno di pausa (incluso)
 
+
+def _fuori_stagione(adesso: datetime) -> bool:
+    """True se siamo fuori dalla stagione velica (mag-set + dal 12 aprile,
+    come il cron di meteo.yml: vedi PAUSA_AL sopra)."""
+    if MESE_INIZIO <= adesso.month <= MESE_FINE:
+        return False
+    if adesso.month == 4 and adesso.day >= 12:
+        return False
+    return True
+
 # I siti delle testate rifiutano i client "da bot": serve uno User-Agent
 # da browser (verificato: con questo rispondono 200).
 UA = {"User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -211,8 +221,8 @@ def main() -> int:
     dry = os.environ.get("NEWS_DRY_RUN", "").lower() in ("1", "true", "yes")
     forza = os.environ.get("NEWS_FORZA", "").lower() in ("1", "true", "yes")
 
-    if not forza and not (MESE_INIZIO <= adesso.month <= MESE_FINE):
-        print("[info] fuori stagione (mag-set): niente news")
+    if not forza and _fuori_stagione(adesso):
+        print("[info] fuori stagione (mag-set, dal 12/4): niente news")
         return 0
 
     if not forza and PAUSA_DAL <= adesso.date() <= PAUSA_AL:
