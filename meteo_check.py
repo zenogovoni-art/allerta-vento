@@ -1893,9 +1893,12 @@ def main() -> int:
 
     # Modalita' annuncio: pubblica sul canale il contenuto di annuncio.md e
     # termina. Usata dal workflow annuncio.yml quando il file viene aggiornato.
-    # Se accanto allo script c'e' annuncio_foto.png, dopo il testo viene
-    # inviata anche la foto (didascalia opzionale in annuncio_foto.txt):
-    # per allegare un'immagine basta committarla, per non allegarla toglierla.
+    # Se accanto allo script c'e' annuncio_foto.png, viene inviata anche la
+    # foto (didascalia opzionale in annuncio_foto.txt): per allegare
+    # un'immagine basta committarla, per non allegarla toglierla. Di norma
+    # va prima il testo e poi la foto; con ANNUNCIO_FOTO_PRIMA=1 (input
+    # "foto_prima" del workflow) si inverte l'ordine per il singolo invio,
+    # senza cambiare il comportamento di default.
     if os.environ.get("INVIA_ANNUNCIO", "").lower() in ("1", "true", "yes"):
         testo = Path(__file__).with_name("annuncio.md").read_text(
             encoding="utf-8").strip()
@@ -1904,14 +1907,25 @@ def main() -> int:
             return 0
         foto = Path(__file__).with_name("annuncio_foto.png")
         didascalia_file = Path(__file__).with_name("annuncio_foto.txt")
+        foto_prima = os.environ.get("ANNUNCIO_FOTO_PRIMA", "").lower() in (
+            "1", "true", "yes")
+
+        def invia_foto_annuncio():
+            if not foto.exists():
+                return
+            didascalia = ""
+            if didascalia_file.exists():
+                didascalia = didascalia_file.read_text(
+                    encoding="utf-8").strip()
+            invia_foto(foto.read_bytes(), didascalia)
+
         try:
-            invia_telegram(testo)
-            if foto.exists():
-                didascalia = ""
-                if didascalia_file.exists():
-                    didascalia = didascalia_file.read_text(
-                        encoding="utf-8").strip()
-                invia_foto(foto.read_bytes(), didascalia)
+            if foto_prima:
+                invia_foto_annuncio()
+                invia_telegram(testo)
+            else:
+                invia_telegram(testo)
+                invia_foto_annuncio()
         except Exception as e:  # noqa: BLE001
             print(f"[errore] invio annuncio fallito: {e}")
             return 1
